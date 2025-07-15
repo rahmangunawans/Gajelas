@@ -29,14 +29,87 @@ class SplashScreen:
                     ),
                     animate_opacity=ft.Animation(2000, ft.AnimationCurve.EASE_IN_OUT),
                 ),
-                # Logo image
+                # Logo container with SVG fallback
                 ft.Container(
-                    content=ft.Image(
-                        src="assets/logo.svg",
-                        width=120,
-                        height=120,
-                        fit=ft.ImageFit.CONTAIN,
-                    ),
+                    content=ft.Stack([
+                        # Background circle
+                        ft.Container(
+                            width=120,
+                            height=120,
+                            border_radius=60,
+                            bgcolor="#0f3460",
+                            border=ft.border.all(4, "#e94560"),
+                        ),
+                        # ATV Text Logo
+                        ft.Container(
+                            content=ft.Column([
+                                ft.Text(
+                                    "ATV",
+                                    size=32,
+                                    weight=ft.FontWeight.BOLD,
+                                    color=ft.Colors.WHITE,
+                                    text_align=ft.TextAlign.CENTER,
+                                ),
+                                ft.Text(
+                                    "AUTOTRADEVIP",
+                                    size=8,
+                                    weight=ft.FontWeight.W_600,
+                                    color="#e94560",
+                                    text_align=ft.TextAlign.CENTER,
+                                ),
+                            ],
+                            spacing=0,
+                            alignment=ft.MainAxisAlignment.CENTER,
+                            horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+                            ),
+                            width=120,
+                            height=120,
+                            alignment=ft.alignment.center,
+                        ),
+                        # Decorative corners
+                        ft.Container(
+                            content=ft.Stack([
+                                ft.Container(
+                                    width=6,
+                                    height=6,
+                                    border_radius=3,
+                                    bgcolor="#e94560",
+                                    opacity=0.7,
+                                    left=25,
+                                    top=25,
+                                ),
+                                ft.Container(
+                                    width=6,
+                                    height=6,
+                                    border_radius=3,
+                                    bgcolor="#e94560",
+                                    opacity=0.7,
+                                    right=25,
+                                    top=25,
+                                ),
+                                ft.Container(
+                                    width=6,
+                                    height=6,
+                                    border_radius=3,
+                                    bgcolor="#e94560",
+                                    opacity=0.7,
+                                    left=25,
+                                    bottom=25,
+                                ),
+                                ft.Container(
+                                    width=6,
+                                    height=6,
+                                    border_radius=3,
+                                    bgcolor="#e94560",
+                                    opacity=0.7,
+                                    right=25,
+                                    bottom=25,
+                                ),
+                            ]),
+                            width=120,
+                            height=120,
+                        ),
+                    ]),
                     padding=ft.padding.all(10),
                     border_radius=60,
                     shadow=ft.BoxShadow(
