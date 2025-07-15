@@ -1,13 +1,13 @@
 import flet as ft
 from pages.splash_screen import SplashScreen
 from pages.auth_handler import AuthHandler
-from database.db_manager import DatabaseManager
+from database.postgres_manager import PostgresManager
 from styles import AppStyles
 import os
 
 class ATVApp:
     def __init__(self):
-        self.db_manager = DatabaseManager()
+        self.db_manager = PostgresManager()
         self.styles = AppStyles()
         self.current_page = None
         self.page = None

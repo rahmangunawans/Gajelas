@@ -2,13 +2,13 @@ import flet as ft
 import hashlib
 import re
 from styles import AppStyles
-from database.db_manager import DatabaseManager
+from database.postgres_manager import PostgresManager
 
 class AuthHandler:
     def __init__(self, page: ft.Page, on_success_callback):
         self.page = page
         self.styles = AppStyles()
-        self.db_manager = DatabaseManager()
+        self.db_manager = PostgresManager()
         self.on_success_callback = on_success_callback
         
     def hash_password(self, password):
