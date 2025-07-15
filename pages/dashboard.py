@@ -8,7 +8,7 @@ class Dashboard:
         self.page = page
         self.user_data = user_data
         self.styles = AppStyles()
-        self.current_tab = "Beranda"
+        self.current_tab = "beranda"
         self.current_broker = "Beranda"
         
     def create_app_header(self):
@@ -129,7 +129,7 @@ class Dashboard:
     
     def create_vip_status_card(self):
         """Create VIP status card"""
-        is_vip = self.user_data.get('is_vip', False)
+        is_vip = self.user_data.get('vip_status', 'basic') == 'premium'
         
         return ft.Container(
             content=ft.Row([
@@ -441,7 +441,283 @@ class Dashboard:
     def switch_tab(self, tab_key):
         """Switch bottom navigation tab"""
         self.current_tab = tab_key
+        
+        # Handle different tab actions
+        if tab_key == "beranda":
+            self.show_home_content()
+        elif tab_key == "bots":
+            self.show_active_bots()
+        elif tab_key == "history":
+            self.show_history()
+        elif tab_key == "profile":
+            self.show_profile()
+        
         self.page.update()
+    
+    def show_home_content(self):
+        """Show home/beranda content"""
+        self.build()
+    
+    def show_active_bots(self):
+        """Show active bots page"""
+        # Clear current content and show active bots
+        self.page.clean()
+        
+        # Create active bots page
+        active_bots_content = ft.Container(
+            content=ft.Column([
+                # Header
+                ft.Container(
+                    content=ft.Row([
+                        ft.IconButton(
+                            icon=ft.Icons.ARROW_BACK,
+                            on_click=lambda e: self.build(),
+                            icon_color=self.styles.TEXT_PRIMARY,
+                        ),
+                        ft.Text(
+                            "Active Bots",
+                            size=20,
+                            weight=ft.FontWeight.BOLD,
+                            color=self.styles.TEXT_PRIMARY,
+                        ),
+                    ]),
+                    bgcolor=self.styles.SECONDARY_COLOR,
+                    padding=ft.padding.symmetric(vertical=15, horizontal=10),
+                ),
+                
+                # Active bots list
+                ft.Container(
+                    content=ft.Column([
+                        ft.Container(
+                            content=ft.Row([
+                                ft.Icon(ft.Icons.SMART_TOY, color=self.styles.SUCCESS_COLOR),
+                                ft.Column([
+                                    ft.Text("Binomo Bot", size=16, weight=ft.FontWeight.BOLD, color=self.styles.TEXT_PRIMARY),
+                                    ft.Text("Status: Active", size=12, color=self.styles.SUCCESS_COLOR),
+                                    ft.Text("Profit: +$1,250", size=12, color=self.styles.SUCCESS_COLOR),
+                                ], expand=True),
+                                ft.Switch(value=True, active_color=self.styles.SUCCESS_COLOR),
+                            ]),
+                            bgcolor=self.styles.SECONDARY_COLOR,
+                            padding=15,
+                            border_radius=10,
+                            margin=ft.margin.only(bottom=10),
+                        ),
+                        ft.Container(
+                            content=ft.Row([
+                                ft.Icon(ft.Icons.SMART_TOY, color=self.styles.SUCCESS_COLOR),
+                                ft.Column([
+                                    ft.Text("Quotex Bot", size=16, weight=ft.FontWeight.BOLD, color=self.styles.TEXT_PRIMARY),
+                                    ft.Text("Status: Active", size=12, color=self.styles.SUCCESS_COLOR),
+                                    ft.Text("Profit: +$850", size=12, color=self.styles.SUCCESS_COLOR),
+                                ], expand=True),
+                                ft.Switch(value=True, active_color=self.styles.SUCCESS_COLOR),
+                            ]),
+                            bgcolor=self.styles.SECONDARY_COLOR,
+                            padding=15,
+                            border_radius=10,
+                            margin=ft.margin.only(bottom=10),
+                        ),
+                    ]),
+                    expand=True,
+                    padding=20,
+                ),
+                
+                # Bottom navigation
+                self.create_bottom_navigation(),
+            ], spacing=0),
+            expand=True,
+            bgcolor=self.styles.PRIMARY_COLOR,
+        )
+        
+        self.page.add(active_bots_content)
+        
+    def show_history(self):
+        """Show trading history page"""
+        # Clear current content and show history
+        self.page.clean()
+        
+        # Create history page
+        history_content = ft.Container(
+            content=ft.Column([
+                # Header
+                ft.Container(
+                    content=ft.Row([
+                        ft.IconButton(
+                            icon=ft.Icons.ARROW_BACK,
+                            on_click=lambda e: self.build(),
+                            icon_color=self.styles.TEXT_PRIMARY,
+                        ),
+                        ft.Text(
+                            "Trading History",
+                            size=20,
+                            weight=ft.FontWeight.BOLD,
+                            color=self.styles.TEXT_PRIMARY,
+                        ),
+                    ]),
+                    bgcolor=self.styles.SECONDARY_COLOR,
+                    padding=ft.padding.symmetric(vertical=15, horizontal=10),
+                ),
+                
+                # History list
+                ft.Container(
+                    content=ft.Column([
+                        ft.Container(
+                            content=ft.Row([
+                                ft.Icon(ft.Icons.TRENDING_UP, color=self.styles.SUCCESS_COLOR),
+                                ft.Column([
+                                    ft.Text("EUR/USD", size=16, weight=ft.FontWeight.BOLD, color=self.styles.TEXT_PRIMARY),
+                                    ft.Text("2024-01-15 14:30", size=12, color=self.styles.TEXT_TERTIARY),
+                                    ft.Text("Binomo", size=12, color=self.styles.TEXT_SECONDARY),
+                                ], expand=True),
+                                ft.Text("+$125", size=16, color=self.styles.SUCCESS_COLOR, weight=ft.FontWeight.BOLD),
+                            ]),
+                            bgcolor=self.styles.SECONDARY_COLOR,
+                            padding=15,
+                            border_radius=10,
+                            margin=ft.margin.only(bottom=10),
+                        ),
+                        ft.Container(
+                            content=ft.Row([
+                                ft.Icon(ft.Icons.TRENDING_DOWN, color=self.styles.ERROR_COLOR),
+                                ft.Column([
+                                    ft.Text("GBP/USD", size=16, weight=ft.FontWeight.BOLD, color=self.styles.TEXT_PRIMARY),
+                                    ft.Text("2024-01-15 13:45", size=12, color=self.styles.TEXT_TERTIARY),
+                                    ft.Text("Quotex", size=12, color=self.styles.TEXT_SECONDARY),
+                                ], expand=True),
+                                ft.Text("-$50", size=16, color=self.styles.ERROR_COLOR, weight=ft.FontWeight.BOLD),
+                            ]),
+                            bgcolor=self.styles.SECONDARY_COLOR,
+                            padding=15,
+                            border_radius=10,
+                            margin=ft.margin.only(bottom=10),
+                        ),
+                    ]),
+                    expand=True,
+                    padding=20,
+                ),
+                
+                # Bottom navigation
+                self.create_bottom_navigation(),
+            ], spacing=0),
+            expand=True,
+            bgcolor=self.styles.PRIMARY_COLOR,
+        )
+        
+        self.page.add(history_content)
+        
+    def show_profile(self):
+        """Show profile page"""
+        # Clear current content and show profile
+        self.page.clean()
+        
+        # Create profile page
+        profile_content = ft.Container(
+            content=ft.Column([
+                # Header
+                ft.Container(
+                    content=ft.Row([
+                        ft.IconButton(
+                            icon=ft.Icons.ARROW_BACK,
+                            on_click=lambda e: self.build(),
+                            icon_color=self.styles.TEXT_PRIMARY,
+                        ),
+                        ft.Text(
+                            "Profile",
+                            size=20,
+                            weight=ft.FontWeight.BOLD,
+                            color=self.styles.TEXT_PRIMARY,
+                        ),
+                    ]),
+                    bgcolor=self.styles.SECONDARY_COLOR,
+                    padding=ft.padding.symmetric(vertical=15, horizontal=10),
+                ),
+                
+                # Profile info
+                ft.Container(
+                    content=ft.Column([
+                        # User info card
+                        ft.Container(
+                            content=ft.Column([
+                                ft.Row([
+                                    ft.Icon(ft.Icons.PERSON, size=60, color=self.styles.TEXT_SECONDARY),
+                                    ft.Column([
+                                        ft.Text(
+                                            f"{self.user_data.get('first_name', 'User')} {self.user_data.get('last_name', '')}",
+                                            size=18,
+                                            weight=ft.FontWeight.BOLD,
+                                            color=self.styles.TEXT_PRIMARY,
+                                        ),
+                                        ft.Text(
+                                            self.user_data.get('email', 'user@example.com'),
+                                            size=14,
+                                            color=self.styles.TEXT_TERTIARY,
+                                        ),
+                                        ft.Row([
+                                            ft.Icon(
+                                                ft.Icons.STAR if self.user_data.get('vip_status') == 'premium' else ft.Icons.STAR_BORDER,
+                                                color=ft.Colors.YELLOW if self.user_data.get('vip_status') == 'premium' else self.styles.TEXT_MUTED,
+                                                size=16,
+                                            ),
+                                            ft.Text(
+                                                "VIP Premium" if self.user_data.get('vip_status') == 'premium' else "Regular",
+                                                size=12,
+                                                color=self.styles.TEXT_SECONDARY,
+                                            ),
+                                        ]),
+                                    ], expand=True),
+                                ]),
+                            ]),
+                            bgcolor=self.styles.SECONDARY_COLOR,
+                            padding=20,
+                            border_radius=10,
+                            margin=ft.margin.only(bottom=20),
+                        ),
+                        
+                        # Profile options
+                        ft.Container(
+                            content=ft.Column([
+                                ft.ListTile(
+                                    leading=ft.Icon(ft.Icons.SETTINGS, color=self.styles.TEXT_SECONDARY),
+                                    title=ft.Text("Settings", color=self.styles.TEXT_PRIMARY),
+                                    trailing=ft.Icon(ft.Icons.ARROW_FORWARD_IOS, color=self.styles.TEXT_TERTIARY),
+                                ),
+                                ft.ListTile(
+                                    leading=ft.Icon(ft.Icons.HELP, color=self.styles.TEXT_SECONDARY),
+                                    title=ft.Text("Help & Support", color=self.styles.TEXT_PRIMARY),
+                                    trailing=ft.Icon(ft.Icons.ARROW_FORWARD_IOS, color=self.styles.TEXT_TERTIARY),
+                                ),
+                                ft.ListTile(
+                                    leading=ft.Icon(ft.Icons.LOGOUT, color=self.styles.ERROR_COLOR),
+                                    title=ft.Text("Logout", color=self.styles.ERROR_COLOR),
+                                    trailing=ft.Icon(ft.Icons.ARROW_FORWARD_IOS, color=self.styles.TEXT_TERTIARY),
+                                    on_click=lambda e: self.logout(),
+                                ),
+                            ]),
+                            bgcolor=self.styles.SECONDARY_COLOR,
+                            padding=10,
+                            border_radius=10,
+                        ),
+                    ]),
+                    expand=True,
+                    padding=20,
+                ),
+                
+                # Bottom navigation
+                self.create_bottom_navigation(),
+            ], spacing=0),
+            expand=True,
+            bgcolor=self.styles.PRIMARY_COLOR,
+        )
+        
+        self.page.add(profile_content)
+        
+    def logout(self):
+        """Handle logout"""
+        # Clear user data and return to auth
+        from pages.auth_handler import AuthHandler
+        self.current_page = AuthHandler(self.page, None)
+        self.current_page.show_login()
     
     def build(self):
         """Build and display the dashboard"""
