@@ -400,48 +400,149 @@ class Dashboard:
         ], spacing=0)
     
     def create_bottom_navigation(self):
-        """Create bottom navigation bar"""
+        """Create enhanced bottom navigation bar with unique design and visual effects"""
         nav_items = [
-            {"icon": ft.Icons.HOME, "label": "Beranda", "key": "beranda"},
-            {"icon": ft.Icons.SMART_TOY, "label": "Active Bots", "key": "bots"},
-            {"icon": ft.Icons.HISTORY, "label": "History", "key": "history"},
-            {"icon": ft.Icons.PERSON, "label": "Saya", "key": "profile"},
+            {"icon": ft.Icons.HOME, "label": "Beranda", "key": "beranda", "gradient": ["#1e3a8a", "#3b82f6"]},
+            {"icon": ft.Icons.SMART_TOY, "label": "Active Bots", "key": "bots", "gradient": ["#059669", "#10b981"]},
+            {"icon": ft.Icons.HISTORY, "label": "History", "key": "history", "gradient": ["#7c3aed", "#a855f7"]},
+            {"icon": ft.Icons.PERSON, "label": "Saya", "key": "profile", "gradient": ["#dc2626", "#ef4444"]},
         ]
         
         nav_buttons = []
-        for item in nav_items:
+        for i, item in enumerate(nav_items):
             is_active = item["key"] == self.current_tab.lower()
             
-            nav_buttons.append(
-                ft.Container(
-                    content=ft.Column([
-                        ft.Icon(
-                            item["icon"],
-                            color=ft.Colors.PINK if is_active else self.styles.TEXT_MUTED,
-                            size=24,
-                        ),
-                        ft.Text(
-                            item["label"],
-                            size=10,
-                            color=ft.Colors.PINK if is_active else self.styles.TEXT_MUTED,
-                            weight=ft.FontWeight.BOLD if is_active else ft.FontWeight.NORMAL,
-                        ),
-                    ], spacing=2, horizontal_alignment=ft.CrossAxisAlignment.CENTER),
-                    padding=ft.padding.symmetric(vertical=8),
+            # Create floating button effect for active item
+            if is_active:
+                nav_button = ft.Container(
+                    content=ft.Container(
+                        content=ft.Column([
+                            # Floating icon container with glow effect
+                            ft.Container(
+                                content=ft.Icon(
+                                    item["icon"],
+                                    color=ft.Colors.WHITE,
+                                    size=28,
+                                ),
+                                width=55,
+                                height=55,
+                                bgcolor=item["gradient"][0],
+                                border_radius=25,
+                                shadow=ft.BoxShadow(
+                                    spread_radius=2,
+                                    blur_radius=15,
+                                    color=ft.Colors.with_opacity(0.4, item["gradient"][1]),
+                                    offset=ft.Offset(0, 5),
+                                ),
+                                animate=ft.Animation(300, ft.AnimationCurve.EASE_IN_OUT),
+                            ),
+                            ft.Container(height=8),
+                            # Active label with glow
+                            ft.Text(
+                                item["label"],
+                                size=11,
+                                color=item["gradient"][0],
+                                weight=ft.FontWeight.BOLD,
+                                text_align=ft.TextAlign.CENTER,
+                            ),
+                        ], horizontal_alignment=ft.CrossAxisAlignment.CENTER),
+                        padding=ft.padding.symmetric(vertical=10),
+                        animate=ft.Animation(300, ft.AnimationCurve.EASE_IN_OUT),
+                    ),
                     on_click=lambda e, key=item["key"]: self.switch_tab(key),
                     expand=True,
                 )
-            )
+            else:
+                nav_button = ft.Container(
+                    content=ft.Column([
+                        # Regular icon
+                        ft.Container(
+                            content=ft.Icon(
+                                item["icon"],
+                                color=self.styles.TEXT_MUTED,
+                                size=24,
+                            ),
+                            animate=ft.Animation(300, ft.AnimationCurve.EASE_IN_OUT),
+                        ),
+                        ft.Container(height=8),
+                        # Regular label
+                        ft.Text(
+                            item["label"],
+                            size=10,
+                            color=self.styles.TEXT_MUTED,
+                            weight=ft.FontWeight.NORMAL,
+                            text_align=ft.TextAlign.CENTER,
+                        ),
+                    ], horizontal_alignment=ft.CrossAxisAlignment.CENTER),
+                    padding=ft.padding.symmetric(vertical=15),
+                    on_click=lambda e, key=item["key"]: self.switch_tab(key),
+                    expand=True,
+                    animate=ft.Animation(300, ft.AnimationCurve.EASE_IN_OUT),
+                )
+            
+            nav_buttons.append(nav_button)
         
+        # Create glassmorphism navigation container
         return ft.Container(
-            content=ft.Row(
-                nav_buttons,
-                alignment=ft.MainAxisAlignment.SPACE_EVENLY,
-                spacing=0,
+            content=ft.Stack([
+                # Background with blur effect
+                ft.Container(
+                    width=375,
+                    height=90,
+                    bgcolor=ft.Colors.with_opacity(0.1, ft.Colors.BLACK),
+                    border_radius=ft.border_radius.only(
+                        top_left=25,
+                        top_right=25,
+                    ),
+                    blur=ft.Blur(10, 10, ft.BlurTileMode.MIRROR),
+                ),
+                # Gradient overlay
+                ft.Container(
+                    width=375,
+                    height=90,
+                    decoration=ft.BoxDecoration(
+                        gradient=ft.LinearGradient(
+                            begin=ft.alignment.top_center,
+                            end=ft.alignment.bottom_center,
+                            colors=[
+                                ft.Colors.with_opacity(0.2, self.styles.SECONDARY_COLOR),
+                                ft.Colors.with_opacity(0.8, self.styles.SECONDARY_COLOR),
+                            ],
+                        ),
+                        border_radius=ft.border_radius.only(
+                            top_left=25,
+                            top_right=25,
+                        ),
+                    ),
+                ),
+                # Navigation buttons
+                ft.Container(
+                    content=ft.Row(
+                        nav_buttons,
+                        alignment=ft.MainAxisAlignment.SPACE_EVENLY,
+                        spacing=0,
+                    ),
+                    width=375,
+                    height=90,
+                    padding=ft.padding.only(top=5, bottom=10),
+                ),
+                # Top accent line
+                ft.Container(
+                    width=60,
+                    height=4,
+                    bgcolor=ft.Colors.with_opacity(0.3, self.styles.TEXT_SECONDARY),
+                    border_radius=2,
+                    margin=ft.margin.only(top=8),
+                    alignment=ft.alignment.top_center,
+                ),
+            ]),
+            shadow=ft.BoxShadow(
+                spread_radius=0,
+                blur_radius=20,
+                color=ft.Colors.with_opacity(0.3, ft.Colors.BLACK),
+                offset=ft.Offset(0, -5),
             ),
-            bgcolor=self.styles.SECONDARY_COLOR,
-            padding=ft.padding.symmetric(vertical=5),
-            border=ft.border.only(top=ft.BorderSide(1, self.styles.CARD_BORDER)),
+            animate=ft.Animation(500, ft.AnimationCurve.EASE_IN_OUT),
         )
     
     def show_vip_options(self, e):
