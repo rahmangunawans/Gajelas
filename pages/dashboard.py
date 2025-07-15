@@ -2046,9 +2046,6 @@ class Dashboard:
                 # App Header
                 self.create_app_header(),
                 
-                # Admin Panel (only for admin users)
-                self.create_admin_panel() if self.user_data.get('is_admin', False) else ft.Container(),
-                
                 # Horizontal Navigation
                 self.create_horizontal_navigation(),
                 
@@ -2056,6 +2053,8 @@ class Dashboard:
                 ft.Container(
                     content=ft.Column([
                         self.create_trading_bot_section(),
+                        # Admin Panel (only for admin users) - positioned after Trading Bot section
+                        self.create_admin_panel() if self.user_data.get('is_admin', False) else ft.Container(),
                         ft.Container(height=20),  # Bottom padding
                     ], scroll=ft.ScrollMode.AUTO),
                     expand=True,
