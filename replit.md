@@ -16,9 +16,12 @@ Preferred communication style: Simple, everyday language.
 - ✓ Configured PostgreSQL database with proper user schema
 - ✓ Created admin user: admin@atv.com / admin123
 - ✓ Updated database manager to support full_name, phone, and admin fields
-- ✓ Application now running on port 8000 for mobile interface
+- ✓ Application now running on port 5000 for mobile interface
 - ✓ All original mobile features preserved (splash screen, authentication, dashboard)
-Project preference: Keep as Flet mobile application, not Flask web application.
+- ✓ Removed all Flask dependencies and files to focus purely on Flet
+- ✓ Cleaned up pyproject.toml to only include necessary dependencies for Flet mobile app
+
+**Project preference:** Keep as Flet mobile application, not Flask web application.
 
 ## System Architecture
 

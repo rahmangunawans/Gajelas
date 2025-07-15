@@ -56,4 +56,8 @@ def main(page: ft.Page):
     app.setup_page(page)
 
 if __name__ == "__main__":
-    ft.app(target=main, port=8000, host="0.0.0.0", view=ft.AppView.WEB_BROWSER)
+    print("🚀 Starting ATV Mobile Application...")
+    print("📱 Mobile-first design optimized for 375x812 (iPhone X/11)")
+    print("🌐 Access: http://localhost:5000")
+    print("👤 Admin login: admin@atv.com / admin123")
+    ft.app(target=main, port=5000, host="0.0.0.0", view=ft.AppView.WEB_BROWSER)
