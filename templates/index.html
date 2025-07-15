@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="text-center mb-5">
+            <div class="mb-4">
+                <i class="fas fa-chart-line" style="font-size: 4rem; color: var(--text-secondary);"></i>
+            </div>
+            <h1 class="display-4 fw-bold mb-3">
+                <span style="color: var(--text-primary);">ATV</span>
+                <span style="color: var(--text-secondary);">AUTOTRADEVIP</span>
+            </h1>
+            <p class="lead mb-4" style="color: var(--text-tertiary);">
+                Advanced Trading Platform for Professional Traders
+            </p>
+            <div class="row text-center mb-5">
+                <div class="col-md-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <i class="fas fa-robot fa-3x mb-3" style="color: var(--accent-color);"></i>
+                            <h5 class="card-title">Automated Trading</h5>
+                            <p class="card-text">Advanced AI-powered trading bots for multiple brokers</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <i class="fas fa-shield-alt fa-3x mb-3" style="color: var(--success-color);"></i>
+                            <h5 class="card-title">Secure Platform</h5>
+                            <p class="card-text">Bank-level security with encrypted transactions</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <i class="fas fa-chart-bar fa-3x mb-3" style="color: var(--warning-color);"></i>
+                            <h5 class="card-title">Real-time Analytics</h5>
+                            <p class="card-text">Live market data and trading performance metrics</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center">
+            <h3 class="mb-4">Supported Brokers</h3>
+            <div class="row">
+                <div class="col-md-2 col-4 mb-3">
+                    <div class="broker-card text-center">
+                        <h6>Binomo</h6>
+                    </div>
+                </div>
+                <div class="col-md-2 col-4 mb-3">
+                    <div class="broker-card text-center">
+                        <h6>Quotex</h6>
+                    </div>
+                </div>
+                <div class="col-md-2 col-4 mb-3">
+                    <div class="broker-card text-center">
+                        <h6>Olymptrade</h6>
+                    </div>
+                </div>
+                <div class="col-md-2 col-4 mb-3">
+                    <div class="broker-card text-center">
+                        <h6>IQ Option</h6>
+                    </div>
+                </div>
+                <div class="col-md-2 col-4 mb-3">
+                    <div class="broker-card text-center">
+                        <h6>Stockity</h6>
+                    </div>
+                </div>
+                <div class="col-md-2 col-4 mb-3">
+                    <div class="broker-card text-center">
+                        <h6>More...</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mt-5">
+            <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg me-3">
+                <i class="fas fa-user-plus me-2"></i>Get Started
+            </a>
+            <a href="{{ url_for('login') }}" class="btn btn-outline-light btn-lg">
+                <i class="fas fa-sign-in-alt me-2"></i>Login
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
