@@ -26,8 +26,10 @@ class PostgresManager:
                     password_hash VARCHAR(255) NOT NULL,
                     first_name VARCHAR(100),
                     last_name VARCHAR(100),
+                    full_name VARCHAR(200),
+                    phone VARCHAR(20),
                     is_admin BOOLEAN DEFAULT FALSE,
-                    vip_status VARCHAR(20) DEFAULT 'basic',
+                    vip_status BOOLEAN DEFAULT FALSE,
                     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                 )
@@ -71,7 +73,7 @@ class PostgresManager:
         
         try:
             cursor.execute("""
-                SELECT id, email, password_hash, first_name, last_name, is_admin, vip_status
+                SELECT id, email, password_hash, first_name, last_name, full_name, phone, is_admin, vip_status
                 FROM users 
                 WHERE email = %s
             """, (email,))
@@ -84,6 +86,8 @@ class PostgresManager:
                     'email': user['email'],
                     'first_name': user['first_name'],
                     'last_name': user['last_name'],
+                    'full_name': user['full_name'],
+                    'phone': user['phone'],
                     'is_admin': user['is_admin'],
                     'vip_status': user['vip_status']
                 }
@@ -106,15 +110,18 @@ class PostgresManager:
             hashed_password = self.hash_password(user_data['password'])
             
             cursor.execute("""
-                INSERT INTO users (email, password_hash, first_name, last_name, vip_status)
-                VALUES (%s, %s, %s, %s, %s)
+                INSERT INTO users (email, password_hash, first_name, last_name, full_name, phone, is_admin, vip_status)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
                 RETURNING id
             """, (
                 user_data['email'],
                 hashed_password,
                 user_data.get('first_name', ''),
                 user_data.get('last_name', ''),
-                user_data.get('vip_status', 'basic')
+                user_data.get('full_name', ''),
+                user_data.get('phone', ''),
+                user_data.get('is_admin', False),
+                user_data.get('vip_status', False)
             ))
             
             user_id = cursor.fetchone()[0]

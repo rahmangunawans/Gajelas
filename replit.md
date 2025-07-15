@@ -7,6 +7,17 @@ This is a Python-based mobile application built with Flet (Python's Flutter fram
 ## User Preferences
 
 Preferred communication style: Simple, everyday language.
+
+## Recent Changes
+
+**July 15, 2025:**
+- ✓ Successfully migrated project from Replit Agent to Replit environment
+- ✓ Restored original Flet mobile application structure
+- ✓ Configured PostgreSQL database with proper user schema
+- ✓ Created admin user: admin@atv.com / admin123
+- ✓ Updated database manager to support full_name, phone, and admin fields
+- ✓ Application now running on port 8000 for mobile interface
+- ✓ All original mobile features preserved (splash screen, authentication, dashboard)
 Project preference: Keep as Flet mobile application, not Flask web application.
 
 ## System Architecture

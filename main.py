@@ -320,4 +320,4 @@ def main(page: ft.Page):
     splash.start_splash_sequence()
 
 if __name__ == "__main__":
-    ft.app(target=main, port=5000, host="0.0.0.0", view=ft.AppView.WEB_BROWSER)
+    ft.app(target=main, port=8000, host="0.0.0.0", view=ft.AppView.WEB_BROWSER)
