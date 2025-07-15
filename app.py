@@ -33,38 +33,9 @@ class ATVApp:
         
     def show_splash_screen(self):
         """Show splash screen"""
-        # Simple test first to see if basic display works
-        self.page.clean()
-        self.page.add(
-            ft.Container(
-                content=ft.Column([
-                    ft.Text(
-                        "ATV - AUTOTRADEVIP",
-                        size=24,
-                        weight=ft.FontWeight.BOLD,
-                        color=self.styles.TEXT_PRIMARY,
-                        text_align=ft.TextAlign.CENTER,
-                    ),
-                    ft.Text(
-                        "Loading...",
-                        size=16,
-                        color=self.styles.TEXT_SECONDARY,
-                        text_align=ft.TextAlign.CENTER,
-                    ),
-                    ft.Container(height=20),
-                    ft.ElevatedButton(
-                        "Start App",
-                        on_click=lambda _: self.navigate_to_auth(),
-                        bgcolor=self.styles.ACCENT_COLOR,
-                        color=ft.Colors.WHITE,
-                    ),
-                ], spacing=10),
-                expand=True,
-                alignment=ft.alignment.center,
-                bgcolor=self.styles.PRIMARY_COLOR,
-            )
-        )
-        self.page.update()
+        splash_screen = SplashScreen(self.page, self.navigate_to_auth)
+        splash_screen.build()
+        splash_screen.start_splash_sequence()
         
     def navigate_to_auth(self):
         """Navigate to authentication pages"""
