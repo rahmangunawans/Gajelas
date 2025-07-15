@@ -29,6 +29,57 @@ class SplashScreen:
                     ),
                     animate_opacity=ft.Animation(2000, ft.AnimationCurve.EASE_IN_OUT),
                 ),
+                # Floating particles around logo
+                ft.Container(
+                    content=ft.Stack([
+                        # Particle 1
+                        ft.Container(
+                            width=4,
+                            height=4,
+                            bgcolor=self.styles.TEXT_SECONDARY,
+                            border_radius=2,
+                            opacity=0.6,
+                            left=20,
+                            top=30,
+                            animate_offset=ft.Animation(3000, ft.AnimationCurve.EASE_IN_OUT),
+                        ),
+                        # Particle 2
+                        ft.Container(
+                            width=3,
+                            height=3,
+                            bgcolor="#e94560",
+                            border_radius=1.5,
+                            opacity=0.8,
+                            right=25,
+                            top=40,
+                            animate_offset=ft.Animation(4000, ft.AnimationCurve.EASE_IN_OUT),
+                        ),
+                        # Particle 3
+                        ft.Container(
+                            width=5,
+                            height=5,
+                            bgcolor=self.styles.TEXT_SECONDARY,
+                            border_radius=2.5,
+                            opacity=0.4,
+                            left=30,
+                            bottom=35,
+                            animate_offset=ft.Animation(3500, ft.AnimationCurve.EASE_IN_OUT),
+                        ),
+                        # Particle 4
+                        ft.Container(
+                            width=3,
+                            height=3,
+                            bgcolor="#e94560",
+                            border_radius=1.5,
+                            opacity=0.7,
+                            right=20,
+                            bottom=30,
+                            animate_offset=ft.Animation(4500, ft.AnimationCurve.EASE_IN_OUT),
+                        ),
+                    ]),
+                    width=140,
+                    height=140,
+                ),
                 # Logo container with SVG fallback
                 ft.Container(
                     content=ft.Stack([
@@ -179,7 +230,7 @@ class SplashScreen:
         return brand_container
         
     def create_progress_bar(self):
-        """Create modern animated progress bar"""
+        """Create modern animated progress bar with floating dots"""
         progress_container = ft.Container(
             content=ft.Column([
                 # Progress bar with gradient
@@ -199,6 +250,39 @@ class SplashScreen:
                         offset=ft.Offset(0, 2),
                     ),
                 ),
+                # Animated loading dots
+                ft.Container(
+                    content=ft.Row([
+                        ft.Container(
+                            width=8,
+                            height=8,
+                            bgcolor=self.styles.TEXT_SECONDARY,
+                            border_radius=4,
+                            opacity=0.3,
+                            animate_opacity=ft.Animation(600, ft.AnimationCurve.EASE_IN_OUT),
+                        ),
+                        ft.Container(
+                            width=8,
+                            height=8,
+                            bgcolor=self.styles.TEXT_SECONDARY,
+                            border_radius=4,
+                            opacity=0.3,
+                            animate_opacity=ft.Animation(600, ft.AnimationCurve.EASE_IN_OUT),
+                        ),
+                        ft.Container(
+                            width=8,
+                            height=8,
+                            bgcolor=self.styles.TEXT_SECONDARY,
+                            border_radius=4,
+                            opacity=0.3,
+                            animate_opacity=ft.Animation(600, ft.AnimationCurve.EASE_IN_OUT),
+                        ),
+                    ],
+                    spacing=12,
+                    alignment=ft.MainAxisAlignment.CENTER,
+                    ),
+                    padding=ft.padding.only(top=20),
+                ),
                 # Progress percentage
                 ft.Container(
                     content=ft.Text(
@@ -207,7 +291,7 @@ class SplashScreen:
                         color=self.styles.TEXT_TERTIARY,
                         text_align=ft.TextAlign.CENTER,
                     ),
-                    padding=ft.padding.only(top=8),
+                    padding=ft.padding.only(top=10),
                 ),
             ],
             spacing=0,
@@ -247,18 +331,70 @@ class SplashScreen:
         return loading_text
         
     def animate_progress(self, progress_bar):
-        """Animate the progress bar with percentage updates"""
+        """Animate the progress bar with percentage updates and dancing dots"""
         def update_progress():
             for i in range(101):
+                # Update progress bar
                 progress_bar.content.controls[0].content.value = i / 100
-                progress_bar.content.controls[1].content.value = f"{i}%"
+                progress_bar.content.controls[2].content.value = f"{i}%"
+                
+                # Animate dots with wave effect
+                dots = progress_bar.content.controls[1].content.controls
+                for j, dot in enumerate(dots):
+                    # Create wave effect - each dot animates with delay
+                    cycle_position = (i + j * 20) % 60
+                    if cycle_position < 20:
+                        dot.opacity = 0.3 + (cycle_position / 20) * 0.7
+                    elif cycle_position < 40:
+                        dot.opacity = 1.0 - ((cycle_position - 20) / 20) * 0.7
+                    else:
+                        dot.opacity = 0.3
+                
                 self.page.update()
-                time.sleep(0.03)
+                time.sleep(0.05)
         
         thread = threading.Thread(target=update_progress)
         thread.daemon = True
         thread.start()
         
+    def animate_floating_particles(self):
+        """Animate floating particles around the logo"""
+        def animate_particles():
+            import math
+            cycle = 0
+            while cycle < 100:  # Run for about 5 seconds
+                # Get particle containers
+                particles = self.logo.content.controls[1].content.controls
+                
+                for i, particle in enumerate(particles):
+                    # Create circular floating motion
+                    angle = (cycle * 0.1) + (i * 1.5)  # Different phase for each particle
+                    radius = 15 + (i * 5)  # Different radius for each particle
+                    
+                    # Calculate new position
+                    x_offset = math.cos(angle) * radius
+                    y_offset = math.sin(angle) * radius
+                    
+                    # Apply smooth movement
+                    if i % 2 == 0:  # Even particles move clockwise
+                        particle.left = 70 + x_offset
+                        particle.top = 70 + y_offset
+                    else:  # Odd particles move counter-clockwise
+                        particle.right = 70 - x_offset
+                        particle.bottom = 70 - y_offset
+                
+                # Pulse logo glow effect
+                glow = self.logo.content.controls[0]
+                glow.opacity = 0.3 + (math.sin(cycle * 0.2) * 0.2)
+                
+                self.page.update()
+                time.sleep(0.05)
+                cycle += 1
+        
+        thread = threading.Thread(target=animate_particles)
+        thread.daemon = True
+        thread.start()
+
     def start_splash_sequence(self):
         """Start the splash screen animation sequence"""
         def animation_sequence():
@@ -266,6 +402,9 @@ class SplashScreen:
             time.sleep(0.5)
             self.logo.opacity = 1
             self.page.update()
+            
+            # Start particle animation
+            self.animate_floating_particles()
             
             # Phase 2: Show brand text
             time.sleep(0.8)
