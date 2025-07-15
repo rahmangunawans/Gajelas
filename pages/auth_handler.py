@@ -231,7 +231,7 @@ class AuthHandler:
                 return
                 
             # Check credentials
-            user = self.db_manager.authenticate_user(email, self.hash_password(password))
+            user = self.db_manager.authenticate_user(email, password)
             if user:
                 # TODO: Implement remember me functionality with session storage
                 if remember_me:
