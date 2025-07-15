@@ -23,6 +23,9 @@ Preferred communication style: Simple, everyday language.
 - ✓ Fixed admin panel position to appear below Trading Bot section instead of horizontal navigation
 - ✓ Enhanced Bottom Navigation Bar with unique glassmorphism design and floating button effects
 - ✓ Added gradient backgrounds, glow effects, and smooth animations to navigation elements
+- ✓ Implemented floating center button navigation design similar to modern mobile apps
+- ✓ Created notched navigation bar with elevated center button for Active Bots section
+- ✓ Added white background with rounded corners and shadow effects for professional look
 
 **Project preference:** Keep as Flet mobile application, not Flask web application.
 

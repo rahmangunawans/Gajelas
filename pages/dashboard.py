@@ -400,72 +400,57 @@ class Dashboard:
         ], spacing=0)
     
     def create_bottom_navigation(self):
-        """Create enhanced bottom navigation bar with unique design and visual effects"""
+        """Create floating center button navigation bar like in the reference image"""
         nav_items = [
-            {"icon": ft.Icons.HOME, "label": "Beranda", "key": "beranda", "color": "#1e3a8a"},
-            {"icon": ft.Icons.SMART_TOY, "label": "Active Bots", "key": "bots", "color": "#059669"},
-            {"icon": ft.Icons.HISTORY, "label": "History", "key": "history", "color": "#7c3aed"},
-            {"icon": ft.Icons.PERSON, "label": "Saya", "key": "profile", "color": "#dc2626"},
+            {"icon": ft.Icons.HOME, "label": "Beranda", "key": "beranda", "position": "left"},
+            {"icon": ft.Icons.SMART_TOY, "label": "Active Bots", "key": "bots", "position": "center"},
+            {"icon": ft.Icons.HISTORY, "label": "History", "key": "history", "position": "right"},
+            {"icon": ft.Icons.PERSON, "label": "Saya", "key": "profile", "position": "far_right"},
         ]
         
+        # Create navigation buttons
         nav_buttons = []
+        center_button = None
+        
         for item in nav_items:
             is_active = item["key"] == self.current_tab.lower()
             
-            # Create floating button effect for active item
-            if is_active:
-                nav_button = ft.Container(
-                    content=ft.Column([
-                        # Floating icon container with shadow effect
-                        ft.Container(
-                            content=ft.Icon(
-                                item["icon"],
-                                color=ft.Colors.WHITE,
-                                size=28,
-                            ),
-                            width=55,
-                            height=55,
-                            bgcolor=item["color"],
-                            border_radius=25,
-                            shadow=ft.BoxShadow(
-                                spread_radius=1,
-                                blur_radius=10,
-                                color=ft.Colors.with_opacity(0.5, item["color"]),
-                                offset=ft.Offset(0, 3),
-                            ),
-                        ),
-                        ft.Container(height=5),
-                        # Active label
-                        ft.Text(
-                            item["label"],
-                            size=11,
-                            color=item["color"],
-                            weight=ft.FontWeight.BOLD,
-                            text_align=ft.TextAlign.CENTER,
-                        ),
-                    ], horizontal_alignment=ft.CrossAxisAlignment.CENTER),
-                    padding=ft.padding.symmetric(vertical=8),
+            if item["position"] == "center":
+                # Create floating center button (like in reference image)
+                center_button = ft.Container(
+                    content=ft.Icon(
+                        item["icon"],
+                        color=ft.Colors.WHITE,
+                        size=32,
+                    ),
+                    width=70,
+                    height=70,
+                    bgcolor="#7c3aed" if is_active else "#059669",
+                    border_radius=35,
+                    shadow=ft.BoxShadow(
+                        spread_radius=2,
+                        blur_radius=15,
+                        color=ft.Colors.with_opacity(0.4, "#7c3aed" if is_active else "#059669"),
+                        offset=ft.Offset(0, 5),
+                    ),
                     on_click=lambda e, key=item["key"]: self.switch_tab(key),
-                    expand=True,
+                    margin=ft.margin.only(top=-35),  # Float above the bar
                 )
             else:
+                # Create regular navigation buttons
                 nav_button = ft.Container(
                     content=ft.Column([
-                        # Regular icon
-                        ft.Container(
-                            content=ft.Icon(
-                                item["icon"],
-                                color=self.styles.TEXT_MUTED,
-                                size=24,
-                            ),
-                            padding=ft.padding.all(15),
+                        ft.Icon(
+                            item["icon"],
+                            color="#7c3aed" if is_active else self.styles.TEXT_MUTED,
+                            size=26 if is_active else 24,
                         ),
-                        # Regular label
+                        ft.Container(height=5),
                         ft.Text(
                             item["label"],
                             size=10,
-                            color=self.styles.TEXT_MUTED,
-                            weight=ft.FontWeight.NORMAL,
+                            color="#7c3aed" if is_active else self.styles.TEXT_MUTED,
+                            weight=ft.FontWeight.BOLD if is_active else ft.FontWeight.NORMAL,
                             text_align=ft.TextAlign.CENTER,
                         ),
                     ], horizontal_alignment=ft.CrossAxisAlignment.CENTER),
@@ -473,40 +458,59 @@ class Dashboard:
                     on_click=lambda e, key=item["key"]: self.switch_tab(key),
                     expand=True,
                 )
-            
-            nav_buttons.append(nav_button)
+                nav_buttons.append(nav_button)
         
-        # Create modern navigation container
-        return ft.Container(
-            content=ft.Column([
-                # Top accent line
+        # Create the main navigation bar with notch for center button
+        nav_bar = ft.Container(
+            content=ft.Row([
+                # Left section
                 ft.Container(
-                    width=60,
-                    height=4,
-                    bgcolor=ft.Colors.with_opacity(0.3, self.styles.TEXT_SECONDARY),
-                    border_radius=2,
-                    alignment=ft.alignment.top_center,
-                    margin=ft.margin.only(bottom=10),
+                    content=nav_buttons[0],
+                    expand=True,
                 ),
-                # Navigation buttons
-                ft.Row(
-                    nav_buttons,
-                    alignment=ft.MainAxisAlignment.SPACE_EVENLY,
-                    spacing=0,
+                # Center space for floating button
+                ft.Container(
+                    width=90,
+                    height=70,
+                    bgcolor=ft.Colors.TRANSPARENT,
                 ),
-            ]),
-            bgcolor=ft.Colors.with_opacity(0.9, self.styles.SECONDARY_COLOR),
+                # Right section
+                ft.Container(
+                    content=ft.Row([
+                        ft.Container(content=nav_buttons[1], expand=True),
+                        ft.Container(content=nav_buttons[2], expand=True),
+                    ]),
+                    expand=True,
+                ),
+            ], alignment=ft.MainAxisAlignment.SPACE_BETWEEN),
+            height=80,
+            bgcolor=ft.Colors.with_opacity(0.95, "#ffffff"),
             border_radius=ft.border_radius.only(
-                top_left=25,
-                top_right=25,
+                top_left=30,
+                top_right=30,
             ),
-            padding=ft.padding.only(top=10, bottom=15),
+            padding=ft.padding.only(left=20, right=20, top=10, bottom=10),
             shadow=ft.BoxShadow(
                 spread_radius=0,
-                blur_radius=15,
-                color=ft.Colors.with_opacity(0.2, ft.Colors.BLACK),
-                offset=ft.Offset(0, -3),
+                blur_radius=20,
+                color=ft.Colors.with_opacity(0.15, ft.Colors.BLACK),
+                offset=ft.Offset(0, -5),
             ),
+        )
+        
+        # Combine navigation bar with floating center button
+        return ft.Container(
+            content=ft.Column([
+                # Floating center button
+                ft.Container(
+                    content=center_button,
+                    alignment=ft.alignment.center,
+                    height=35,
+                ),
+                # Navigation bar
+                nav_bar,
+            ], spacing=0),
+            height=115,
         )
     
     def show_vip_options(self, e):
@@ -2114,18 +2118,18 @@ class Dashboard:
                 # Horizontal Navigation
                 self.create_horizontal_navigation(),
                 
-                # Main Content (Scrollable)
+                # Main Content (Scrollable) - adjusted for floating navigation
                 ft.Container(
                     content=ft.Column([
                         self.create_trading_bot_section(),
                         # Admin Panel (only for admin users) - positioned after Trading Bot section
                         self.create_admin_panel() if self.user_data.get('is_admin', False) else ft.Container(),
-                        ft.Container(height=20),  # Bottom padding
+                        ft.Container(height=140),  # Extra bottom padding for floating navigation
                     ], scroll=ft.ScrollMode.AUTO),
                     expand=True,
                 ),
                 
-                # Bottom Navigation
+                # Floating Bottom Navigation
                 self.create_bottom_navigation(),
                 
             ], spacing=0),
