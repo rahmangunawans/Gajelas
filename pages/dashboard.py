@@ -92,6 +92,104 @@ class Dashboard:
             border=ft.border.only(bottom=ft.BorderSide(1, self.styles.CARD_BORDER)),
         )
     
+    def create_admin_panel(self):
+        """Create admin panel section"""
+        return ft.Container(
+            content=ft.Column([
+                # Admin Panel Header
+                ft.Container(
+                    content=ft.Row([
+                        ft.Icon(
+                            ft.Icons.ADMIN_PANEL_SETTINGS,
+                            color=self.styles.ERROR_COLOR,
+                            size=24,
+                        ),
+                        ft.Text(
+                            "Admin Panel",
+                            size=18,
+                            weight=ft.FontWeight.BOLD,
+                            color=self.styles.ERROR_COLOR,
+                        ),
+                        ft.Container(expand=True),
+                        ft.IconButton(
+                            icon=ft.Icons.SETTINGS,
+                            icon_color=self.styles.ERROR_COLOR,
+                            on_click=lambda e: self.show_admin_settings(),
+                        ),
+                    ]),
+                    padding=ft.padding.symmetric(horizontal=20, vertical=10),
+                ),
+                
+                # Admin Quick Actions
+                ft.Container(
+                    content=ft.Row([
+                        # User Management
+                        ft.Container(
+                            content=ft.Column([
+                                ft.Icon(ft.Icons.PEOPLE, color=self.styles.TEXT_PRIMARY, size=20),
+                                ft.Text("Users", size=12, color=self.styles.TEXT_PRIMARY),
+                            ], horizontal_alignment=ft.CrossAxisAlignment.CENTER),
+                            bgcolor=self.styles.SECONDARY_COLOR,
+                            padding=ft.padding.all(10),
+                            border_radius=8,
+                            on_click=lambda e: self.show_user_management(),
+                            expand=True,
+                        ),
+                        
+                        ft.Container(width=10),
+                        
+                        # Bot Management
+                        ft.Container(
+                            content=ft.Column([
+                                ft.Icon(ft.Icons.SMART_TOY, color=self.styles.TEXT_PRIMARY, size=20),
+                                ft.Text("Bots", size=12, color=self.styles.TEXT_PRIMARY),
+                            ], horizontal_alignment=ft.CrossAxisAlignment.CENTER),
+                            bgcolor=self.styles.SECONDARY_COLOR,
+                            padding=ft.padding.all(10),
+                            border_radius=8,
+                            on_click=lambda e: self.show_bot_management(),
+                            expand=True,
+                        ),
+                        
+                        ft.Container(width=10),
+                        
+                        # System Stats
+                        ft.Container(
+                            content=ft.Column([
+                                ft.Icon(ft.Icons.ANALYTICS, color=self.styles.TEXT_PRIMARY, size=20),
+                                ft.Text("Stats", size=12, color=self.styles.TEXT_PRIMARY),
+                            ], horizontal_alignment=ft.CrossAxisAlignment.CENTER),
+                            bgcolor=self.styles.SECONDARY_COLOR,
+                            padding=ft.padding.all(10),
+                            border_radius=8,
+                            on_click=lambda e: self.show_system_stats(),
+                            expand=True,
+                        ),
+                        
+                        ft.Container(width=10),
+                        
+                        # Audit Logs
+                        ft.Container(
+                            content=ft.Column([
+                                ft.Icon(ft.Icons.HISTORY, color=self.styles.TEXT_PRIMARY, size=20),
+                                ft.Text("Logs", size=12, color=self.styles.TEXT_PRIMARY),
+                            ], horizontal_alignment=ft.CrossAxisAlignment.CENTER),
+                            bgcolor=self.styles.SECONDARY_COLOR,
+                            padding=ft.padding.all(10),
+                            border_radius=8,
+                            on_click=lambda e: self.show_audit_logs(),
+                            expand=True,
+                        ),
+                    ]),
+                    padding=ft.padding.symmetric(horizontal=20, vertical=5),
+                ),
+            ]),
+            bgcolor=ft.Colors.with_opacity(0.05, self.styles.ERROR_COLOR),
+            border=ft.border.all(1, ft.Colors.with_opacity(0.3, self.styles.ERROR_COLOR)),
+            border_radius=10,
+            margin=ft.margin.symmetric(horizontal=10, vertical=5),
+        )
+    
     def create_horizontal_navigation(self):
         """Create horizontal navigation bar for brokers"""
         brokers = ["Beranda", "Binomo", "Quotex", "Olymptrade", "IQ Option", "Stockity"]
@@ -1292,15 +1390,638 @@ class Dashboard:
         # TODO: Implement notification settings page
         self.show_settings()
         
-    def show_language_settings(self):
-        """Show language settings page"""
-        # TODO: Implement language settings page
+    def show_admin_settings(self):
+        """Show admin settings page"""
+        # TODO: Implement admin settings page
         self.show_settings()
         
-    def show_about(self):
-        """Show about page"""
-        # TODO: Implement about page
-        self.show_settings()
+    def show_user_management(self):
+        """Show user management page with CRUD operations"""
+        # Clear current content and show user management
+        self.page.clean()
+        
+        # Sample user data (in real app, this would come from database)
+        users_data = [
+            {"id": 1, "name": "John Doe", "email": "john@example.com", "vip_status": "basic", "created": "2024-01-10"},
+            {"id": 2, "name": "Admin ATV", "email": "admin@atv.com", "vip_status": "premium", "created": "2024-01-01"},
+            {"id": 3, "name": "Jane Smith", "email": "jane@example.com", "vip_status": "premium", "created": "2024-01-15"},
+        ]
+        
+        def create_user_card(user):
+            return ft.Container(
+                content=ft.Row([
+                    ft.Column([
+                        ft.Text(user["name"], size=16, weight=ft.FontWeight.BOLD, color=self.styles.TEXT_PRIMARY),
+                        ft.Text(user["email"], size=12, color=self.styles.TEXT_TERTIARY),
+                        ft.Row([
+                            ft.Icon(
+                                ft.Icons.STAR if user["vip_status"] == "premium" else ft.Icons.STAR_BORDER,
+                                color=ft.Colors.YELLOW if user["vip_status"] == "premium" else self.styles.TEXT_MUTED,
+                                size=16,
+                            ),
+                            ft.Text(user["vip_status"].title(), size=12, color=self.styles.TEXT_SECONDARY),
+                        ]),
+                    ], expand=True),
+                    ft.Column([
+                        ft.IconButton(
+                            icon=ft.Icons.EDIT,
+                            icon_color=self.styles.TEXT_SECONDARY,
+                            on_click=lambda e, u=user: self.edit_user(u),
+                            tooltip="Edit User",
+                        ),
+                        ft.IconButton(
+                            icon=ft.Icons.DELETE,
+                            icon_color=self.styles.ERROR_COLOR,
+                            on_click=lambda e, u=user: self.delete_user(u),
+                            tooltip="Delete User",
+                        ),
+                    ]),
+                ]),
+                bgcolor=self.styles.SECONDARY_COLOR,
+                padding=15,
+                border_radius=10,
+                margin=ft.margin.only(bottom=10),
+            )
+        
+        # Create user management page
+        user_management_content = ft.Container(
+            content=ft.Column([
+                # Header
+                ft.Container(
+                    content=ft.Row([
+                        ft.IconButton(
+                            icon=ft.Icons.ARROW_BACK,
+                            on_click=lambda e: self.build(),
+                            icon_color=self.styles.TEXT_PRIMARY,
+                        ),
+                        ft.Text(
+                            "User Management",
+                            size=20,
+                            weight=ft.FontWeight.BOLD,
+                            color=self.styles.TEXT_PRIMARY,
+                        ),
+                        ft.Container(expand=True),
+                        ft.IconButton(
+                            icon=ft.Icons.ADD,
+                            icon_color=self.styles.SUCCESS_COLOR,
+                            on_click=lambda e: self.add_user(),
+                            tooltip="Add New User",
+                        ),
+                    ]),
+                    bgcolor=self.styles.SECONDARY_COLOR,
+                    padding=ft.padding.symmetric(vertical=15, horizontal=10),
+                ),
+                
+                # User list
+                ft.Container(
+                    content=ft.Column([
+                        ft.Text(
+                            f"Total Users: {len(users_data)}",
+                            size=14,
+                            color=self.styles.TEXT_TERTIARY,
+                        ),
+                        ft.Container(height=10),
+                        ft.Column([
+                            create_user_card(user) for user in users_data
+                        ]),
+                    ]),
+                    expand=True,
+                    padding=20,
+                ),
+                
+                # Bottom navigation
+                self.create_bottom_navigation(),
+            ], spacing=0),
+            expand=True,
+            bgcolor=self.styles.PRIMARY_COLOR,
+        )
+        
+        self.page.add(user_management_content)
+        
+    def show_bot_management(self):
+        """Show bot management page with CRUD operations"""
+        # Clear current content and show bot management
+        self.page.clean()
+        
+        # Sample bot data
+        bots_data = [
+            {"id": 1, "name": "Binomo Bot", "broker": "Binomo", "status": "active", "profit": 1250.50},
+            {"id": 2, "name": "Quotex Bot", "broker": "Quotex", "status": "active", "profit": 850.75},
+            {"id": 3, "name": "IQ Option Bot", "broker": "IQ Option", "status": "inactive", "profit": -150.25},
+            {"id": 4, "name": "Olymptrade Bot", "broker": "Olymptrade", "status": "active", "profit": 2100.00},
+        ]
+        
+        def create_bot_card(bot):
+            return ft.Container(
+                content=ft.Row([
+                    ft.Column([
+                        ft.Text(bot["name"], size=16, weight=ft.FontWeight.BOLD, color=self.styles.TEXT_PRIMARY),
+                        ft.Text(f"Broker: {bot['broker']}", size=12, color=self.styles.TEXT_TERTIARY),
+                        ft.Row([
+                            ft.Icon(
+                                ft.Icons.PLAY_CIRCLE if bot["status"] == "active" else ft.Icons.PAUSE_CIRCLE,
+                                color=self.styles.SUCCESS_COLOR if bot["status"] == "active" else self.styles.TEXT_MUTED,
+                                size=16,
+                            ),
+                            ft.Text(
+                                bot["status"].title(),
+                                size=12,
+                                color=self.styles.SUCCESS_COLOR if bot["status"] == "active" else self.styles.TEXT_MUTED,
+                            ),
+                        ]),
+                    ], expand=True),
+                    ft.Column([
+                        ft.Text(
+                            f"${bot['profit']:,.2f}",
+                            size=14,
+                            weight=ft.FontWeight.BOLD,
+                            color=self.styles.SUCCESS_COLOR if bot["profit"] > 0 else self.styles.ERROR_COLOR,
+                        ),
+                        ft.Row([
+                            ft.IconButton(
+                                icon=ft.Icons.EDIT,
+                                icon_color=self.styles.TEXT_SECONDARY,
+                                on_click=lambda e, b=bot: self.edit_bot(b),
+                                tooltip="Edit Bot",
+                            ),
+                            ft.IconButton(
+                                icon=ft.Icons.DELETE,
+                                icon_color=self.styles.ERROR_COLOR,
+                                on_click=lambda e, b=bot: self.delete_bot(b),
+                                tooltip="Delete Bot",
+                            ),
+                        ]),
+                    ]),
+                ]),
+                bgcolor=self.styles.SECONDARY_COLOR,
+                padding=15,
+                border_radius=10,
+                margin=ft.margin.only(bottom=10),
+            )
+        
+        # Create bot management page
+        bot_management_content = ft.Container(
+            content=ft.Column([
+                # Header
+                ft.Container(
+                    content=ft.Row([
+                        ft.IconButton(
+                            icon=ft.Icons.ARROW_BACK,
+                            on_click=lambda e: self.build(),
+                            icon_color=self.styles.TEXT_PRIMARY,
+                        ),
+                        ft.Text(
+                            "Bot Management",
+                            size=20,
+                            weight=ft.FontWeight.BOLD,
+                            color=self.styles.TEXT_PRIMARY,
+                        ),
+                        ft.Container(expand=True),
+                        ft.IconButton(
+                            icon=ft.Icons.ADD,
+                            icon_color=self.styles.SUCCESS_COLOR,
+                            on_click=lambda e: self.add_bot(),
+                            tooltip="Add New Bot",
+                        ),
+                    ]),
+                    bgcolor=self.styles.SECONDARY_COLOR,
+                    padding=ft.padding.symmetric(vertical=15, horizontal=10),
+                ),
+                
+                # Bot list
+                ft.Container(
+                    content=ft.Column([
+                        ft.Text(
+                            f"Total Bots: {len(bots_data)}",
+                            size=14,
+                            color=self.styles.TEXT_TERTIARY,
+                        ),
+                        ft.Container(height=10),
+                        ft.Column([
+                            create_bot_card(bot) for bot in bots_data
+                        ]),
+                    ]),
+                    expand=True,
+                    padding=20,
+                ),
+                
+                # Bottom navigation
+                self.create_bottom_navigation(),
+            ], spacing=0),
+            expand=True,
+            bgcolor=self.styles.PRIMARY_COLOR,
+        )
+        
+        self.page.add(bot_management_content)
+        
+    def show_system_stats(self):
+        """Show system statistics page"""
+        # Clear current content and show system stats
+        self.page.clean()
+        
+        # Sample system stats
+        stats_data = {
+            "total_users": 1245,
+            "active_bots": 8,
+            "total_profit": 125470.50,
+            "success_rate": 78.5,
+            "uptime": "99.8%",
+            "active_trades": 23,
+        }
+        
+        def create_stat_card(title, value, icon, color):
+            return ft.Container(
+                content=ft.Column([
+                    ft.Icon(icon, color=color, size=30),
+                    ft.Text(str(value), size=20, weight=ft.FontWeight.BOLD, color=self.styles.TEXT_PRIMARY),
+                    ft.Text(title, size=12, color=self.styles.TEXT_TERTIARY),
+                ], horizontal_alignment=ft.CrossAxisAlignment.CENTER),
+                bgcolor=self.styles.SECONDARY_COLOR,
+                padding=15,
+                border_radius=10,
+                expand=True,
+            )
+        
+        # Create system stats page
+        system_stats_content = ft.Container(
+            content=ft.Column([
+                # Header
+                ft.Container(
+                    content=ft.Row([
+                        ft.IconButton(
+                            icon=ft.Icons.ARROW_BACK,
+                            on_click=lambda e: self.build(),
+                            icon_color=self.styles.TEXT_PRIMARY,
+                        ),
+                        ft.Text(
+                            "System Statistics",
+                            size=20,
+                            weight=ft.FontWeight.BOLD,
+                            color=self.styles.TEXT_PRIMARY,
+                        ),
+                        ft.Container(expand=True),
+                        ft.IconButton(
+                            icon=ft.Icons.REFRESH,
+                            icon_color=self.styles.TEXT_SECONDARY,
+                            on_click=lambda e: self.refresh_stats(),
+                            tooltip="Refresh Stats",
+                        ),
+                    ]),
+                    bgcolor=self.styles.SECONDARY_COLOR,
+                    padding=ft.padding.symmetric(vertical=15, horizontal=10),
+                ),
+                
+                # Stats grid
+                ft.Container(
+                    content=ft.Column([
+                        ft.Row([
+                            create_stat_card("Total Users", stats_data["total_users"], ft.Icons.PEOPLE, self.styles.TEXT_SECONDARY),
+                            ft.Container(width=10),
+                            create_stat_card("Active Bots", stats_data["active_bots"], ft.Icons.SMART_TOY, self.styles.SUCCESS_COLOR),
+                        ]),
+                        ft.Container(height=10),
+                        ft.Row([
+                            create_stat_card("Total Profit", f"${stats_data['total_profit']:,.2f}", ft.Icons.TRENDING_UP, self.styles.SUCCESS_COLOR),
+                            ft.Container(width=10),
+                            create_stat_card("Success Rate", f"{stats_data['success_rate']}%", ft.Icons.ANALYTICS, self.styles.TEXT_SECONDARY),
+                        ]),
+                        ft.Container(height=10),
+                        ft.Row([
+                            create_stat_card("System Uptime", stats_data["uptime"], ft.Icons.SCHEDULE, self.styles.SUCCESS_COLOR),
+                            ft.Container(width=10),
+                            create_stat_card("Active Trades", stats_data["active_trades"], ft.Icons.SHOW_CHART, self.styles.TEXT_SECONDARY),
+                        ]),
+                    ]),
+                    expand=True,
+                    padding=20,
+                ),
+                
+                # Bottom navigation
+                self.create_bottom_navigation(),
+            ], spacing=0),
+            expand=True,
+            bgcolor=self.styles.PRIMARY_COLOR,
+        )
+        
+        self.page.add(system_stats_content)
+        
+    def show_audit_logs(self):
+        """Show audit logs page"""
+        # Clear current content and show audit logs
+        self.page.clean()
+        
+        # Sample audit logs
+        logs_data = [
+            {"timestamp": "2024-01-15 14:30:25", "user": "admin@atv.com", "action": "User Created", "details": "Created user jane@example.com"},
+            {"timestamp": "2024-01-15 14:25:10", "user": "admin@atv.com", "action": "Bot Started", "details": "Started Binomo Bot"},
+            {"timestamp": "2024-01-15 14:20:05", "user": "john@example.com", "action": "Login", "details": "Successful login"},
+            {"timestamp": "2024-01-15 14:15:30", "user": "admin@atv.com", "action": "VIP Upgraded", "details": "Upgraded user to VIP Premium"},
+            {"timestamp": "2024-01-15 14:10:15", "user": "jane@example.com", "action": "Password Changed", "details": "Password updated successfully"},
+        ]
+        
+        def create_log_entry(log):
+            return ft.Container(
+                content=ft.Column([
+                    ft.Row([
+                        ft.Text(log["timestamp"], size=12, color=self.styles.TEXT_TERTIARY),
+                        ft.Container(expand=True),
+                        ft.Text(log["action"], size=12, weight=ft.FontWeight.BOLD, color=self.styles.TEXT_SECONDARY),
+                    ]),
+                    ft.Text(f"User: {log['user']}", size=12, color=self.styles.TEXT_TERTIARY),
+                    ft.Text(log["details"], size=12, color=self.styles.TEXT_PRIMARY),
+                ]),
+                bgcolor=self.styles.SECONDARY_COLOR,
+                padding=15,
+                border_radius=10,
+                margin=ft.margin.only(bottom=10),
+            )
+        
+        # Create audit logs page
+        audit_logs_content = ft.Container(
+            content=ft.Column([
+                # Header
+                ft.Container(
+                    content=ft.Row([
+                        ft.IconButton(
+                            icon=ft.Icons.ARROW_BACK,
+                            on_click=lambda e: self.build(),
+                            icon_color=self.styles.TEXT_PRIMARY,
+                        ),
+                        ft.Text(
+                            "Audit Logs",
+                            size=20,
+                            weight=ft.FontWeight.BOLD,
+                            color=self.styles.TEXT_PRIMARY,
+                        ),
+                        ft.Container(expand=True),
+                        ft.IconButton(
+                            icon=ft.Icons.FILTER_LIST,
+                            icon_color=self.styles.TEXT_SECONDARY,
+                            on_click=lambda e: self.filter_logs(),
+                            tooltip="Filter Logs",
+                        ),
+                    ]),
+                    bgcolor=self.styles.SECONDARY_COLOR,
+                    padding=ft.padding.symmetric(vertical=15, horizontal=10),
+                ),
+                
+                # Logs list
+                ft.Container(
+                    content=ft.Column([
+                        ft.Text(
+                            f"Recent Activity ({len(logs_data)} entries)",
+                            size=14,
+                            color=self.styles.TEXT_TERTIARY,
+                        ),
+                        ft.Container(height=10),
+                        ft.Column([
+                            create_log_entry(log) for log in logs_data
+                        ]),
+                    ]),
+                    expand=True,
+                    padding=20,
+                ),
+                
+                # Bottom navigation
+                self.create_bottom_navigation(),
+            ], spacing=0),
+            expand=True,
+            bgcolor=self.styles.PRIMARY_COLOR,
+        )
+        
+        self.page.add(audit_logs_content)
+        
+    # CRUD Operation Methods
+    def add_user(self):
+        """Add new user dialog"""
+        def close_dialog(e):
+            dialog.open = False
+            self.page.update()
+        
+        def save_user(e):
+            # TODO: Implement user creation in database
+            print(f"Creating user: {name_field.value}, {email_field.value}")
+            close_dialog(e)
+            self.show_user_management()  # Refresh the page
+        
+        name_field = ft.TextField(label="Full Name", width=250)
+        email_field = ft.TextField(label="Email", width=250)
+        vip_dropdown = ft.Dropdown(
+            label="VIP Status",
+            width=250,
+            options=[
+                ft.dropdown.Option("basic", "Basic"),
+                ft.dropdown.Option("premium", "Premium"),
+            ],
+            value="basic",
+        )
+        
+        dialog = ft.AlertDialog(
+            title=ft.Text("Add New User", color=self.styles.TEXT_PRIMARY),
+            content=ft.Column([
+                name_field,
+                email_field,
+                vip_dropdown,
+            ], width=300, height=200),
+            actions=[
+                ft.TextButton("Cancel", on_click=close_dialog),
+                ft.ElevatedButton("Save", on_click=save_user, bgcolor=self.styles.SUCCESS_COLOR),
+            ],
+            bgcolor=self.styles.PRIMARY_COLOR,
+        )
+        
+        self.page.overlay.append(dialog)
+        dialog.open = True
+        self.page.update()
+        
+    def edit_user(self, user):
+        """Edit user dialog"""
+        def close_dialog(e):
+            dialog.open = False
+            self.page.update()
+        
+        def save_changes(e):
+            # TODO: Implement user update in database
+            print(f"Updating user {user['id']}: {name_field.value}, {vip_dropdown.value}")
+            close_dialog(e)
+            self.show_user_management()  # Refresh the page
+        
+        name_field = ft.TextField(label="Full Name", value=user["name"], width=250)
+        email_field = ft.TextField(label="Email", value=user["email"], width=250, disabled=True)
+        vip_dropdown = ft.Dropdown(
+            label="VIP Status",
+            width=250,
+            options=[
+                ft.dropdown.Option("basic", "Basic"),
+                ft.dropdown.Option("premium", "Premium"),
+            ],
+            value=user["vip_status"],
+        )
+        
+        dialog = ft.AlertDialog(
+            title=ft.Text("Edit User", color=self.styles.TEXT_PRIMARY),
+            content=ft.Column([
+                name_field,
+                email_field,
+                vip_dropdown,
+            ], width=300, height=200),
+            actions=[
+                ft.TextButton("Cancel", on_click=close_dialog),
+                ft.ElevatedButton("Save", on_click=save_changes, bgcolor=self.styles.SUCCESS_COLOR),
+            ],
+            bgcolor=self.styles.PRIMARY_COLOR,
+        )
+        
+        self.page.overlay.append(dialog)
+        dialog.open = True
+        self.page.update()
+        
+    def delete_user(self, user):
+        """Delete user confirmation dialog"""
+        def close_dialog(e):
+            dialog.open = False
+            self.page.update()
+        
+        def confirm_delete(e):
+            # TODO: Implement user deletion in database
+            print(f"Deleting user {user['id']}: {user['name']}")
+            close_dialog(e)
+            self.show_user_management()  # Refresh the page
+        
+        dialog = ft.AlertDialog(
+            title=ft.Text("Delete User", color=self.styles.ERROR_COLOR),
+            content=ft.Text(f"Are you sure you want to delete user '{user['name']}'? This action cannot be undone.", color=self.styles.TEXT_TERTIARY),
+            actions=[
+                ft.TextButton("Cancel", on_click=close_dialog),
+                ft.ElevatedButton("Delete", on_click=confirm_delete, bgcolor=self.styles.ERROR_COLOR),
+            ],
+            bgcolor=self.styles.PRIMARY_COLOR,
+        )
+        
+        self.page.overlay.append(dialog)
+        dialog.open = True
+        self.page.update()
+        
+    def add_bot(self):
+        """Add new bot dialog"""
+        def close_dialog(e):
+            dialog.open = False
+            self.page.update()
+        
+        def save_bot(e):
+            # TODO: Implement bot creation in database
+            print(f"Creating bot: {name_field.value}, {broker_dropdown.value}")
+            close_dialog(e)
+            self.show_bot_management()  # Refresh the page
+        
+        name_field = ft.TextField(label="Bot Name", width=250)
+        broker_dropdown = ft.Dropdown(
+            label="Broker",
+            width=250,
+            options=[
+                ft.dropdown.Option("Binomo", "Binomo"),
+                ft.dropdown.Option("Quotex", "Quotex"),
+                ft.dropdown.Option("IQ Option", "IQ Option"),
+                ft.dropdown.Option("Olymptrade", "Olymptrade"),
+                ft.dropdown.Option("Stockity", "Stockity"),
+            ],
+        )
+        
+        dialog = ft.AlertDialog(
+            title=ft.Text("Add New Bot", color=self.styles.TEXT_PRIMARY),
+            content=ft.Column([
+                name_field,
+                broker_dropdown,
+            ], width=300, height=150),
+            actions=[
+                ft.TextButton("Cancel", on_click=close_dialog),
+                ft.ElevatedButton("Save", on_click=save_bot, bgcolor=self.styles.SUCCESS_COLOR),
+            ],
+            bgcolor=self.styles.PRIMARY_COLOR,
+        )
+        
+        self.page.overlay.append(dialog)
+        dialog.open = True
+        self.page.update()
+        
+    def edit_bot(self, bot):
+        """Edit bot dialog"""
+        def close_dialog(e):
+            dialog.open = False
+            self.page.update()
+        
+        def save_changes(e):
+            # TODO: Implement bot update in database
+            print(f"Updating bot {bot['id']}: {name_field.value}, {status_dropdown.value}")
+            close_dialog(e)
+            self.show_bot_management()  # Refresh the page
+        
+        name_field = ft.TextField(label="Bot Name", value=bot["name"], width=250)
+        broker_field = ft.TextField(label="Broker", value=bot["broker"], width=250, disabled=True)
+        status_dropdown = ft.Dropdown(
+            label="Status",
+            width=250,
+            options=[
+                ft.dropdown.Option("active", "Active"),
+                ft.dropdown.Option("inactive", "Inactive"),
+            ],
+            value=bot["status"],
+        )
+        
+        dialog = ft.AlertDialog(
+            title=ft.Text("Edit Bot", color=self.styles.TEXT_PRIMARY),
+            content=ft.Column([
+                name_field,
+                broker_field,
+                status_dropdown,
+            ], width=300, height=200),
+            actions=[
+                ft.TextButton("Cancel", on_click=close_dialog),
+                ft.ElevatedButton("Save", on_click=save_changes, bgcolor=self.styles.SUCCESS_COLOR),
+            ],
+            bgcolor=self.styles.PRIMARY_COLOR,
+        )
+        
+        self.page.overlay.append(dialog)
+        dialog.open = True
+        self.page.update()
+        
+    def delete_bot(self, bot):
+        """Delete bot confirmation dialog"""
+        def close_dialog(e):
+            dialog.open = False
+            self.page.update()
+        
+        def confirm_delete(e):
+            # TODO: Implement bot deletion in database
+            print(f"Deleting bot {bot['id']}: {bot['name']}")
+            close_dialog(e)
+            self.show_bot_management()  # Refresh the page
+        
+        dialog = ft.AlertDialog(
+            title=ft.Text("Delete Bot", color=self.styles.ERROR_COLOR),
+            content=ft.Text(f"Are you sure you want to delete bot '{bot['name']}'? This action cannot be undone.", color=self.styles.TEXT_TERTIARY),
+            actions=[
+                ft.TextButton("Cancel", on_click=close_dialog),
+                ft.ElevatedButton("Delete", on_click=confirm_delete, bgcolor=self.styles.ERROR_COLOR),
+            ],
+            bgcolor=self.styles.PRIMARY_COLOR,
+        )
+        
+        self.page.overlay.append(dialog)
+        dialog.open = True
+        self.page.update()
+        
+    def refresh_stats(self):
+        """Refresh system statistics"""
+        # TODO: Implement stats refresh
+        print("Refreshing system statistics...")
+        self.show_system_stats()
+        
+    def filter_logs(self):
+        """Filter audit logs"""
+        # TODO: Implement log filtering
+        print("Filtering audit logs...")
         
     def logout(self):
         """Handle logout"""
@@ -1308,6 +2029,12 @@ class Dashboard:
         from pages.auth_handler import AuthHandler
         self.current_page = AuthHandler(self.page, None)
         self.current_page.show_login()
+        
+
+        
+
+        
+
     
     def build(self):
         """Build and display the dashboard"""
@@ -1318,6 +2045,9 @@ class Dashboard:
             content=ft.Column([
                 # App Header
                 self.create_app_header(),
+                
+                # Admin Panel (only for admin users)
+                self.create_admin_panel() if self.user_data.get('is_admin', False) else ft.Container(),
                 
                 # Horizontal Navigation
                 self.create_horizontal_navigation(),
