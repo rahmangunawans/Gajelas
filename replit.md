@@ -7,6 +7,7 @@ This is a Python-based mobile application built with Flet (Python's Flutter fram
 ## User Preferences
 
 Preferred communication style: Simple, everyday language.
+Project preference: Keep as Flet mobile application, not Flask web application.
 
 ## System Architecture
 
@@ -16,7 +17,7 @@ The application follows a modular architecture pattern with clear separation of 
 - **UI Architecture**: Component-based design with reusable styling system
 - **Design Pattern**: Object-oriented approach with dedicated classes for different screens
 - **Platform Target**: Mobile-first design (375x812 resolution - iPhone X/11 dimensions)
-- **Database**: SQLite for local data storage with user authentication
+- **Database**: PostgreSQL for production data storage with user authentication (migrated from SQLite)
 - **Authentication**: Hash-based password security with session management
 - **Project Structure**: Modular design with separate packages for pages, database, and styling
 
