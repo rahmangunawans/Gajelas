@@ -12,8 +12,10 @@ class AuthHandler:
         self.on_success_callback = on_success_callback
         
     def hash_password(self, password):
-        """Hash password for storage"""
-        return hashlib.sha256(password.encode()).hexdigest()
+        """Hash password for storage using bcrypt"""
+        import bcrypt
+        salt = bcrypt.gensalt()
+        return bcrypt.hashpw(password.encode('utf-8'), salt).decode('utf-8')
         
     def validate_email(self, email):
         """Validate email format"""
