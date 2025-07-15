@@ -1,1 +1,40 @@
-
+<svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background circle -->
+  <circle cx="60" cy="60" r="58" fill="#0f3460" stroke="#e94560" stroke-width="4"/>
+  
+  <!-- ATV Letters -->
+  <g transform="translate(60, 60)">
+    <!-- A -->
+    <path d="M-35 -15 L-25 -15 L-20 0 L-15 -15 L-5 -15 L-15 15 L-25 15 Z" fill="#ffffff"/>
+    <rect x="-22" y="-5" width="14" height="3" fill="#0f3460"/>
+    
+    <!-- T -->
+    <rect x="-3" y="-15" width="16" height="4" fill="#ffffff"/>
+    <rect x="3" y="-15" width="4" height="30" fill="#ffffff"/>
+    
+    <!-- V -->
+    <path d="M15 -15 L25 -15 L35 15 L25 15 L20 0 L15 15 L5 15 Z" fill="#ffffff"/>
+  </g>
+  
+  <!-- Decorative elements -->
+  <circle cx="30" cy="30" r="3" fill="#e94560" opacity="0.7"/>
+  <circle cx="90" cy="30" r="3" fill="#e94560" opacity="0.7"/>
+  <circle cx="30" cy="90" r="3" fill="#e94560" opacity="0.7"/>
+  <circle cx="90" cy="90" r="3" fill="#e94560" opacity="0.7"/>
+  
+  <!-- Trading symbols -->
+  <g transform="translate(60, 35)">
+    <!-- Up arrow -->
+    <path d="M-8 -8 L0 -16 L8 -8 L4 -8 L4 -4 L-4 -4 L-4 -8 Z" fill="#4CAF50"/>
+  </g>
+  
+  <g transform="translate(60, 85)">
+    <!-- Down arrow -->
+    <path d="M-8 8 L0 16 L8 8 L4 8 L4 4 L-4 4 L-4 8 Z" fill="#f44336"/>
+  </g>
+  
+  <!-- Outer ring animation elements -->
+  <circle cx="60" cy="60" r="55" fill="none" stroke="#e94560" stroke-width="1" opacity="0.3" stroke-dasharray="5,5">
+    <animateTransform attributeName="transform" type="rotate" values="0 60 60;360 60 60" dur="10s" repeatCount="indefinite"/>
+  </circle>
+</svg>
