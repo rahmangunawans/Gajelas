@@ -810,62 +810,60 @@ class AuthHandler:
                     error_container.visible = True
                     self.page.update()
                     return
-                    
-                if not self.validate_email(email):
-                    error_container.content.value = "Format email tidak valid"
-                    error_container.visible = True
-                    self.page.update()
-                    return
-                    
-                if len(password) < 6:
-                    error_container.content.value = "Password minimal 6 karakter"
-                    error_container.visible = True
-                    self.page.update()
-                    return
-                    
-                if password != confirm_password:
-                    error_container.content.value = "Password tidak cocok"
-                    error_container.visible = True
-                    self.page.update()
-                    return
-                    
-                if not terms_accepted:
-                    error_container.content.value = "Anda harus menyetujui syarat dan ketentuan"
-                    error_container.visible = True
-                    self.page.update()
-                    return
-                    
-                # Check if user already exists
-                if self.db_manager.user_exists(email):
-                    error_container.content.value = "Email sudah terdaftar"
-                    error_container.visible = True
-                    self.page.update()
-                    return
-                    
-                # Create user
-                user_data = {
-                    'full_name': username,
-                    'email': email,
-                    'password': password,
-                    'phone': '',
-                    'is_admin': False
-                }
                 
-                if self.db_manager.create_user(user_data):
-                    success_container.content.value = "Registrasi berhasil! Silahkan login."
-                    success_container.visible = True
-                    self.page.update()
-                    
-                    # Auto redirect to login after 2 seconds
-                    def redirect_to_login():
-                        import time
-                        time.sleep(2)
-                        self.show_login()
-                    
-                    import threading
-                    thread = threading.Thread(target=redirect_to_login)
-                    thread.daemon = True
-                    thread.start()
+            if not self.validate_email(email):
+                error_container.content.value = "Format email tidak valid"
+                error_container.visible = True
+                self.page.update()
+                return
+                
+            if len(password) < 6:
+                error_container.content.value = "Password minimal 6 karakter"
+                error_container.visible = True
+                self.page.update()
+                return
+                
+            if password != confirm_password:
+                error_container.content.value = "Password tidak cocok"
+                error_container.visible = True
+                self.page.update()
+                return
+                
+            if not agree_terms:
+                error_container.content.value = "Anda harus menyetujui syarat dan ketentuan"
+                error_container.visible = True
+                self.page.update()
+                return
+                
+            # Check if user already exists
+            if self.db_manager.user_exists(email):
+                error_container.content.value = "Email sudah terdaftar"
+                error_container.visible = True
+                self.page.update()
+                return
+                
+            # Create user
+            user_data = {
+                'username': username,
+                'email': email,
+                'password': self.hash_password(password)
+            }
+            
+            if self.db_manager.create_user(user_data):
+                success_container.content.value = "Registrasi berhasil! Silahkan login."
+                success_container.visible = True
+                self.page.update()
+                
+                # Auto redirect to login after 2 seconds
+                def redirect_to_login():
+                    import time
+                    time.sleep(2)
+                    self.show_login()
+                
+                import threading
+                thread = threading.Thread(target=redirect_to_login)
+                thread.daemon = True
+                thread.start()
                 else:
                     error_container.content.value = "Gagal mendaftar. Silahkan coba lagi."
                     error_container.visible = True
