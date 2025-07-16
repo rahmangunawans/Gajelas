@@ -58,12 +58,23 @@ class ATVApp:
 
 def main(page: ft.Page):
     """Main application entry point"""
-    app = ATVApp()
-    app.setup_page(page)
+    try:
+        app = ATVApp()
+        app.setup_page(page)
+    except Exception as e:
+        print(f"Error in main: {e}")
+        page.add(ft.Text(f"Error: {e}", color=ft.Colors.RED))
+        page.update()
 
 if __name__ == "__main__":
     print("🚀 Starting ATV Mobile Application...")
     print("📱 Mobile-first design optimized for 375x812 (iPhone X/11)")
     print("🌐 Access: http://localhost:5000")
     print("👤 Admin login: admin@atv.com / admin123")
-    ft.app(target=main, port=5000, host="0.0.0.0", view=ft.AppView.WEB_BROWSER)
+    
+    try:
+        ft.app(target=main, port=5000, host="0.0.0.0", view=ft.AppView.WEB_BROWSER, web_renderer=ft.WebRenderer.HTML)
+    except Exception as e:
+        print(f"Error starting app: {e}")
+        # Try alternative port
+        ft.app(target=main, port=5001, host="0.0.0.0", view=ft.AppView.WEB_BROWSER)
