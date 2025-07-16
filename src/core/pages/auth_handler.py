@@ -68,7 +68,6 @@ class AuthHandler:
                                         weight=ft.FontWeight.W_500,
                                         color="#06b6d4",
                                         text_align=ft.TextAlign.CENTER,
-                                        letter_spacing=0.5,
                                     ),
                                 ],
                                 spacing=2,
