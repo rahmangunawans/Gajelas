@@ -1,6 +1,8 @@
 import flet as ft
 import sys
 import os
+import time
+import threading
 
 # Add src to path for imports
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
@@ -17,10 +19,13 @@ class ATVApp:
         self.styles = AppStyles()
         self.current_page = None
         self.page = None
-        self.db_initialized = False
+        self.is_initialized = False
         
     def setup_page(self, page: ft.Page):
         """Configure the main page settings"""
+        if self.is_initialized:
+            return
+            
         self.page = page
         page.title = AppConfig.APP_NAME
         page.window_width = AppConfig.MOBILE_WIDTH
@@ -32,36 +37,46 @@ class ATVApp:
         page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
         page.theme_mode = ft.ThemeMode.DARK
         
-        # Initialize database safely (only once)
-        if not self.db_initialized:
-            try:
-                self.db_manager.init_db()
-                print("Database initialized successfully")
-                self.db_initialized = True
-            except Exception as e:
-                print(f"Database initialization error: {e}")
-                self.db_initialized = False
+        # Initialize database once
+        try:
+            self.db_manager.init_db()
+            print("Database initialized successfully")
+        except Exception as e:
+            print(f"Database initialization error: {e}")
+        
+        # Mark as initialized to prevent loops
+        self.is_initialized = True
         
         # Start with splash screen
         self.show_splash_screen()
         
     def show_splash_screen(self):
-        """Show splash screen"""
-        splash_screen = SplashScreen(self.page, self.navigate_to_auth)
-        splash_screen.build()
+        """Show splash screen with all original animations"""
+        try:
+            splash_screen = SplashScreen(self.page, self.navigate_to_auth)
+            splash_screen.build()
+        except Exception as e:
+            print(f"Splash error: {e}")
+            # Fallback navigation
+            time.sleep(2)
+            self.navigate_to_auth()
         
     def navigate_to_auth(self):
         """Navigate to authentication pages"""
-        self.current_page = AuthHandler(self.page, self.navigate_to_dashboard)
-        self.current_page.show_login()
+        try:
+            self.current_page = AuthHandler(self.page, self.navigate_to_dashboard)
+            self.current_page.show_login()
+        except Exception as e:
+            print(f"Auth navigation error: {e}")
         
     def navigate_to_dashboard(self, user_data):
         """Navigate to main dashboard after successful login"""
-        from core.pages.dashboard import Dashboard
-        
-        # Create and show dashboard
-        dashboard = Dashboard(self.page, user_data)
-        dashboard.build()
+        try:
+            from core.pages.dashboard import Dashboard
+            dashboard = Dashboard(self.page, user_data)
+            dashboard.build()
+        except Exception as e:
+            print(f"Dashboard error: {e}")
 
 def main(page: ft.Page):
     """Main application entry point"""
@@ -80,7 +95,6 @@ if __name__ == "__main__":
     print("👤 Admin login: admin@atv.com / admin123")
     
     try:
-        # Simplified Flet configuration
         ft.app(
             target=main, 
             port=5000, 

@@ -11,16 +11,24 @@ from services.database.postgres_manager import PostgresManager
 from core.styles import AppStyles
 from config.app_config import AppConfig
 
+# Global flag to prevent multiple initializations
+app_initialized = False
+
 class ATVApp:
     def __init__(self):
         self.db_manager = PostgresManager()
         self.styles = AppStyles()
         self.current_page = None
         self.page = None
-        self.db_initialized = False
         
     def setup_page(self, page: ft.Page):
         """Configure the main page settings"""
+        global app_initialized
+        
+        if app_initialized:
+            return
+        app_initialized = True
+        
         self.page = page
         page.title = AppConfig.APP_NAME
         page.window_width = AppConfig.MOBILE_WIDTH
@@ -32,15 +40,12 @@ class ATVApp:
         page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
         page.theme_mode = ft.ThemeMode.DARK
         
-        # Initialize database safely (only once)
-        if not self.db_initialized:
-            try:
-                self.db_manager.init_db()
-                print("Database initialized successfully")
-                self.db_initialized = True
-            except Exception as e:
-                print(f"Database initialization error: {e}")
-                self.db_initialized = False
+        # Initialize database once
+        try:
+            self.db_manager.init_db()
+            print("Database initialized successfully")
+        except Exception as e:
+            print(f"Database initialization error: {e}")
         
         # Start with splash screen
         self.show_splash_screen()
@@ -58,8 +63,6 @@ class ATVApp:
     def navigate_to_dashboard(self, user_data):
         """Navigate to main dashboard after successful login"""
         from core.pages.dashboard import Dashboard
-        
-        # Create and show dashboard
         dashboard = Dashboard(self.page, user_data)
         dashboard.build()
 
@@ -80,7 +83,6 @@ if __name__ == "__main__":
     print("👤 Admin login: admin@atv.com / admin123")
     
     try:
-        # Simplified Flet configuration
         ft.app(
             target=main, 
             port=5000, 

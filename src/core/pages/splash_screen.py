@@ -438,8 +438,9 @@ class SplashScreen:
         self.page.update()
         
     def show_main_content(self):
-        """Show product description after splash"""
-        self.page.clean()
+        """Navigate directly to login instead of showing description"""
+        self.on_complete_callback()
+        return
         
         # Create scrollable content for better mobile experience
         description_content = ft.Container(
@@ -650,13 +651,22 @@ class SplashScreen:
             self.page.add(splash_container)
             self.page.update()
             
-            # Start original animation sequence
-            self.start_splash_sequence()
+            # Start animation sequence after build
+            def delayed_start():
+                time.sleep(0.5)
+                self.start_splash_sequence()
+            
+            thread = threading.Thread(target=delayed_start)
+            thread.daemon = True
+            thread.start()
             
         except Exception as e:
             print(f"Error in splash build: {e}")
-            # Simple fallback
-            self.simple_progress_animation()
+            # Fallback to simple splash
+            self.page.add(ft.Text("ATV - Loading...", color=ft.Colors.WHITE, size=24))
+            self.page.update()
+            time.sleep(3)
+            self.on_complete_callback()
             
     def start_splash_sequence(self):
         """Start the splash screen animation sequence - restored original"""
