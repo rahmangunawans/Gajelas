@@ -294,6 +294,18 @@ class Dashboard:
                             width=40,
                             height=40,
                             fit=ft.ImageFit.CONTAIN,
+                            error_content=ft.Container(
+                                content=ft.Icon(
+                                    ft.Icons.TRENDING_UP,
+                                    size=24,
+                                    color=ft.Colors.WHITE,
+                                ),
+                                width=40,
+                                height=40,
+                                bgcolor=self.styles.ACCENT_COLOR,
+                                border_radius=20,
+                                alignment=ft.alignment.center,
+                            ),
                         ),
                         width=50,
                         height=50,
@@ -301,6 +313,7 @@ class Dashboard:
                         border_radius=25,
                         alignment=ft.alignment.center,
                         padding=5,
+                        border=ft.border.all(2, ft.Colors.with_opacity(0.2, self.styles.TEXT_SECONDARY)),
                     ),
                     ft.Column([
                         ft.Text(
