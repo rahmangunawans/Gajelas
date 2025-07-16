@@ -16,22 +16,35 @@ author = "agent"
 task = "workflow.run"
 args = "ATV Mobile App"
 
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "ATV Simple Test"
+
 [[workflows.workflow]]
 name = "ATV Mobile App"
 author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "python app.py"
+args = "cd /home/runner/workspace && python -u app.py"
 waitForPort = 5000
+
+[[workflows.workflow]]
+name = "ATV Simple Test"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd /home/runner/workspace && python -u app_simple.py"
+waitForPort = 6000
 
 [[ports]]
 localPort = 5000
 externalPort = 80
 
 [[ports]]
-localPort = 5001
-externalPort = 3000
+localPort = 6000
+externalPort = 6000
 
 [[ports]]
 localPort = 8000

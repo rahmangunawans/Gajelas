@@ -660,46 +660,33 @@ class SplashScreen:
             self.on_complete_callback()
             
     def start_splash_sequence(self):
-        """Start the splash screen animation sequence - restored original"""
+        """Start the splash screen animation sequence - simplified"""
         def animation_sequence():
             try:
-                # Phase 1: Show logo
-                time.sleep(0.5)
+                # Simple fade-in sequence
                 self.logo.opacity = 1
                 self.page.update()
+                time.sleep(0.3)
                 
-                # Start particle animation if available
-                try:
-                    self.animate_floating_particles()
-                except:
-                    pass
-                
-                # Phase 2: Show brand text
-                time.sleep(0.8)
                 self.brand_text.opacity = 1
                 self.page.update()
+                time.sleep(0.3)
                 
-                # Phase 3: Show progress bar and loading text
-                time.sleep(0.6)
                 self.progress_bar.opacity = 1
                 self.loading_text.opacity = 1
-                self.page.update()
-                
-                # Phase 4: Animate progress
-                time.sleep(0.4)
-                self.animate_progress(self.progress_bar)
-                
-                # Phase 5: Show version
-                time.sleep(1.0)
                 self.version_text.opacity = 1
                 self.page.update()
+                time.sleep(0.5)
                 
-                # Phase 6: Wait for progress to complete
-                time.sleep(2.0)
+                # Simple progress animation
+                progress_bar_control = self.progress_bar.content.controls[0].content
+                for i in range(0, 101, 10):
+                    progress_bar_control.value = i / 100
+                    self.page.update()
+                    time.sleep(0.1)
                 
-                # Phase 7: Fade out splash and navigate to auth
-                self.fade_out_splash()
-                time.sleep(1.0)
+                # Short pause then navigate to auth
+                time.sleep(0.5)
                 self.on_complete_callback()
                 
             except Exception as e:
