@@ -17,7 +17,6 @@ class ATVApp:
         self.styles = AppStyles()
         self.current_page = None
         self.page = None
-        self.db_initialized = False
         
     def setup_page(self, page: ft.Page):
         """Configure the main page settings"""
@@ -33,7 +32,7 @@ class ATVApp:
         page.theme_mode = ft.ThemeMode.DARK
         
         # Initialize database safely (only once)
-        if not self.db_initialized:
+        if not hasattr(self, 'db_initialized'):
             try:
                 self.db_manager.init_db()
                 print("Database initialized successfully")
@@ -49,6 +48,7 @@ class ATVApp:
         """Show splash screen"""
         splash_screen = SplashScreen(self.page, self.navigate_to_auth)
         splash_screen.build()
+        splash_screen.start_splash_sequence()
         
     def navigate_to_auth(self):
         """Navigate to authentication pages"""
