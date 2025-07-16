@@ -1,8 +1,8 @@
-modules = ["python-3.11"]
+modules = ["python-3.11", "postgresql-16"]
 
 [nix]
 channel = "stable-24_05"
-packages = ["atk", "cairo", "cargo", "gdk-pixbuf", "glib", "gtk3", "libiconv", "openssl", "pango", "postgresql", "rustc"]
+packages = ["atk", "cairo", "cargo", "gdk-pixbuf", "glib", "gtk3", "libiconv", "openssl", "pango", "postgresql", "rustc", "sqlite"]
 
 [workflows]
 runButton = "Project"
