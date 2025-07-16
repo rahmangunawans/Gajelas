@@ -278,8 +278,18 @@ class Dashboard:
     def create_broker_card(self, broker_name, is_active=False, progress=0.0):
         """Create individual broker card with progress"""
         import os
+        import base64
         
-        # Try different path approaches for better compatibility
+        def get_base64_image(image_path):
+            """Convert image to base64 for Flet compatibility"""
+            try:
+                with open(image_path, "rb") as img_file:
+                    return base64.b64encode(img_file.read()).decode('utf-8')
+            except Exception as e:
+                print(f"Error loading image {image_path}: {e}")
+                return None
+        
+        # Try to load PNG images as base64
         broker_logos = {
             "Binomo": "assets/brokers/binomo.png",
             "Stockity": "assets/brokers/stockity.png",
@@ -290,14 +300,17 @@ class Dashboard:
         
         logo_path = broker_logos.get(broker_name, "assets/logo.svg")
         
-        # Check if file exists and log it
-        if broker_name in broker_logos:
-            file_path = logo_path
-            if os.path.exists(file_path):
-                print(f"✓ Logo found for {broker_name}: {file_path}")
+        # Try to get base64 version of the image
+        base64_image = None
+        if broker_name in broker_logos and os.path.exists(logo_path):
+            base64_image = get_base64_image(logo_path)
+            if base64_image:
+                logo_path = f"data:image/png;base64,{base64_image}"
+                print(f"✓ Base64 logo loaded for {broker_name}")
             else:
-                print(f"✗ Logo not found for {broker_name}: {file_path}")
-                logo_path = "assets/logo.svg"  # fallback
+                print(f"✗ Failed to load base64 for {broker_name}")
+        else:
+            print(f"✗ PNG file not found for {broker_name}: {logo_path}")
         
         return ft.Container(
             content=ft.Column([
@@ -308,28 +321,8 @@ class Dashboard:
                             width=40,
                             height=40,
                             fit=ft.ImageFit.CONTAIN,
-                            error_content=ft.Container(
-                                content=ft.Column([
-                                    ft.Icon(
-                                        ft.Icons.TRENDING_UP,
-                                        size=20,
-                                        color=ft.Colors.WHITE,
-                                    ),
-                                    ft.Text(
-                                        broker_name[:3],
-                                        size=8,
-                                        color=ft.Colors.WHITE,
-                                        weight=ft.FontWeight.BOLD,
-                                    ),
-                                ], 
-                                horizontal_alignment=ft.CrossAxisAlignment.CENTER,
-                                spacing=2),
-                                width=40,
-                                height=40,
-                                bgcolor=self.styles.ACCENT_COLOR,
-                                border_radius=20,
-                                alignment=ft.alignment.center,
-                            ),
+                            repeat=ft.ImageRepeat.NO_REPEAT,
+                            border_radius=ft.border_radius.all(20),
                         ),
                         width=50,
                         height=50,
