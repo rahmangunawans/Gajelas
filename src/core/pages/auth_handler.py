@@ -29,50 +29,73 @@ class AuthHandler:
         return re.match(pattern, email) is not None
         
     def create_header(self, title, subtitle=None):
-        """Create enhanced header for auth pages"""
+        """Create professional header for auth pages"""
         header_content = [
-            # Logo with glow effect
+            # Professional logo section
             ft.Container(
-                content=ft.Stack([
-                    # Background glow
+                content=ft.Column([
+                    # Modern ATV logo with professional styling
                     ft.Container(
-                        width=80,
-                        height=80,
-                        border_radius=40,
-                        gradient=ft.RadialGradient(
-                            colors=[
-                                ft.Colors.with_opacity(0.2, self.styles.TEXT_SECONDARY),
-                                ft.Colors.TRANSPARENT,
-                            ],
-                            center=ft.alignment.center,
-                            radius=1.0,
-                        ),
-                    ),
-                    # Logo
-                    ft.Container(
-                        content=ft.Image(
-                            src="assets/logo.svg",
-                            width=60,
-                            height=60,
-                            fit=ft.ImageFit.CONTAIN,
-                        ),
-                        padding=ft.padding.all(10),
+                        content=ft.Stack([
+                            # Subtle background circle
+                            ft.Container(
+                                width=90,
+                                height=90,
+                                border_radius=45,
+                                gradient=ft.LinearGradient(
+                                    begin=ft.alignment.top_left,
+                                    end=ft.alignment.bottom_right,
+                                    colors=[
+                                        ft.Colors.with_opacity(0.1, "#06b6d4"),
+                                        ft.Colors.with_opacity(0.05, "#3b82f6"),
+                                    ],
+                                ),
+                                border=ft.border.all(1, ft.Colors.with_opacity(0.1, "#06b6d4")),
+                            ),
+                            # Professional ATV text logo
+                            ft.Container(
+                                content=ft.Column([
+                                    ft.Text(
+                                        "ATV",
+                                        size=26,
+                                        weight=ft.FontWeight.BOLD,
+                                        color="#ffffff",
+                                        text_align=ft.TextAlign.CENTER,
+                                    ),
+                                    ft.Text(
+                                        "AUTOTRADEVIP",
+                                        size=7,
+                                        weight=ft.FontWeight.W_500,
+                                        color="#06b6d4",
+                                        text_align=ft.TextAlign.CENTER,
+                                        letter_spacing=0.5,
+                                    ),
+                                ],
+                                spacing=2,
+                                horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+                                ),
+                                width=90,
+                                height=90,
+                                alignment=ft.alignment.center,
+                            ),
+                        ]),
+                        alignment=ft.alignment.center,
+                        padding=ft.padding.only(bottom=30),
                     ),
                 ]),
                 alignment=ft.alignment.center,
-                padding=ft.padding.only(bottom=20),
             ),
-            # Title with shadow
+            # Professional title
             ft.Container(
                 content=ft.Text(
                     title,
-                    size=28,
+                    size=32,
                     weight=ft.FontWeight.BOLD,
-                    color=self.styles.TEXT_PRIMARY,
+                    color="#ffffff",
                     text_align=ft.TextAlign.CENTER,
                 ),
-                shadow=ft.BoxShadow(
-                    spread_radius=0,
+                padding=ft.padding.only(bottom=8),
+            ),
                     blur_radius=10,
                     color=ft.Colors.with_opacity(0.3, self.styles.TEXT_SECONDARY),
                     offset=ft.Offset(0, 2),
@@ -85,101 +108,145 @@ class AuthHandler:
                 ft.Container(
                     content=ft.Text(
                         subtitle,
-                        size=14,
-                        color=self.styles.TEXT_TERTIARY,
+                        size=16,
+                        color="#94a3b8",
                         text_align=ft.TextAlign.CENTER,
+                        weight=ft.FontWeight.W_400,
                     ),
-                    padding=ft.padding.only(top=5),
+                    padding=ft.padding.only(top=5, bottom=20),
                 )
             )
             
         return ft.Column(
             header_content,
-            spacing=5,
+            spacing=0,
             horizontal_alignment=ft.CrossAxisAlignment.CENTER,
         )
         
     def create_form_field(self, label, hint_text, password=False, value="", icon=None):
-        """Create enhanced form field with modern styling"""
-        input_style = self.styles.get_input_style()
+        """Create professional form field with modern styling"""
+        # Determine the appropriate icon
+        field_icon = icon
+        if not field_icon:
+            if password:
+                field_icon = ft.Icons.LOCK_OUTLINE
+            elif "email" in label.lower():
+                field_icon = ft.Icons.EMAIL_OUTLINED
+            elif "name" in label.lower():
+                field_icon = ft.Icons.PERSON_OUTLINE
+            elif "phone" in label.lower():
+                field_icon = ft.Icons.PHONE_OUTLINED
+            else:
+                field_icon = ft.Icons.TEXT_FIELDS_OUTLINED
         
-        field_content = [
-            ft.Text(
-                label,
-                size=14,
-                weight=ft.FontWeight.W_600,
-                color=self.styles.TEXT_PRIMARY,
+        text_field = ft.TextField(
+            hint_text=hint_text,
+            password=password,
+            value=value,
+            border_color=ft.Colors.TRANSPARENT,
+            focused_border_color=ft.Colors.TRANSPARENT,
+            cursor_color="#06b6d4",
+            text_style=ft.TextStyle(
+                size=16,
+                color="#ffffff",
+                weight=ft.FontWeight.W_400,
             ),
-            ft.Container(
-                content=ft.Row([
-                    ft.Icon(
-                        icon or (ft.Icons.LOCK if password else ft.Icons.EMAIL),
-                        size=20,
-                        color=self.styles.TEXT_TERTIARY,
-                    ) if icon or password or "email" in label.lower() else None,
-                    ft.TextField(
-                        hint_text=hint_text,
-                        password=password,
-                        value=value,
-                        border_color=input_style["border_color"],
-                        focused_border_color=input_style["focused_border_color"],
-                        cursor_color=input_style["cursor_color"],
-                        text_style=input_style["text_style"],
-                        hint_style=input_style["hint_style"],
-                        bgcolor=input_style["bgcolor"],
-                        border_radius=input_style["border_radius"],
-                        content_padding=input_style["content_padding"],
-                        expand=True,
-                    ),
-                ], spacing=10),
-                shadow=ft.BoxShadow(
-                    spread_radius=0,
-                    blur_radius=8,
-                    color=ft.Colors.BLACK12,
-                    offset=ft.Offset(0, 2),
-                ),
-                border_radius=12,
-                padding=ft.padding.symmetric(horizontal=4),
+            hint_style=ft.TextStyle(
+                size=16,
+                color="#64748b",
+                weight=ft.FontWeight.W_400,
             ),
-        ]
-        
-        # Remove icon if not needed
-        if not icon and not password and "email" not in label.lower():
-            field_content[1].content.controls.pop(0)
-        
-        return ft.Container(
-            content=ft.Column(field_content, spacing=8),
-            padding=ft.padding.symmetric(vertical=8),
+            bgcolor=ft.Colors.TRANSPARENT,
+            content_padding=ft.padding.symmetric(horizontal=16, vertical=18),
+            expand=True,
         )
         
-    def create_primary_button(self, text, on_click, width=280):
-        """Create enhanced primary button with hover effects"""
+        return ft.Container(
+            content=ft.Column([
+                # Field label
+                ft.Container(
+                    content=ft.Text(
+                        label,
+                        size=14,
+                        weight=ft.FontWeight.W_600,
+                        color="#ffffff",
+                    ),
+                    padding=ft.padding.only(left=4, bottom=8),
+                ),
+                # Input field container
+                ft.Container(
+                    content=ft.Row([
+                        ft.Icon(
+                            field_icon,
+                            size=22,
+                            color="#64748b",
+                        ),
+                        text_field,
+                    ], spacing=12),
+                    bgcolor="#151528",
+                    border_radius=12,
+                    border=ft.border.all(1, "#334155"),
+                    padding=ft.padding.symmetric(horizontal=16, vertical=2),
+                    shadow=ft.BoxShadow(
+                        spread_radius=0,
+                        blur_radius=8,
+                        color=ft.Colors.with_opacity(0.1, "#000000"),
+                        offset=ft.Offset(0, 2),
+                    ),
+                ),
+            ], spacing=0),
+            padding=ft.padding.only(bottom=20),
+        )
+        
+    def create_primary_button(self, text, on_click, width=320):
+        """Create modern primary button with professional styling"""
         return ft.Container(
             content=ft.ElevatedButton(
                 text,
                 on_click=on_click,
-                style=self.styles.get_primary_button_style(),
+                style=ft.ButtonStyle(
+                    color=ft.Colors.WHITE,
+                    bgcolor="#06b6d4",
+                    padding=ft.padding.symmetric(horizontal=40, vertical=18),
+                    text_style=ft.TextStyle(
+                        size=16,
+                        weight=ft.FontWeight.W_600,
+                        letter_spacing=0.5,
+                    ),
+                    shape=ft.RoundedRectangleBorder(radius=12),
+                    elevation=0,
+                    shadow_color=ft.Colors.TRANSPARENT,
+                ),
                 width=width,
-                height=55,
+                height=56,
             ),
             shadow=ft.BoxShadow(
                 spread_radius=0,
-                blur_radius=15,
-                color=ft.Colors.with_opacity(0.3, self.styles.TEXT_SECONDARY),
-                offset=ft.Offset(0, 5),
+                blur_radius=20,
+                color=ft.Colors.with_opacity(0.3, "#06b6d4"),
+                offset=ft.Offset(0, 8),
             ),
             border_radius=12,
+            margin=ft.margin.only(bottom=16),
         )
         
     def create_text_button(self, text, on_click):
-        """Create text button for navigation"""
-        return ft.TextButton(
-            text,
-            on_click=on_click,
-            style=ft.ButtonStyle(
-                color=self.styles.TEXT_SECONDARY,
-                padding=ft.padding.symmetric(horizontal=10, vertical=5),
+        """Create modern text button for navigation"""
+        return ft.Container(
+            content=ft.TextButton(
+                text,
+                on_click=on_click,
+                style=ft.ButtonStyle(
+                    color="#06b6d4",
+                    padding=ft.padding.symmetric(horizontal=20, vertical=12),
+                    text_style=ft.TextStyle(
+                        size=14,
+                        weight=ft.FontWeight.W_600,
+                    ),
+                    shape=ft.RoundedRectangleBorder(radius=8),
+                ),
             ),
+            alignment=ft.alignment.center,
         )
         
     def show_login(self):
