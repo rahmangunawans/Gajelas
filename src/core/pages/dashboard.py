@@ -277,6 +277,9 @@ class Dashboard:
     
     def create_broker_card(self, broker_name, is_active=False, progress=0.0):
         """Create individual broker card with progress"""
+        import os
+        
+        # Try different path approaches for better compatibility
         broker_logos = {
             "Binomo": "assets/brokers/binomo.png",
             "Stockity": "assets/brokers/stockity.png",
@@ -285,21 +288,42 @@ class Dashboard:
             "Quotex": "assets/brokers/quotex.png",
         }
         
+        logo_path = broker_logos.get(broker_name, "assets/logo.svg")
+        
+        # Check if file exists and log it
+        if broker_name in broker_logos:
+            file_path = logo_path
+            if os.path.exists(file_path):
+                print(f"✓ Logo found for {broker_name}: {file_path}")
+            else:
+                print(f"✗ Logo not found for {broker_name}: {file_path}")
+                logo_path = "assets/logo.svg"  # fallback
+        
         return ft.Container(
             content=ft.Column([
                 ft.Row([
                     ft.Container(
                         content=ft.Image(
-                            src=broker_logos.get(broker_name, "assets/logo.svg"),
+                            src=logo_path,
                             width=40,
                             height=40,
                             fit=ft.ImageFit.CONTAIN,
                             error_content=ft.Container(
-                                content=ft.Icon(
-                                    ft.Icons.TRENDING_UP,
-                                    size=24,
-                                    color=ft.Colors.WHITE,
-                                ),
+                                content=ft.Column([
+                                    ft.Icon(
+                                        ft.Icons.TRENDING_UP,
+                                        size=20,
+                                        color=ft.Colors.WHITE,
+                                    ),
+                                    ft.Text(
+                                        broker_name[:3],
+                                        size=8,
+                                        color=ft.Colors.WHITE,
+                                        weight=ft.FontWeight.BOLD,
+                                    ),
+                                ], 
+                                horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+                                spacing=2),
                                 width=40,
                                 height=40,
                                 bgcolor=self.styles.ACCENT_COLOR,
