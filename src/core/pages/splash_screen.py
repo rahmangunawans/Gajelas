@@ -609,73 +609,116 @@ class SplashScreen:
         try:
             self.page.controls.clear()
             
-            # Simple splash screen
-            splash_content = ft.Column([
-                ft.Container(height=100),
-                # Simple logo icon
-                ft.Icon(
-                    ft.Icons.FLASH_ON,
-                    size=80,
-                    color=ft.Colors.BLUE_400
-                ),
-                ft.Container(height=20),
-                # Brand text
-                ft.Text(
-                    "ATV",
-                    size=36,
-                    weight=ft.FontWeight.BOLD,
-                    color=ft.Colors.WHITE
-                ),
-                ft.Text(
-                    "AUTOTRADEVIP",
-                    size=16,
-                    color=ft.Colors.BLUE_400
-                ),
-                ft.Container(height=40),
-                # Progress bar
-                ft.ProgressBar(
-                    width=200,
-                    color=ft.Colors.BLUE_400,
-                    bgcolor=ft.Colors.WHITE12,
-                    value=0
-                ),
-                ft.Container(height=15),
-                ft.Text(
-                    "Loading...",
-                    size=14,
-                    color=ft.Colors.WHITE70
-                ),
-                ft.Container(height=20),
-                ft.Text(
-                    "Version 1.0.0",
-                    size=12,
-                    color=ft.Colors.WHITE54
-                ),
-            ],
-            alignment=ft.MainAxisAlignment.CENTER,
-            horizontal_alignment=ft.CrossAxisAlignment.CENTER,
-            )
+            # Create all components like original
+            self.logo = self.create_logo()
+            self.brand_text = self.create_brand_text()
+            self.progress_bar = self.create_progress_bar()
+            self.loading_text = self.create_loading_text()
+            self.version_text = self.create_version_text()
             
-            # Main container
+            # Create main container with gradient background like original
             splash_container = ft.Container(
-                content=splash_content,
-                width=self.page.window_width or 375,
-                height=self.page.window_height or 812,
-                bgcolor=AppStyles.PRIMARY_COLOR,
-                alignment=ft.alignment.center
+                content=ft.Column([
+                    ft.Container(height=50),  # Top spacing
+                    self.logo,
+                    ft.Container(height=30),
+                    self.brand_text,
+                    ft.Container(height=60),
+                    self.progress_bar,
+                    ft.Container(height=20),
+                    self.loading_text,
+                    ft.Container(height=40),
+                    self.version_text,
+                ],
+                horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+                spacing=0,
+                ),
+                expand=True,
+                alignment=ft.alignment.center,
+                gradient=ft.LinearGradient(
+                    begin=ft.alignment.top_center,
+                    end=ft.alignment.bottom_center,
+                    colors=[
+                        AppStyles.PRIMARY_COLOR,
+                        AppStyles.SECONDARY_COLOR,
+                        AppStyles.PRIMARY_COLOR
+                    ]
+                ),
             )
             
+            # Add to page
             self.page.add(splash_container)
             self.page.update()
             
-            # Simple progress animation
-            self.simple_progress_animation()
+            # Start original animation sequence
+            self.start_splash_sequence()
             
         except Exception as e:
             print(f"Error in splash build: {e}")
-            # Ultra simple fallback
-            self.page.add(ft.Text("ATV - Loading...", color=ft.Colors.WHITE))
+            # Simple fallback
+            self.simple_progress_animation()
+            
+    def start_splash_sequence(self):
+        """Start the splash screen animation sequence - restored original"""
+        def animation_sequence():
+            try:
+                # Phase 1: Show logo
+                time.sleep(0.5)
+                self.logo.opacity = 1
+                self.page.update()
+                
+                # Start particle animation if available
+                try:
+                    self.animate_floating_particles()
+                except:
+                    pass
+                
+                # Phase 2: Show brand text
+                time.sleep(0.8)
+                self.brand_text.opacity = 1
+                self.page.update()
+                
+                # Phase 3: Show progress bar and loading text
+                time.sleep(0.6)
+                self.progress_bar.opacity = 1
+                self.loading_text.opacity = 1
+                self.page.update()
+                
+                # Phase 4: Animate progress
+                time.sleep(0.4)
+                self.animate_progress(self.progress_bar)
+                
+                # Phase 5: Show version
+                time.sleep(1.0)
+                self.version_text.opacity = 1
+                self.page.update()
+                
+                # Phase 6: Wait for progress to complete
+                time.sleep(2.0)
+                
+                # Phase 7: Fade out splash and show main content
+                self.fade_out_splash()
+                time.sleep(1.0)
+                self.show_main_content()
+                
+            except Exception as e:
+                print(f"Animation error: {e}")
+                # Fallback to auth
+                time.sleep(3)
+                self.on_complete_callback()
+        
+        thread = threading.Thread(target=animation_sequence)
+        thread.daemon = True
+        thread.start()
+        
+    def fade_out_splash(self):
+        """Fade out the splash screen - restored original"""
+        try:
+            self.logo.opacity = 0
+            self.brand_text.opacity = 0
+            self.progress_bar.opacity = 0
+            self.loading_text.opacity = 0
+            self.version_text.opacity = 0
             self.page.update()
-            # Continue to auth after short delay
-            time.sleep(2)
-            self.on_complete_callback()
+        except Exception as e:
+            print(f"Fade out error: {e}")
