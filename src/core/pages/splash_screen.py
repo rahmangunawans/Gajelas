@@ -293,9 +293,10 @@ class SplashScreen:
                 ft.Container(
                     content=ft.Text(
                         "0%",
-                        size=10,
-                        color=self.styles.TEXT_TERTIARY,
+                        size=12,
+                        color=self.styles.TEXT_SECONDARY,
                         text_align=ft.TextAlign.CENTER,
+                        weight=ft.FontWeight.W_600,
                     ),
                     padding=ft.padding.only(top=10),
                 ),
@@ -342,6 +343,7 @@ class SplashScreen:
             for i in range(101):
                 # Update progress bar
                 progress_bar.content.controls[0].content.value = i / 100
+                # Update percentage text correctly
                 progress_bar.content.controls[2].content.value = f"{i}%"
                 
                 # Animate dots with wave effect
