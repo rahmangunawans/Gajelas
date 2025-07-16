@@ -14,15 +14,15 @@ author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "workflow.run"
-args = "Basic Flet Test"
+args = "ATV Application"
 
 [[workflows.workflow]]
-name = "Basic Flet Test"
+name = "ATV Application"
 author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "python test_flet_basic.py"
+args = "python app.py"
 waitForPort = 5000
 
 [[ports]]
