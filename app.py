@@ -86,8 +86,7 @@ if __name__ == "__main__":
             target=main, 
             port=5000, 
             host="0.0.0.0",
-            view=ft.AppView.WEB_BROWSER,
-            web_renderer=ft.WebRenderer.HTML
+            view=ft.AppView.WEB_BROWSER
         )
     except Exception as e:
         logger.critical(f"Critical error starting application: {e}")
