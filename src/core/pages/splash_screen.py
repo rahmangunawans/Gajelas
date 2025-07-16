@@ -680,12 +680,15 @@ class SplashScreen:
                 self.page.update()
                 time.sleep(0.5)
                 
-                # Simple progress animation
+                # Progress animation with percentage update
                 progress_bar_control = self.progress_bar.content.controls[0].content
-                for i in range(0, 101, 10):
+                percentage_text = self.progress_bar.content.controls[2].content
+                
+                for i in range(0, 101, 5):
                     progress_bar_control.value = i / 100
+                    percentage_text.value = f"{i}%"
                     self.page.update()
-                    time.sleep(0.1)
+                    time.sleep(0.08)
                 
                 # Short pause then navigate to auth
                 time.sleep(0.5)
