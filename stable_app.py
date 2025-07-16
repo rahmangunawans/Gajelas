@@ -12,15 +12,33 @@ from core.styles import AppStyles
 from config.app_config import AppConfig
 from utils.logger import logger
 
-class ATVApp:
+# Global app state to prevent multiple initializations
+_app_state = {
+    'initialized': False,
+    'db_manager': None
+}
+
+class StableATVApp:
     def __init__(self):
-        self.db_manager = PostgresManager()
+        global _app_state
+        
+        if not _app_state['db_manager']:
+            _app_state['db_manager'] = PostgresManager()
+            
+        self.db_manager = _app_state['db_manager']
         self.styles = AppStyles()
         self.current_page = None
         self.page = None
         
     def setup_page(self, page: ft.Page):
         """Configure the main page settings"""
+        global _app_state
+        
+        # Prevent multiple setups
+        if _app_state['initialized']:
+            logger.warning("App already initialized, skipping setup")
+            return
+        
         self.page = page
         page.title = AppConfig.APP_NAME
         page.window_width = AppConfig.MOBILE_WIDTH
@@ -32,43 +50,42 @@ class ATVApp:
         page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
         page.theme_mode = ft.ThemeMode.DARK
         
-        # Initialize database safely (only once)
-        if not hasattr(self, 'db_initialized'):
+        # Initialize database only once
+        if not _app_state['initialized']:
             try:
                 self.db_manager.init_db()
-                logger.info("Database initialized successfully")
-                self.db_initialized = True
+                logger.info("Database initialized successfully - stable version")
+                _app_state['initialized'] = True
             except Exception as e:
                 logger.error(f"Database initialization error: {e}")
-                self.db_initialized = False
         
         # Start with splash screen
         self.show_splash_screen()
         
     def show_splash_screen(self):
         """Show splash screen"""
+        logger.debug("Loading splash screen")
         splash_screen = SplashScreen(self.page, self.navigate_to_auth)
         splash_screen.build()
-        splash_screen.start_splash_sequence()
         
     def navigate_to_auth(self):
         """Navigate to authentication pages"""
+        logger.debug("Navigating to authentication")
         self.current_page = AuthHandler(self.page, self.navigate_to_dashboard)
         self.current_page.show_login()
         
     def navigate_to_dashboard(self, user_data):
         """Navigate to main dashboard after successful login"""
+        logger.info(f"User {user_data.get('email')} logged in successfully")
         from core.pages.dashboard import Dashboard
-        
-        # Create and show dashboard
         dashboard = Dashboard(self.page, user_data)
         dashboard.build()
 
 def main(page: ft.Page):
     """Main application entry point"""
     try:
-        logger.info("Starting ATV Mobile Application")
-        app = ATVApp()
+        logger.info("Starting stable ATV Mobile Application")
+        app = StableATVApp()
         app.setup_page(page)
     except Exception as e:
         logger.error(f"Error in main application: {e}")
@@ -76,10 +93,11 @@ def main(page: ft.Page):
         page.update()
 
 if __name__ == "__main__":
-    logger.info("🚀 Starting ATV Mobile Application...")
+    logger.info("🚀 Starting ATV Mobile Application - Stable Version")
     logger.info("📱 Mobile-first design optimized for 375x812 (iPhone X/11)")
     logger.info("🌐 Access: http://localhost:5000")
     logger.info("👤 Admin login: admin@atv.com / admin123")
+    logger.info("🔧 Using professional logging system for debugging")
     
     try:
         ft.app(

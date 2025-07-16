@@ -651,7 +651,8 @@ class SplashScreen:
             self.page.update()
             
         except Exception as e:
-            print(f"Error in splash build: {e}")
+            from utils.logger import logger
+            logger.error(f"Error in splash build: {e}")
             # Fallback to simple splash
             self.page.add(ft.Text("ATV - Loading...", color=ft.Colors.WHITE, size=24))
             self.page.update()

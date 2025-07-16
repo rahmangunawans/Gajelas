@@ -1,8 +1,18 @@
 import psycopg2
 import bcrypt
 import os
+import sys
 from datetime import datetime
 from psycopg2.extras import RealDictCursor
+
+# Add utils to path for logger
+sys.path.append(os.path.join(os.path.dirname(__file__), '../..'))
+try:
+    from utils.logger import logger
+except ImportError:
+    # Fallback if logger not available
+    import logging
+    logger = logging.getLogger(__name__)
 
 class PostgresManager:
     def __init__(self, db_url=None):
@@ -48,10 +58,10 @@ class PostgresManager:
             ''')
             
             conn.commit()
-            print("Database initialized successfully")
+            logger.info("Database initialized successfully")
             
         except Exception as e:
-            print(f"Error initializing database: {e}")
+            logger.error(f"Error initializing database: {e}")
             conn.rollback()
         finally:
             cursor.close()
@@ -95,7 +105,7 @@ class PostgresManager:
             return None
             
         except Exception as e:
-            print(f"Error authenticating user: {e}")
+            logger.error(f"Error authenticating user: {e}")
             return None
         finally:
             cursor.close()

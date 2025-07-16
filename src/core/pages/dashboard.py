@@ -567,7 +567,8 @@ class Dashboard:
     
     def show_notifications(self, e):
         """Show notifications"""
-        print("Showing notifications")
+        from utils.logger import logger
+        logger.debug("Showing notifications")
     
     def switch_broker(self, broker):
         """Switch active broker"""
@@ -576,7 +577,8 @@ class Dashboard:
     
     def toggle_broker(self, broker_name, is_active):
         """Toggle broker active status"""
-        print(f"Toggling {broker_name}: {is_active}")
+        from utils.logger import logger
+        logger.debug(f"Toggling {broker_name}: {is_active}")
         self.page.update()
     
     def switch_tab(self, tab_key):
