@@ -14,15 +14,15 @@ author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "workflow.run"
-args = "Flet Mobile Splash Screen"
+args = "Basic Flet Test"
 
 [[workflows.workflow]]
-name = "Flet Mobile Splash Screen"
+name = "Basic Flet Test"
 author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "python app.py"
+args = "python test_flet_basic.py"
 waitForPort = 5000
 
 [[ports]]

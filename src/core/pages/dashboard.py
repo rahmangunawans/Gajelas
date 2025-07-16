@@ -278,23 +278,35 @@ class Dashboard:
     def create_broker_card(self, broker_name, is_active=False, progress=0.0):
         """Create individual broker card with progress and broker logos"""
         broker_logos = {
-            "Binomo": "assets/broker_logos/binomo.png",
-            "Stockity": "assets/broker_logos/stockity.png",
-            "IQ Option": "assets/broker_logos/iq_option.png",
-            "Olymptrade": "assets/broker_logos/olymptrade.png",
-            "Quotex": "assets/broker_logos/quotex.png",
+            "Binomo": "assets/broker_logos/binomo.svg",
+            "Stockity": "assets/broker_logos/stockity.svg", 
+            "IQ Option": "assets/broker_logos/iq_option.svg",
+            "Olymptrade": "assets/broker_logos/olymptrade.svg",
+            "Quotex": "assets/broker_logos/quotex.svg",
         }
+        
+        # Create broker logo with fallback
+        logo_path = broker_logos.get(broker_name)
+        if logo_path:
+            logo_content = ft.Image(
+                src=logo_path,
+                width=35,
+                height=35,
+                fit=ft.ImageFit.CONTAIN,
+            )
+        else:
+            # Fallback to icon if no logo found
+            logo_content = ft.Icon(
+                ft.Icons.ACCOUNT_BALANCE,
+                color=self.styles.TEXT_SECONDARY,
+                size=32,
+            )
         
         return ft.Container(
             content=ft.Column([
                 ft.Row([
                     ft.Container(
-                        content=ft.Image(
-                            src=broker_logos.get(broker_name, "assets/logo.svg"),
-                            width=35,
-                            height=35,
-                            fit=ft.ImageFit.CONTAIN,
-                        ),
+                        content=logo_content,
                         width=50,
                         height=50,
                         bgcolor=ft.Colors.with_opacity(0.1, self.styles.TEXT_SECONDARY),
