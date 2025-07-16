@@ -641,9 +641,9 @@ class SplashScreen:
                     begin=ft.alignment.top_center,
                     end=ft.alignment.bottom_center,
                     colors=[
-                        self.styles.PRIMARY_COLOR,
-                        self.styles.SECONDARY_COLOR,
-                        self.styles.PRIMARY_COLOR
+                        AppStyles.PRIMARY_COLOR,
+                        AppStyles.SECONDARY_COLOR,
+                        AppStyles.PRIMARY_COLOR
                     ]
                 ),
             )
@@ -653,26 +653,10 @@ class SplashScreen:
             self.page.update()
             
         except Exception as e:
-            print(f"Error in splash build: {e}")
+            from utils.logger import logger
+            logger.error(f"Error in splash build: {e}")
             # Fallback to simple splash
-            self.page.controls.clear()
-            self.page.add(
-                ft.Container(
-                    content=ft.Column([
-                        ft.Text("ATV", size=48, color=ft.Colors.WHITE, weight=ft.FontWeight.BOLD),
-                        ft.Text("AUTOTRADEVIP", size=16, color="#06b6d4"),
-                        ft.Container(height=20),
-                        ft.ProgressBar(width=200, height=4, color="#06b6d4"),
-                        ft.Text("Loading...", size=14, color=ft.Colors.WHITE),
-                    ],
-                    horizontal_alignment=ft.CrossAxisAlignment.CENTER,
-                    spacing=20,
-                    ),
-                    expand=True,
-                    alignment=ft.alignment.center,
-                    bgcolor="#0a0a1a",
-                )
-            )
+            self.page.add(ft.Text("ATV - Loading...", color=ft.Colors.WHITE, size=24))
             self.page.update()
             time.sleep(3)
             self.on_complete_callback()
