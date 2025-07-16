@@ -14,15 +14,15 @@ author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "workflow.run"
-args = "ATV Dashboard Direct"
+args = "Flet Mobile Splash Screen"
 
 [[workflows.workflow]]
-name = "ATV Dashboard Direct"
+name = "Flet Mobile Splash Screen"
 author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "python dashboard_direct.py"
+args = "python app.py"
 waitForPort = 5000
 
 [[ports]]

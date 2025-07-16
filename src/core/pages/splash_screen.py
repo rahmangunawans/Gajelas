@@ -622,67 +622,30 @@ class SplashScreen:
         
     def build(self):
         """Build and display the splash screen"""
-        # Create simple splash screen directly
+        # Create all components
+        self.logo = self.create_logo()
+        self.brand_text = self.create_brand_text()
+        self.progress_bar = self.create_progress_bar()
+        self.loading_text = self.create_loading_text()
+        self.version_text = self.create_version_text()
+        
+        # Create main container
         splash_container = ft.Container(
             content=ft.Column([
-                ft.Container(height=150),
-                # Simple logo
-                ft.Image(
-                    src="assets/logo.svg",
-                    width=100,
-                    height=100,
-                    fit=ft.ImageFit.CONTAIN,
-                ),
+                ft.Container(height=50),  # Top spacing
+                self.logo,
                 ft.Container(height=30),
-                # Brand text
-                ft.Text(
-                    "ATV",
-                    size=36,
-                    weight=ft.FontWeight.BOLD,
-                    color=self.styles.TEXT_PRIMARY,
-                    text_align=ft.TextAlign.CENTER,
-                ),
-                ft.Text(
-                    "AUTOTRADEVIP",
-                    size=16,
-                    weight=ft.FontWeight.W_600,
-                    color=self.styles.TEXT_SECONDARY,
-                    text_align=ft.TextAlign.CENTER,
-                ),
-                ft.Container(height=50),
-                # Simple progress bar
-                ft.ProgressBar(
-                    width=200,
-                    height=4,
-                    color=self.styles.TEXT_SECONDARY,
-                    bgcolor=self.styles.PROGRESS_BG,
-                ),
+                self.brand_text,
+                ft.Container(height=60),
+                self.progress_bar,
                 ft.Container(height=20),
-                ft.Text(
-                    "Loading...",
-                    size=14,
-                    color=self.styles.TEXT_SECONDARY,
-                    text_align=ft.TextAlign.CENTER,
-                ),
-                ft.Container(height=30),
-                ft.Text(
-                    "Version 1.0.0",
-                    size=12,
-                    color=self.styles.TEXT_MUTED,
-                    text_align=ft.TextAlign.CENTER,
-                ),
-                ft.Container(height=50),
-                ft.ElevatedButton(
-                    "GET STARTED",
-                    on_click=lambda _: self.on_complete_callback(),
-                    bgcolor=self.styles.TEXT_SECONDARY,
-                    color=ft.Colors.WHITE,
-                    width=200,
-                    height=40,
-                ),
-            ], 
+                self.loading_text,
+                ft.Container(height=40),
+                self.version_text,
+            ],
             horizontal_alignment=ft.CrossAxisAlignment.CENTER,
-            spacing=0),
+            spacing=0,
+            ),
             expand=True,
             alignment=ft.alignment.center,
             bgcolor=self.styles.PRIMARY_COLOR,
@@ -691,3 +654,6 @@ class SplashScreen:
         # Add to page
         self.page.add(splash_container)
         self.page.update()
+        
+        # Start animation sequence
+        self.start_splash_sequence()

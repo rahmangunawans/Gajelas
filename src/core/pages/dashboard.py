@@ -276,43 +276,29 @@ class Dashboard:
         )
     
     def create_broker_card(self, broker_name, is_active=False, progress=0.0):
-        """Create individual broker card with progress and broker logos"""
-        broker_logos = {
-            "Binomo": "assets/broker_logos/binomo.svg",
-            "Stockity": "assets/broker_logos/stockity.svg", 
-            "IQ Option": "assets/broker_logos/iq_option.svg",
-            "Olymptrade": "assets/broker_logos/olymptrade.svg",
-            "Quotex": "assets/broker_logos/quotex.svg",
+        """Create individual broker card with progress"""
+        broker_icons = {
+            "Binomo": ft.Icons.TRENDING_UP,
+            "Stockity": ft.Icons.SHOW_CHART,
+            "IQ Option": ft.Icons.INSIGHTS,
+            "Olymptrade": ft.Icons.SPORTS_MOTORSPORTS,
+            "Quotex": ft.Icons.QUERY_STATS,
         }
-        
-        # Create broker logo with fallback
-        logo_path = broker_logos.get(broker_name)
-        if logo_path:
-            logo_content = ft.Image(
-                src=logo_path,
-                width=35,
-                height=35,
-                fit=ft.ImageFit.CONTAIN,
-            )
-        else:
-            # Fallback to icon if no logo found
-            logo_content = ft.Icon(
-                ft.Icons.ACCOUNT_BALANCE,
-                color=self.styles.TEXT_SECONDARY,
-                size=32,
-            )
         
         return ft.Container(
             content=ft.Column([
                 ft.Row([
                     ft.Container(
-                        content=logo_content,
+                        content=ft.Icon(
+                            broker_icons.get(broker_name, ft.Icons.CANDLESTICK_CHART),
+                            color=self.styles.TEXT_SECONDARY,
+                            size=32,
+                        ),
                         width=50,
                         height=50,
                         bgcolor=ft.Colors.with_opacity(0.1, self.styles.TEXT_SECONDARY),
                         border_radius=25,
                         alignment=ft.alignment.center,
-                        padding=ft.padding.all(7),
                     ),
                     ft.Column([
                         ft.Text(

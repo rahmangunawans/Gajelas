@@ -34,13 +34,14 @@ class ATVApp:
         # Initialize database
         self.db_manager.init_db()
         
-        # Skip splash screen and go directly to authentication
-        self.navigate_to_auth()
+        # Start with splash screen
+        self.show_splash_screen()
         
     def show_splash_screen(self):
         """Show splash screen"""
         splash_screen = SplashScreen(self.page, self.navigate_to_auth)
         splash_screen.build()
+        splash_screen.start_splash_sequence()
         
     def navigate_to_auth(self):
         """Navigate to authentication pages"""
