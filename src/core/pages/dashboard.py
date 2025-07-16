@@ -1,7 +1,13 @@
 import flet as ft
 import threading
 import time
-from styles import AppStyles
+import sys
+import os
+
+# Add src to path for imports
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..'))
+
+from core.styles import AppStyles
 
 class Dashboard:
     def __init__(self, page: ft.Page, user_data):

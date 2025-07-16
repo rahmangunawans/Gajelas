@@ -1,7 +1,13 @@
 import flet as ft
 import time
 import threading
-from styles import AppStyles
+import sys
+import os
+
+# Add src to path for imports
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..'))
+
+from core.styles import AppStyles
 
 class SplashScreen:
     def __init__(self, page: ft.Page, on_complete_callback):

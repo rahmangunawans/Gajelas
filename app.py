@@ -1,9 +1,15 @@
 import flet as ft
-from pages.splash_screen import SplashScreen
-from pages.auth_handler import AuthHandler
-from database.postgres_manager import PostgresManager
-from styles import AppStyles
+import sys
 import os
+
+# Add src to path for imports
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
+
+from core.pages.splash_screen import SplashScreen
+from core.pages.auth_handler import AuthHandler
+from services.database.postgres_manager import PostgresManager
+from core.styles import AppStyles
+from config.app_config import AppConfig
 
 class ATVApp:
     def __init__(self):
@@ -15,9 +21,9 @@ class ATVApp:
     def setup_page(self, page: ft.Page):
         """Configure the main page settings"""
         self.page = page
-        page.title = "ATV - AUTOTRADEVIP"
-        page.window_width = 375
-        page.window_height = 812
+        page.title = AppConfig.APP_NAME
+        page.window_width = AppConfig.MOBILE_WIDTH
+        page.window_height = AppConfig.MOBILE_HEIGHT
         page.padding = 0
         page.spacing = 0
         page.bgcolor = self.styles.PRIMARY_COLOR
@@ -44,7 +50,7 @@ class ATVApp:
         
     def navigate_to_dashboard(self, user_data):
         """Navigate to main dashboard after successful login"""
-        from pages.dashboard import Dashboard
+        from core.pages.dashboard import Dashboard
         
         # Create and show dashboard
         dashboard = Dashboard(self.page, user_data)

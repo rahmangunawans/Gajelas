@@ -1,8 +1,14 @@
 import flet as ft
 import hashlib
 import re
-from styles import AppStyles
-from database.postgres_manager import PostgresManager
+import sys
+import os
+
+# Add src to path for imports
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..'))
+
+from core.styles import AppStyles
+from services.database.postgres_manager import PostgresManager
 
 class AuthHandler:
     def __init__(self, page: ft.Page, on_success_callback):
