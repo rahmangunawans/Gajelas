@@ -252,11 +252,11 @@ class AuthHandler:
                 # Ultra-premium glassmorphism container
                 ft.Container(
                     content=ft.Stack([
-                        # Premium background with multiple gradient layers
+                        # Premium background with multiple gradient layers - optimized for mobile
                         ft.Container(
-                            width=330,
-                            height=65,
-                            border_radius=18,
+                            width=300,
+                            height=55,
+                            border_radius=16,
                             gradient=ft.LinearGradient(
                                 begin=ft.alignment.top_left,
                                 end=ft.alignment.bottom_right,
@@ -271,9 +271,9 @@ class AuthHandler:
                         ),
                         # Secondary luxury glow layer
                         ft.Container(
-                            width=330,
-                            height=65,
-                            border_radius=18,
+                            width=300,
+                            height=55,
+                            border_radius=16,
                             gradient=ft.LinearGradient(
                                 begin=ft.alignment.top_center,
                                 end=ft.alignment.bottom_center,
@@ -304,14 +304,14 @@ class AuthHandler:
                             spacing=0,
                             vertical_alignment=ft.CrossAxisAlignment.CENTER,
                             ),
-                            width=330,
-                            height=65,
+                            width=300,
+                            height=55,
                         ),
                         # Luxury focus glow effect
                         ft.Container(
-                            width=330,
-                            height=65,
-                            border_radius=18,
+                            width=300,
+                            height=55,
+                            border_radius=16,
                             shadow=ft.BoxShadow(
                                 spread_radius=0,
                                 blur_radius=20,
@@ -533,11 +533,11 @@ class AuthHandler:
                     # Ultra-luxury glassmorphism form card
                     ft.Container(
                         content=ft.Stack([
-                            # Outer luxury glow effect
+                            # Outer luxury glow effect - mobile optimized
                             ft.Container(
-                                width=355,
-                                height=580,
-                                border_radius=28,
+                                width=320,
+                                height=500,
+                                border_radius=24,
                                 gradient=ft.RadialGradient(
                                     center=ft.alignment.center,
                                     radius=1.2,
@@ -550,9 +550,9 @@ class AuthHandler:
                             ),
                             # Premium card background with sophisticated gradients
                             ft.Container(
-                                width=350,
-                                height=575,
-                                border_radius=26,
+                                width=315,
+                                height=495,
+                                border_radius=22,
                                 gradient=ft.LinearGradient(
                                     begin=ft.alignment.top_left,
                                     end=ft.alignment.bottom_right,
@@ -576,9 +576,9 @@ class AuthHandler:
                             ),
                             # Premium highlight overlay
                             ft.Container(
-                                width=350,
-                                height=575,
-                                border_radius=26,
+                                width=315,
+                                height=495,
+                                border_radius=22,
                                 gradient=ft.LinearGradient(
                                     begin=ft.alignment.top_center,
                                     end=ft.alignment.bottom_center,
@@ -650,7 +650,7 @@ class AuthHandler:
                                     ft.Container(height=25),
                                     
                                     # Ultra-premium login button
-                                    self.create_primary_button("MASUK SEKARANG", handle_login, 330),
+                                    self.create_primary_button("MASUK SEKARANG", handle_login, 300),
                                     
                                     ft.Container(height=35),
                                     
@@ -709,9 +709,9 @@ class AuthHandler:
                                         margin=ft.margin.only(top=15),
                                     ),
                                 ], spacing=0),
-                                padding=45,
-                                width=350,
-                                height=575,
+                                padding=35,
+                                width=315,
+                                height=495,
                                 left=2.5,
                                 top=2.5,
                             ),
@@ -743,17 +743,17 @@ class AuthHandler:
         """Show registration page"""
         self.page.clean()
         
-        # Create form fields
-        username_field = self.create_form_field("Username", "Masukkan username Anda", icon=ft.Icons.PERSON)
-        email_field = self.create_form_field("Email", "Masukkan email Anda")
-        password_field = self.create_form_field("Password", "Masukkan password Anda", password=True)
-        confirm_password_field = self.create_form_field("Konfirmasi Password", "Masukkan ulang password Anda", password=True)
+        # Create luxury form fields
+        username_field = self.create_luxury_form_field("Username", "Masukkan username Anda", icon=ft.Icons.PERSON)
+        email_field = self.create_luxury_form_field("Email", "Masukkan email Anda")
+        password_field = self.create_luxury_form_field("Password", "Masukkan password Anda", password=True)
+        confirm_password_field = self.create_luxury_form_field("Konfirmasi Password", "Masukkan ulang password Anda", password=True)
         
-        # Get text field references
-        username_textfield = username_field.content.controls[1].content.controls[-1]
-        email_textfield = email_field.content.controls[1].content.controls[-1]
-        password_textfield = password_field.content.controls[1].content.controls[-1]
-        confirm_password_textfield = confirm_password_field.content.controls[1].content.controls[-1]
+        # Get text field references from luxury structure
+        username_textfield = username_field.content.controls[1].content.controls[2].content.controls[1]
+        email_textfield = email_field.content.controls[1].content.controls[2].content.controls[1]
+        password_textfield = password_field.content.controls[1].content.controls[2].content.controls[1]
+        confirm_password_textfield = confirm_password_field.content.controls[1].content.controls[2].content.controls[1]
         
         # Error message container
         error_container = ft.Container(
@@ -988,11 +988,11 @@ class AuthHandler:
         """Show forgot password page"""
         self.page.clean()
         
-        # Create form fields
-        email_field = self.create_form_field("Email", "Masukkan email Anda")
+        # Create luxury form field
+        email_field = self.create_luxury_form_field("Email", "Masukkan email Anda")
         
-        # Get text field reference
-        email_textfield = email_field.content.controls[1].content.controls[-1]
+        # Get text field reference from luxury structure
+        email_textfield = email_field.content.controls[1].content.controls[2].content.controls[1]
         
         # Error message container
         error_container = ft.Container(
