@@ -420,28 +420,34 @@ class Dashboard:
         for item in nav_items:
             is_active = item["key"] == self.current_tab.lower()
             
-            # Create navigation button with modern styling
+            # Create navigation button with app theme colors
             nav_button = ft.Container(
                 content=ft.Column([
                     ft.Container(
                         content=ft.Icon(
                             item["icon"],
-                            color=ft.Colors.WHITE if is_active else "#64748b",
+                            color=self.styles.TEXT_PRIMARY if is_active else self.styles.TEXT_TERTIARY,
                             size=24,
                         ),
                         width=48,
                         height=32,
-                        bgcolor="#10b981" if is_active else ft.Colors.TRANSPARENT,
+                        bgcolor=self.styles.TEXT_SECONDARY if is_active else ft.Colors.TRANSPARENT,
                         border_radius=16,
                         alignment=ft.alignment.center,
                         animate=ft.Animation(300, ft.AnimationCurve.EASE_OUT),
+                        shadow=ft.BoxShadow(
+                            spread_radius=0,
+                            blur_radius=8,
+                            color=ft.Colors.with_opacity(0.3, self.styles.TEXT_SECONDARY) if is_active else ft.Colors.TRANSPARENT,
+                            offset=ft.Offset(0, 2),
+                        ) if is_active else None,
                     ),
                     ft.Container(height=4),
                     ft.Text(
                         item["label"],
                         size=10,
-                        color="#10b981" if is_active else "#64748b",
-                        weight=ft.FontWeight.W_500 if is_active else ft.FontWeight.W_400,
+                        color=self.styles.TEXT_SECONDARY if is_active else self.styles.TEXT_MUTED,
+                        weight=ft.FontWeight.W_600 if is_active else ft.FontWeight.W_400,
                         text_align=ft.TextAlign.CENTER,
                     ),
                 ], horizontal_alignment=ft.CrossAxisAlignment.CENTER, spacing=0),
@@ -452,7 +458,7 @@ class Dashboard:
             )
             nav_buttons.append(nav_button)
         
-        # Create the main navigation bar
+        # Create the main navigation bar with app theme
         nav_bar = ft.Container(
             content=ft.Row(
                 nav_buttons,
@@ -460,7 +466,7 @@ class Dashboard:
                 spacing=0,
             ),
             height=70,
-            bgcolor=ft.Colors.WHITE,
+            bgcolor=self.styles.SECONDARY_COLOR,
             border_radius=ft.border_radius.only(
                 top_left=20,
                 top_right=20,
@@ -468,12 +474,12 @@ class Dashboard:
             padding=ft.padding.symmetric(horizontal=10, vertical=5),
             shadow=ft.BoxShadow(
                 spread_radius=0,
-                blur_radius=10,
-                color=ft.Colors.with_opacity(0.1, ft.Colors.BLACK),
-                offset=ft.Offset(0, -2),
+                blur_radius=15,
+                color=ft.Colors.with_opacity(0.3, ft.Colors.BLACK),
+                offset=ft.Offset(0, -3),
             ),
             border=ft.border.only(
-                top=ft.BorderSide(1, ft.Colors.with_opacity(0.1, ft.Colors.BLACK))
+                top=ft.BorderSide(1, self.styles.CARD_BORDER)
             ),
         )
         
