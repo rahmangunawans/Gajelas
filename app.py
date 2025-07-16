@@ -78,13 +78,12 @@ if __name__ == "__main__":
     print("👤 Admin login: admin@atv.com / admin123")
     
     try:
+        # Simplified Flet configuration
         ft.app(
             target=main, 
             port=5000, 
-            host="0.0.0.0", 
-            view=ft.AppView.WEB_BROWSER, 
-            web_renderer=ft.WebRenderer.HTML,
-            route_url_strategy="path"
+            host="0.0.0.0",
+            view=ft.AppView.WEB_BROWSER
         )
     except Exception as e:
         print(f"Error starting app: {e}")
