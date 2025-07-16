@@ -406,118 +406,78 @@ class Dashboard:
         ], spacing=0)
     
     def create_bottom_navigation(self):
-        """Create floating center button navigation bar like in the reference image"""
+        """Create modern bottom navigation bar with clean design"""
         nav_items = [
-            {"icon": ft.Icons.HOME, "label": "Beranda", "key": "beranda", "position": "left"},
-            {"icon": ft.Icons.SMART_TOY, "label": "Active Bots", "key": "bots", "position": "center"},
-            {"icon": ft.Icons.HISTORY, "label": "History", "key": "history", "position": "right"},
-            {"icon": ft.Icons.PERSON, "label": "Saya", "key": "profile", "position": "far_right"},
+            {"icon": ft.Icons.HOME, "label": "Beranda", "key": "beranda"},
+            {"icon": ft.Icons.SMART_TOY, "label": "Active Bots", "key": "bots"},
+            {"icon": ft.Icons.HISTORY, "label": "History", "key": "history"},
+            {"icon": ft.Icons.PERSON, "label": "Saya", "key": "profile"},
         ]
         
         # Create navigation buttons
         nav_buttons = []
-        center_button = None
         
         for item in nav_items:
             is_active = item["key"] == self.current_tab.lower()
             
-            if item["position"] == "center":
-                # Create floating center button (like in reference image)
-                center_button = ft.Container(
-                    content=ft.Icon(
-                        item["icon"],
-                        color=ft.Colors.WHITE,
-                        size=32,
-                    ),
-                    width=70,
-                    height=70,
-                    bgcolor="#7c3aed" if is_active else "#059669",
-                    border_radius=35,
-                    shadow=ft.BoxShadow(
-                        spread_radius=2,
-                        blur_radius=15,
-                        color=ft.Colors.with_opacity(0.4, "#7c3aed" if is_active else "#059669"),
-                        offset=ft.Offset(0, 5),
-                    ),
-                    on_click=lambda e, key=item["key"]: self.switch_tab(key),
-                    margin=ft.margin.only(top=-35),  # Float above the bar
-                )
-            else:
-                # Create regular navigation buttons
-                nav_button = ft.Container(
-                    content=ft.Column([
-                        ft.Icon(
+            # Create navigation button with modern styling
+            nav_button = ft.Container(
+                content=ft.Column([
+                    ft.Container(
+                        content=ft.Icon(
                             item["icon"],
-                            color="#7c3aed" if is_active else self.styles.TEXT_MUTED,
-                            size=26 if is_active else 24,
+                            color=ft.Colors.WHITE if is_active else "#64748b",
+                            size=24,
                         ),
-                        ft.Container(height=5),
-                        ft.Text(
-                            item["label"],
-                            size=10,
-                            color="#7c3aed" if is_active else self.styles.TEXT_MUTED,
-                            weight=ft.FontWeight.BOLD if is_active else ft.FontWeight.NORMAL,
-                            text_align=ft.TextAlign.CENTER,
-                        ),
-                    ], horizontal_alignment=ft.CrossAxisAlignment.CENTER),
-                    padding=ft.padding.symmetric(vertical=10),
-                    on_click=lambda e, key=item["key"]: self.switch_tab(key),
-                    expand=True,
-                )
-                nav_buttons.append(nav_button)
+                        width=48,
+                        height=32,
+                        bgcolor="#10b981" if is_active else ft.Colors.TRANSPARENT,
+                        border_radius=16,
+                        alignment=ft.alignment.center,
+                        animate=ft.Animation(300, ft.AnimationCurve.EASE_OUT),
+                    ),
+                    ft.Container(height=4),
+                    ft.Text(
+                        item["label"],
+                        size=10,
+                        color="#10b981" if is_active else "#64748b",
+                        weight=ft.FontWeight.W_500 if is_active else ft.FontWeight.W_400,
+                        text_align=ft.TextAlign.CENTER,
+                    ),
+                ], horizontal_alignment=ft.CrossAxisAlignment.CENTER, spacing=0),
+                padding=ft.padding.symmetric(vertical=8),
+                on_click=lambda e, key=item["key"]: self.switch_tab(key),
+                expand=True,
+                animate=ft.Animation(200, ft.AnimationCurve.EASE_OUT),
+            )
+            nav_buttons.append(nav_button)
         
-        # Create the main navigation bar with notch for center button
+        # Create the main navigation bar
         nav_bar = ft.Container(
-            content=ft.Row([
-                # Left section
-                ft.Container(
-                    content=nav_buttons[0],
-                    expand=True,
-                ),
-                # Center space for floating button
-                ft.Container(
-                    width=90,
-                    height=70,
-                    bgcolor=ft.Colors.TRANSPARENT,
-                ),
-                # Right section
-                ft.Container(
-                    content=ft.Row([
-                        ft.Container(content=nav_buttons[1], expand=True),
-                        ft.Container(content=nav_buttons[2], expand=True),
-                    ]),
-                    expand=True,
-                ),
-            ], alignment=ft.MainAxisAlignment.SPACE_BETWEEN),
-            height=80,
-            bgcolor=ft.Colors.with_opacity(0.95, "#ffffff"),
-            border_radius=ft.border_radius.only(
-                top_left=30,
-                top_right=30,
+            content=ft.Row(
+                nav_buttons,
+                alignment=ft.MainAxisAlignment.SPACE_AROUND,
+                spacing=0,
             ),
-            padding=ft.padding.only(left=20, right=20, top=10, bottom=10),
+            height=70,
+            bgcolor=ft.Colors.WHITE,
+            border_radius=ft.border_radius.only(
+                top_left=20,
+                top_right=20,
+            ),
+            padding=ft.padding.symmetric(horizontal=10, vertical=5),
             shadow=ft.BoxShadow(
                 spread_radius=0,
-                blur_radius=20,
-                color=ft.Colors.with_opacity(0.15, ft.Colors.BLACK),
-                offset=ft.Offset(0, -5),
+                blur_radius=10,
+                color=ft.Colors.with_opacity(0.1, ft.Colors.BLACK),
+                offset=ft.Offset(0, -2),
+            ),
+            border=ft.border.only(
+                top=ft.BorderSide(1, ft.Colors.with_opacity(0.1, ft.Colors.BLACK))
             ),
         )
         
-        # Combine navigation bar with floating center button
-        return ft.Container(
-            content=ft.Column([
-                # Floating center button
-                ft.Container(
-                    content=center_button,
-                    alignment=ft.alignment.center,
-                    height=35,
-                ),
-                # Navigation bar
-                nav_bar,
-            ], spacing=0),
-            height=115,
-        )
+        return nav_bar
     
     def show_vip_options(self, e):
         """Show VIP subscription options"""
