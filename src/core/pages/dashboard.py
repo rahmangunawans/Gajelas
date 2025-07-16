@@ -278,11 +278,11 @@ class Dashboard:
     def create_broker_card(self, broker_name, is_active=False, progress=0.0):
         """Create individual broker card with progress"""
         broker_logos = {
-            "Binomo": "assets/brokers/binomo.svg",
-            "Stockity": "assets/brokers/stockity.svg",
-            "IQ Option": "assets/brokers/iqoption.svg",
-            "Olymptrade": "assets/brokers/olymptrade.svg",
-            "Quotex": "assets/brokers/quotex.svg",
+            "Binomo": "assets/brokers/binomo.png",
+            "Stockity": "assets/brokers/stockity.png",
+            "IQ Option": "assets/brokers/iqoption.png",
+            "Olymptrade": "assets/brokers/olymptrade.png",
+            "Quotex": "assets/brokers/quotex.png",
         }
         
         return ft.Container(
