@@ -100,6 +100,7 @@ class AuthHandler:
                                     weight=ft.FontWeight.W_900,
                                     color="#ffffff",
                                     text_align=ft.TextAlign.CENTER,
+                                    font_family="SF Pro Display",
                                 ),
                                 ft.Container(
                                     content=ft.Text(
@@ -108,6 +109,7 @@ class AuthHandler:
                                         weight=ft.FontWeight.W_700,
                                         color="#00d4ff",
                                         text_align=ft.TextAlign.CENTER,
+                                        font_family="SF Pro Display",
                                     ),
                                     margin=ft.margin.only(top=-2),
                                 ),
@@ -173,6 +175,7 @@ class AuthHandler:
                                 weight=ft.FontWeight.W_900,
                                 color="#ffffff",
                                 text_align=ft.TextAlign.CENTER,
+                                font_family="SF Pro Display",
                             ),
                             left=-2,
                             top=-3,
@@ -188,6 +191,7 @@ class AuthHandler:
                         color="#94a3b8",
                         text_align=ft.TextAlign.CENTER,
                         weight=ft.FontWeight.W_500,
+                        font_family="Inter",
                     ),
                     margin=ft.margin.only(bottom=35),
                 ),
@@ -226,11 +230,13 @@ class AuthHandler:
                 size=15,
                 color="#ffffff",
                 weight=ft.FontWeight.W_500,
+                font_family="Inter",
             ),
             hint_style=ft.TextStyle(
                 size=15,
                 color="#64748b",
                 weight=ft.FontWeight.W_400,
+                font_family="Inter",
             ),
             bgcolor=ft.Colors.TRANSPARENT,
             content_padding=ft.padding.symmetric(horizontal=0, vertical=18),
@@ -246,6 +252,7 @@ class AuthHandler:
                         size=12,
                         weight=ft.FontWeight.W_700,
                         color="#00d4ff",
+                        font_family="Inter",
                     ),
                     padding=ft.padding.only(left=12, bottom=8),
                 ),
@@ -371,6 +378,7 @@ class AuthHandler:
                             weight=ft.FontWeight.W_700,
                             color="#ffffff",
                             text_align=ft.TextAlign.CENTER,
+                            font_family="SF Pro Display",
                         ),
                         on_click=on_click,
                         style=ft.ButtonStyle(
@@ -406,6 +414,7 @@ class AuthHandler:
                     size=15,
                     weight=ft.FontWeight.W_600,
                     color="#06b6d4",
+                    font_family="Inter",
                 ),
                 on_click=on_click,
                 style=ft.ButtonStyle(
@@ -502,237 +511,195 @@ class AuthHandler:
                 error_container.visible = True
                 self.page.update()
         
-        # Ultra-professional login page with stunning visual effects
+        # Ultra-professional login page with mobile-optimized layout
         login_content = ft.Container(
-            content=ft.Stack([
-                # Dynamic gradient background with floating particles effect
+            content=ft.Column([
+                # Premium header section
                 ft.Container(
-                    width=400,
-                    height=900,
-                    gradient=ft.RadialGradient(
-                        center=ft.alignment.center,
-                        radius=1.5,
-                        colors=[
-                            ft.Colors.with_opacity(0.15, "#06b6d4"),
-                            ft.Colors.with_opacity(0.08, "#1e3a8a"),
-                            self.styles.PRIMARY_COLOR,
-                            ft.Colors.with_opacity(0.05, "#000000"),
-                        ],
-                        stops=[0.0, 0.3, 0.7, 1.0],
-                    ),
+                    content=self.create_premium_header("Masuk", "Selamat datang kembali di platform trading profesional"),
+                    padding=ft.padding.only(top=20, bottom=10),
                 ),
-                # Main content with professional layout
-                ft.Column([
-                    ft.Container(height=50),
                     
-                    # Ultra-modern header
-                    self.create_premium_header("Masuk", "Selamat datang kembali di platform trading profesional"),
-                    
-                    ft.Container(height=40),
-                    
-                    # Ultra-luxury glassmorphism form card
-                    ft.Container(
-                        content=ft.Stack([
-                            # Outer luxury glow effect - mobile optimized
-                            ft.Container(
-                                width=320,
-                                height=500,
-                                border_radius=24,
-                                gradient=ft.RadialGradient(
-                                    center=ft.alignment.center,
-                                    radius=1.2,
-                                    colors=[
-                                        ft.Colors.with_opacity(0.2, "#00d4ff"),
-                                        ft.Colors.with_opacity(0.1, "#0ea5e9"),
-                                        ft.Colors.TRANSPARENT,
-                                    ],
-                                ),
+                # Mobile-optimized form container
+                ft.Container(
+                    content=ft.Stack([
+                        # Premium card background
+                        ft.Container(
+                            width=340,
+                            height=460,
+                            border_radius=24,
+                            gradient=ft.LinearGradient(
+                                begin=ft.alignment.top_left,
+                                end=ft.alignment.bottom_right,
+                                colors=[
+                                    ft.Colors.with_opacity(0.18, "#ffffff"),
+                                    ft.Colors.with_opacity(0.08, "#00d4ff"),
+                                    ft.Colors.with_opacity(0.12, "#0ea5e9"),
+                                    ft.Colors.with_opacity(0.05, "#1e40af"),
+                                    ft.Colors.with_opacity(0.03, "#000000"),
+                                ],
                             ),
-                            # Premium card background with sophisticated gradients
-                            ft.Container(
-                                width=315,
-                                height=495,
-                                border_radius=22,
-                                gradient=ft.LinearGradient(
-                                    begin=ft.alignment.top_left,
-                                    end=ft.alignment.bottom_right,
-                                    colors=[
-                                        ft.Colors.with_opacity(0.18, "#ffffff"),
-                                        ft.Colors.with_opacity(0.08, "#00d4ff"),
-                                        ft.Colors.with_opacity(0.12, "#0ea5e9"),
-                                        ft.Colors.with_opacity(0.05, "#1e40af"),
-                                        ft.Colors.with_opacity(0.03, "#000000"),
-                                    ],
-                                ),
-                                border=ft.border.all(1.5, ft.Colors.with_opacity(0.3, "#00d4ff")),
-                                shadow=ft.BoxShadow(
-                                    spread_radius=0,
-                                    blur_radius=50,
-                                    color=ft.Colors.with_opacity(0.4, "#000000"),
-                                    offset=ft.Offset(0, 25),
-                                ),
-                                left=2.5,
-                                top=2.5,
+                            border=ft.border.all(1.5, ft.Colors.with_opacity(0.3, "#00d4ff")),
+                            shadow=ft.BoxShadow(
+                                spread_radius=0,
+                                blur_radius=30,
+                                color=ft.Colors.with_opacity(0.3, "#000000"),
+                                offset=ft.Offset(0, 15),
                             ),
-                            # Premium highlight overlay
-                            ft.Container(
-                                width=315,
-                                height=495,
-                                border_radius=22,
-                                gradient=ft.LinearGradient(
-                                    begin=ft.alignment.top_center,
-                                    end=ft.alignment.bottom_center,
-                                    colors=[
-                                        ft.Colors.with_opacity(0.15, "#ffffff"),
-                                        ft.Colors.with_opacity(0.05, "#ffffff"),
-                                        ft.Colors.TRANSPARENT,
-                                    ],
-                                    stops=[0.0, 0.3, 1.0],
+                        ),
+                        # Form content
+                        ft.Container(
+                            content=ft.Column([
+                                # Premium form heading
+                                ft.Container(
+                                    content=ft.Text(
+                                        "Akses Eksklusif",
+                                        size=18,
+                                        weight=ft.FontWeight.W_900,
+                                        color="#ffffff",
+                                        text_align=ft.TextAlign.CENTER,
+                                        font_family="SF Pro Display",
+                                    ),
+                                    margin=ft.margin.only(bottom=25),
                                 ),
-                                left=2.5,
-                                top=2.5,
-                            ),
-                            # Form content with luxury spacing
-                            ft.Container(
-                                content=ft.Column([
-                                    # Premium form heading with enhanced styling
-                                    ft.Container(
-                                        content=ft.Text(
-                                            "Akses Eksklusif",
-                                            size=20,
-                                            weight=ft.FontWeight.W_900,
-                                            color="#ffffff",
-                                            text_align=ft.TextAlign.CENTER,
+                                
+                                # Form fields
+                                email_field,
+                                password_field,
+                                
+                                # Remember me and forgot password
+                                ft.Container(
+                                    content=ft.Row([
+                                        ft.Checkbox(
+                                            label="Ingat saya",
+                                            value=False,
+                                            fill_color="#00d4ff",
+                                            check_color="#ffffff",
+                                            label_style=ft.TextStyle(
+                                                color="#ffffff",
+                                                size=11,
+                                                weight=ft.FontWeight.W_600,
+                                                font_family="Inter",
+                                            ),
                                         ),
-                                        margin=ft.margin.only(bottom=35),
-                                    ),
-                                    
-                                    # Luxury form fields
-                                    email_field,
-                                    password_field,
-                                    
-                                    # Premium remember me and forgot password section
-                                    ft.Container(
-                                        content=ft.Row([
-                                            ft.Checkbox(
-                                                label="Ingat saya",
-                                                value=False,
-                                                fill_color="#00d4ff",
-                                                check_color="#ffffff",
-                                                label_style=ft.TextStyle(
-                                                    color="#ffffff",
-                                                    size=12,
-                                                    weight=ft.FontWeight.W_600,
-                                                ),
+                                        ft.Container(expand=True),
+                                        ft.TextButton(
+                                            content=ft.Text(
+                                                "Lupa Password?",
+                                                size=11,
+                                                weight=ft.FontWeight.W_700,
+                                                color="#00d4ff",
+                                                font_family="Inter",
                                             ),
-                                            ft.Container(expand=True),
-                                            ft.TextButton(
-                                                content=ft.Text(
-                                                    "Lupa Password?",
-                                                    size=12,
-                                                    weight=ft.FontWeight.W_700,
-                                                    color="#00d4ff",
-                                                ),
-                                                on_click=lambda e: self.show_forgot_password(),
-                                                style=ft.ButtonStyle(
-                                                    overlay_color=ft.Colors.with_opacity(0.1, "#00d4ff"),
-                                                    padding=ft.padding.symmetric(horizontal=12, vertical=6),
-                                                    shape=ft.RoundedRectangleBorder(radius=8),
-                                                ),
+                                            on_click=lambda e: self.show_forgot_password(),
+                                            style=ft.ButtonStyle(
+                                                overlay_color=ft.Colors.with_opacity(0.1, "#00d4ff"),
+                                                padding=ft.padding.symmetric(horizontal=8, vertical=4),
+                                                shape=ft.RoundedRectangleBorder(radius=6),
                                             ),
-                                        ], alignment=ft.MainAxisAlignment.SPACE_BETWEEN),
-                                        margin=ft.margin.symmetric(vertical=20),
-                                    ),
-                                    
-                                    # Error message with luxury styling
-                                    error_container,
-                                    
-                                    ft.Container(height=25),
-                                    
-                                    # Ultra-premium login button
-                                    self.create_primary_button("MASUK SEKARANG", handle_login, 300),
-                                    
-                                    ft.Container(height=35),
-                                    
-                                    # Luxury divider with enhanced glow effect
-                                    ft.Container(
-                                        content=ft.Stack([
-                                            ft.Container(
-                                                height=1,
-                                                gradient=ft.LinearGradient(
-                                                    colors=[
-                                                        ft.Colors.TRANSPARENT,
-                                                        ft.Colors.with_opacity(0.4, "#00d4ff"),
-                                                        ft.Colors.TRANSPARENT,
-                                                    ]
-                                                ),
+                                        ),
+                                    ], alignment=ft.MainAxisAlignment.SPACE_BETWEEN),
+                                    margin=ft.margin.symmetric(vertical=15),
+                                ),
+                                
+                                # Error message
+                                error_container,
+                                
+                                ft.Container(height=15),
+                                
+                                # Login button
+                                self.create_primary_button("MASUK SEKARANG", handle_login, 300),
+                                
+                                ft.Container(height=20),
+                                
+                                # Divider
+                                ft.Container(
+                                    content=ft.Stack([
+                                        ft.Container(
+                                            height=1,
+                                            gradient=ft.LinearGradient(
+                                                colors=[
+                                                    ft.Colors.TRANSPARENT,
+                                                    ft.Colors.with_opacity(0.4, "#00d4ff"),
+                                                    ft.Colors.TRANSPARENT,
+                                                ]
                                             ),
-                                            ft.Container(
-                                                content=ft.Text(
-                                                    "atau",
-                                                    size=11,
-                                                    color="#64748b",
-                                                    weight=ft.FontWeight.W_600,
-                                                ),
-                                                bgcolor=ft.Colors.with_opacity(0.95, "#0a0a1a"),
-                                                padding=ft.padding.symmetric(horizontal=18),
-                                                alignment=ft.alignment.center,
+                                        ),
+                                        ft.Container(
+                                            content=ft.Text(
+                                                "atau",
+                                                size=10,
+                                                color="#64748b",
+                                                weight=ft.FontWeight.W_600,
+                                                font_family="Inter",
                                             ),
-                                        ]),
-                                        margin=ft.margin.symmetric(vertical=25),
-                                    ),
-                                    
-                                    # Registration link with premium styling
-                                    ft.Container(
-                                        content=ft.Row([
-                                            ft.Text(
-                                                "Belum punya akun? ",
-                                                size=13,
-                                                color="#94a3b8",
-                                                weight=ft.FontWeight.W_500,
+                                            bgcolor=ft.Colors.with_opacity(0.95, "#0a0a1a"),
+                                            padding=ft.padding.symmetric(horizontal=15),
+                                            alignment=ft.alignment.center,
+                                        ),
+                                    ]),
+                                    margin=ft.margin.symmetric(vertical=15),
+                                ),
+                                
+                                # Registration link
+                                ft.Container(
+                                    content=ft.Row([
+                                        ft.Text(
+                                            "Belum punya akun? ",
+                                            size=12,
+                                            color="#94a3b8",
+                                            weight=ft.FontWeight.W_500,
+                                            font_family="Inter",
+                                        ),
+                                        ft.TextButton(
+                                            content=ft.Text(
+                                                "Daftar Sekarang",
+                                                size=12,
+                                                weight=ft.FontWeight.W_800,
+                                                color="#00d4ff",
+                                                font_family="Inter",
                                             ),
-                                            ft.TextButton(
-                                                content=ft.Text(
-                                                    "Daftar Sekarang",
-                                                    size=13,
-                                                    weight=ft.FontWeight.W_800,
-                                                    color="#00d4ff",
-                                                ),
-                                                on_click=lambda e: self.show_register(),
-                                                style=ft.ButtonStyle(
-                                                    overlay_color=ft.Colors.with_opacity(0.1, "#00d4ff"),
-                                                    padding=ft.padding.symmetric(horizontal=12, vertical=6),
-                                                    shape=ft.RoundedRectangleBorder(radius=8),
-                                                ),
+                                            on_click=lambda e: self.show_register(),
+                                            style=ft.ButtonStyle(
+                                                overlay_color=ft.Colors.with_opacity(0.1, "#00d4ff"),
+                                                padding=ft.padding.symmetric(horizontal=8, vertical=4),
+                                                shape=ft.RoundedRectangleBorder(radius=6),
                                             ),
-                                        ], alignment=ft.MainAxisAlignment.CENTER),
-                                        margin=ft.margin.only(top=15),
-                                    ),
-                                ], spacing=0),
-                                padding=35,
-                                width=315,
-                                height=495,
-                                left=2.5,
-                                top=2.5,
-                            ),
-                        ]),
-                        margin=ft.margin.symmetric(horizontal=15),
-                        animate=ft.Animation(800, ft.AnimationCurve.EASE_OUT),
-                    ),
-                    
-                    ft.Container(height=60),
-                    
-                ], 
-                spacing=0,
-                horizontal_alignment=ft.CrossAxisAlignment.CENTER,
-                scroll=ft.ScrollMode.AUTO,
+                                        ),
+                                    ], alignment=ft.MainAxisAlignment.CENTER),
+                                    margin=ft.margin.only(top=10),
+                                ),
+                            ], spacing=0),
+                            padding=30,
+                            width=340,
+                            height=460,
+                        ),
+                    ]),
+                    margin=ft.margin.symmetric(horizontal=15),
+                    animate=ft.Animation(600, ft.AnimationCurve.EASE_OUT),
                 ),
-            ]),
+                
+                ft.Container(height=40),
+                
+            ], 
+            spacing=0,
+            horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+            scroll=ft.ScrollMode.AUTO,
+            ),
             expand=True,
-            bgcolor=self.styles.PRIMARY_COLOR,
-            padding=ft.padding.symmetric(horizontal=10, vertical=20),
+            bgcolor=ft.Colors.with_opacity(1.0, "#0a0a1a"),
+            gradient=ft.RadialGradient(
+                center=ft.alignment.top_center,
+                radius=1.2,
+                colors=[
+                    ft.Colors.with_opacity(0.1, "#00d4ff"),
+                    ft.Colors.with_opacity(0.05, "#0ea5e9"),
+                    ft.Colors.with_opacity(1.0, "#0a0a1a"),
+                ],
+            ),
+            padding=ft.padding.symmetric(horizontal=5, vertical=15),
             opacity=0,
-            animate_opacity=ft.Animation(1000, ft.AnimationCurve.EASE_IN_OUT)
+            animate_opacity=ft.Animation(800, ft.AnimationCurve.EASE_IN_OUT)
         )
         
         self.page.add(login_content)
