@@ -31,8 +31,13 @@ class ATVApp:
         page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
         page.theme_mode = ft.ThemeMode.DARK
         
-        # Initialize database
-        self.db_manager.init_db()
+        # Initialize database safely
+        try:
+            self.db_manager.init_db()
+            print("Database initialized successfully")
+        except Exception as e:
+            print(f"Database initialization error: {e}")
+            # Continue without database for now
         
         # Start with splash screen
         self.show_splash_screen()
@@ -73,8 +78,15 @@ if __name__ == "__main__":
     print("👤 Admin login: admin@atv.com / admin123")
     
     try:
-        ft.app(target=main, port=5000, host="0.0.0.0", view=ft.AppView.WEB_BROWSER, web_renderer=ft.WebRenderer.HTML)
+        ft.app(
+            target=main, 
+            port=5000, 
+            host="0.0.0.0", 
+            view=ft.AppView.WEB_BROWSER, 
+            web_renderer=ft.WebRenderer.HTML,
+            route_url_strategy="path"
+        )
     except Exception as e:
         print(f"Error starting app: {e}")
-        # Try alternative port
-        ft.app(target=main, port=5001, host="0.0.0.0", view=ft.AppView.WEB_BROWSER)
+        import traceback
+        traceback.print_exc()
