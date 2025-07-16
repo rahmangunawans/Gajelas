@@ -7,14 +7,14 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
 
 from core.pages.splash_screen import SplashScreen
 from core.pages.auth_handler import AuthHandler
-from services.database.postgres_manager import PostgresManager
+from services.database.sqlite_manager import SQLiteManager
 from core.styles import AppStyles
 from config.app_config import AppConfig
 from utils.logger import logger
 
 class ATVApp:
     def __init__(self):
-        self.db_manager = PostgresManager()
+        self.db_manager = SQLiteManager(AppConfig.DATABASE_PATH)
         self.styles = AppStyles()
         self.current_page = None
         self.page = None

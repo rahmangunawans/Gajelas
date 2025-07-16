@@ -8,13 +8,13 @@ import os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..'))
 
 from core.styles import AppStyles
-from services.database.postgres_manager import PostgresManager
+from services.database.sqlite_manager import SQLiteManager
 
 class AuthHandler:
     def __init__(self, page: ft.Page, on_success_callback):
         self.page = page
         self.styles = AppStyles()
-        self.db_manager = PostgresManager()
+        self.db_manager = SQLiteManager()
         self.on_success_callback = on_success_callback
         
     def hash_password(self, password):
@@ -95,11 +95,6 @@ class AuthHandler:
                     text_align=ft.TextAlign.CENTER,
                 ),
                 padding=ft.padding.only(bottom=8),
-            ),
-                    blur_radius=10,
-                    color=ft.Colors.with_opacity(0.3, self.styles.TEXT_SECONDARY),
-                    offset=ft.Offset(0, 2),
-                ),
             ),
         ]
         

@@ -13,6 +13,7 @@ class AppConfig:
     
     # Database Configuration
     DATABASE_URL = os.environ.get('DATABASE_URL')
+    DATABASE_PATH = "database.db"  # SQLite database path for Replit compatibility
     
     # UI Configuration
     MOBILE_WIDTH = 375
