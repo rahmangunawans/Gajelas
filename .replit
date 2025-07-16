@@ -14,15 +14,15 @@ author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "workflow.run"
-args = "ATV Application"
+args = "ATV Dashboard Direct"
 
 [[workflows.workflow]]
-name = "ATV Application"
+name = "ATV Dashboard Direct"
 author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "python app.py"
+args = "python dashboard_direct.py"
 waitForPort = 5000
 
 [[ports]]
