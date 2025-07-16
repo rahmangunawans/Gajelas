@@ -696,10 +696,10 @@ class SplashScreen:
                 # Phase 6: Wait for progress to complete
                 time.sleep(2.0)
                 
-                # Phase 7: Fade out splash and show main content
+                # Phase 7: Fade out splash and navigate to auth
                 self.fade_out_splash()
                 time.sleep(1.0)
-                self.show_main_content()
+                self.on_complete_callback()
                 
             except Exception as e:
                 print(f"Animation error: {e}")

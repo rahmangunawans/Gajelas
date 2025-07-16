@@ -31,13 +31,15 @@ class ATVApp:
         page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
         page.theme_mode = ft.ThemeMode.DARK
         
-        # Initialize database safely
-        try:
-            self.db_manager.init_db()
-            print("Database initialized successfully")
-        except Exception as e:
-            print(f"Database initialization error: {e}")
-            # Continue without database for now
+        # Initialize database safely (only once)
+        if not hasattr(self, 'db_initialized'):
+            try:
+                self.db_manager.init_db()
+                print("Database initialized successfully")
+                self.db_initialized = True
+            except Exception as e:
+                print(f"Database initialization error: {e}")
+                self.db_initialized = False
         
         # Start with splash screen
         self.show_splash_screen()

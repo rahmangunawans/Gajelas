@@ -190,9 +190,14 @@ class AuthHandler:
         email_field = self.create_form_field("Email", "Masukkan email Anda")
         password_field = self.create_form_field("Password", "Masukkan password Anda", password=True)
         
-        # Get text field references
-        email_textfield = email_field.content.controls[1].content.controls[-1]
-        password_textfield = password_field.content.controls[1].content.controls[-1]
+        # Get text field references more safely
+        try:
+            email_textfield = email_field.content.controls[1].content.controls[-1]
+            password_textfield = password_field.content.controls[1].content.controls[-1]
+        except (IndexError, AttributeError):
+            # Fallback for field access
+            email_textfield = email_field.content.controls[1].content.controls[1] if len(email_field.content.controls[1].content.controls) > 1 else email_field.content.controls[1].content.controls[0]
+            password_textfield = password_field.content.controls[1].content.controls[1] if len(password_field.content.controls[1].content.controls) > 1 else password_field.content.controls[1].content.controls[0]
         
         # Error message container
         error_container = ft.Container(
@@ -219,33 +224,49 @@ class AuthHandler:
         )
         
         def handle_login(e):
-            email = email_textfield.value
-            password = password_textfield.value
-            remember_me = remember_checkbox.value
-            
-            # Validation
-            if not email or not password:
-                error_container.content.value = "Email dan password harus diisi"
-                error_container.visible = True
-                self.page.update()
-                return
+            try:
+                email = email_textfield.value.strip() if email_textfield.value else ""
+                password = password_textfield.value.strip() if password_textfield.value else ""
+                remember_me = remember_checkbox.value
                 
-            if not self.validate_email(email):
-                error_container.content.value = "Format email tidak valid"
-                error_container.visible = True
-                self.page.update()
-                return
+                print(f"Login attempt - Email: {email}, Password length: {len(password)}")
                 
-            # Check credentials
-            user = self.db_manager.authenticate_user(email, password)
-            if user:
-                # TODO: Implement remember me functionality with session storage
-                if remember_me:
-                    # Store user session for longer period
-                    print(f"Remember me enabled for user: {user['email']}")
-                self.on_success_callback(user)
-            else:
-                error_container.content.value = "Email atau password salah"
+                # Clear previous errors
+                error_container.visible = False
+                error_container.content.value = ""
+                
+                # Validation
+                if not email or not password:
+                    error_container.content.value = "Email dan password harus diisi"
+                    error_container.visible = True
+                    self.page.update()
+                    return
+                    
+                if not self.validate_email(email):
+                    error_container.content.value = "Format email tidak valid"
+                    error_container.visible = True
+                    self.page.update()
+                    return
+                    
+                # Check credentials
+                print(f"Authenticating user: {email}")
+                user = self.db_manager.authenticate_user(email, password)
+                print(f"Authentication result: {user}")
+                
+                if user:
+                    print(f"Login successful for user: {user['email']}")
+                    if remember_me:
+                        print(f"Remember me enabled for user: {user['email']}")
+                    self.on_success_callback(user)
+                else:
+                    print("Authentication failed")
+                    error_container.content.value = "Email atau password salah"
+                    error_container.visible = True
+                    self.page.update()
+                    
+            except Exception as e:
+                print(f"Login error: {e}")
+                error_container.content.value = f"Terjadi kesalahan: {str(e)}"
                 error_container.visible = True
                 self.page.update()
         
