@@ -894,40 +894,78 @@ class Dashboard:
         self.page.add(profile_content)
         
     def show_language_selection(self):
-        """Show language selection dialog"""
-        def change_language(language_code):
-            """Change the current language"""
-            language_manager.set_language(language_code)
+        """Show language selection dialog with save/cancel functionality"""
+        selected_language = language_manager.current_language
+        
+        def select_language(language_code):
+            """Select a language temporarily"""
+            nonlocal selected_language
+            selected_language = language_code
+            # Update UI to show selection
+            update_language_options()
+            
+        def save_language(e):
+            """Save the selected language"""
+            language_manager.set_language(selected_language)
+            close_dialog(e)
             # Refresh the current page to apply new language
             self.show_profile()
             
         def close_dialog(e):
+            """Close the dialog"""
             dialog.open = False
             self.page.update()
             
-        # Create language options
-        language_options = []
-        for lang in language_manager.get_available_languages():
-            is_current = lang["code"] == language_manager.current_language
-            language_options.append(
-                ft.ListTile(
-                    leading=ft.Icon(ft.Icons.LANGUAGE, color=self.styles.TEXT_SECONDARY),
-                    title=ft.Text(lang["name"], color=self.styles.TEXT_PRIMARY),
-                    trailing=ft.Icon(ft.Icons.CHECK, color=self.styles.ACCENT_COLOR) if is_current else None,
-                    on_click=lambda e, code=lang["code"]: [change_language(code), close_dialog(e)],
-                    bgcolor=self.styles.SECONDARY_COLOR if is_current else None,
+        def update_language_options():
+            """Update language options display"""
+            language_options.controls.clear()
+            for lang in language_manager.get_available_languages():
+                is_selected = lang["code"] == selected_language
+                is_current = lang["code"] == language_manager.current_language
+                
+                # Show both current and selected states
+                trailing_icon = None
+                if is_current and is_selected:
+                    trailing_icon = ft.Icon(ft.Icons.CHECK_CIRCLE, color=self.styles.ACCENT_COLOR)
+                elif is_selected:
+                    trailing_icon = ft.Icon(ft.Icons.RADIO_BUTTON_CHECKED, color=self.styles.ACCENT_COLOR)
+                elif is_current:
+                    trailing_icon = ft.Icon(ft.Icons.CHECK, color=self.styles.TEXT_SECONDARY)
+                
+                language_options.controls.append(
+                    ft.ListTile(
+                        leading=ft.Icon(ft.Icons.LANGUAGE, color=self.styles.TEXT_SECONDARY),
+                        title=ft.Text(lang["name"], color=self.styles.TEXT_PRIMARY),
+                        trailing=trailing_icon,
+                        on_click=lambda e, code=lang["code"]: select_language(code),
+                        bgcolor=self.styles.SECONDARY_COLOR if is_selected else None,
+                    )
                 )
-            )
+            self.page.update()
+        
+        # Create language options container
+        language_options = ft.Column([], spacing=5)
+        update_language_options()
         
         dialog = ft.AlertDialog(
-            title=ft.Text(language_manager.get_text("language"), color=self.styles.TEXT_PRIMARY),
+            title=ft.Text(language_manager.get_text("select_language"), color=self.styles.TEXT_PRIMARY),
             content=ft.Container(
-                content=ft.Column(language_options, spacing=5),
-                width=300,
-                height=150,
+                content=language_options,
+                width=350,
+                height=400,
             ),
             actions=[
-                ft.TextButton(language_manager.get_text("cancel"), on_click=close_dialog),
+                ft.TextButton(
+                    language_manager.get_text("cancel"), 
+                    on_click=close_dialog,
+                    style=ft.ButtonStyle(color=self.styles.TEXT_SECONDARY)
+                ),
+                ft.ElevatedButton(
+                    language_manager.get_text("save"), 
+                    on_click=save_language,
+                    bgcolor=self.styles.ACCENT_COLOR,
+                    color=ft.Colors.WHITE
+                ),
             ],
             bgcolor=self.styles.PRIMARY_COLOR,
         )
