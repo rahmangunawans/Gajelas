@@ -8,7 +8,7 @@ import os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..'))
 
 from core.styles import AppStyles
-from core.language import language_manager
+from core.translator import smart_translator
 
 class Dashboard:
     def __init__(self, page: ft.Page, user_data):
@@ -43,7 +43,7 @@ class Dashboard:
                 # Search Bar
                 ft.Container(
                     content=ft.TextField(
-                        hint_text=language_manager.get_text("search_broker_bot"),
+                        hint_text=smart_translator.get_text("search_broker_bot"),
                         hint_style=ft.TextStyle(
                             color=self.styles.TEXT_MUTED,
                             size=14,
@@ -441,10 +441,10 @@ class Dashboard:
     def create_bottom_navigation(self):
         """Create modern bottom navigation bar with clean design"""
         nav_items = [
-            {"icon": ft.Icons.HOME, "label": language_manager.get_text("beranda"), "key": "beranda"},
-            {"icon": ft.Icons.SMART_TOY, "label": language_manager.get_text("active_bots"), "key": "bots"},
-            {"icon": ft.Icons.HISTORY, "label": language_manager.get_text("history"), "key": "history"},
-            {"icon": ft.Icons.PERSON, "label": language_manager.get_text("profile"), "key": "profile"},
+            {"icon": ft.Icons.HOME, "label": smart_translator.get_text("beranda"), "key": "beranda"},
+            {"icon": ft.Icons.SMART_TOY, "label": smart_translator.get_text("active_bots"), "key": "bots"},
+            {"icon": ft.Icons.HISTORY, "label": smart_translator.get_text("history"), "key": "history"},
+            {"icon": ft.Icons.PERSON, "label": smart_translator.get_text("profile"), "key": "profile"},
         ]
         
         # Create navigation buttons
@@ -834,7 +834,7 @@ class Dashboard:
                                                 size=16,
                                             ),
                                             ft.Text(
-                                                language_manager.get_text("vip_premium") if self.user_data.get('vip_status') == 'premium' else language_manager.get_text("regular"),
+                                                smart_translator.get_text("vip_premium") if self.user_data.get('vip_status') == 'premium' else smart_translator.get_text("regular"),
                                                 size=12,
                                                 color=self.styles.TEXT_SECONDARY,
                                             ),
@@ -853,24 +853,24 @@ class Dashboard:
                             content=ft.Column([
                                 ft.ListTile(
                                     leading=ft.Icon(ft.Icons.LANGUAGE, color=self.styles.TEXT_SECONDARY),
-                                    title=ft.Text(language_manager.get_text("language"), color=self.styles.TEXT_PRIMARY),
+                                    title=ft.Text(smart_translator.get_text("language"), color=self.styles.TEXT_PRIMARY),
                                     trailing=ft.Icon(ft.Icons.ARROW_FORWARD_IOS, color=self.styles.TEXT_TERTIARY),
                                     on_click=lambda e: self.show_language_selection(),
                                 ),
                                 ft.ListTile(
                                     leading=ft.Icon(ft.Icons.SETTINGS, color=self.styles.TEXT_SECONDARY),
-                                    title=ft.Text(language_manager.get_text("settings"), color=self.styles.TEXT_PRIMARY),
+                                    title=ft.Text(smart_translator.get_text("settings"), color=self.styles.TEXT_PRIMARY),
                                     trailing=ft.Icon(ft.Icons.ARROW_FORWARD_IOS, color=self.styles.TEXT_TERTIARY),
                                     on_click=lambda e: self.show_settings(),
                                 ),
                                 ft.ListTile(
                                     leading=ft.Icon(ft.Icons.HELP, color=self.styles.TEXT_SECONDARY),
-                                    title=ft.Text(language_manager.get_text("help_support"), color=self.styles.TEXT_PRIMARY),
+                                    title=ft.Text(smart_translator.get_text("help_support"), color=self.styles.TEXT_PRIMARY),
                                     trailing=ft.Icon(ft.Icons.ARROW_FORWARD_IOS, color=self.styles.TEXT_TERTIARY),
                                 ),
                                 ft.ListTile(
                                     leading=ft.Icon(ft.Icons.LOGOUT, color=self.styles.ERROR_COLOR),
-                                    title=ft.Text(language_manager.get_text("logout"), color=self.styles.ERROR_COLOR),
+                                    title=ft.Text(smart_translator.get_text("logout"), color=self.styles.ERROR_COLOR),
                                     trailing=ft.Icon(ft.Icons.ARROW_FORWARD_IOS, color=self.styles.TEXT_TERTIARY),
                                     on_click=lambda e: self.logout(),
                                 ),
@@ -895,7 +895,7 @@ class Dashboard:
         
     def show_language_selection(self):
         """Show language selection dialog with save/cancel functionality"""
-        selected_language = language_manager.current_language
+        selected_language = smart_translator.current_language
         
         def select_language(language_code):
             """Select a language temporarily"""
@@ -906,7 +906,7 @@ class Dashboard:
             
         def save_language(e):
             """Save the selected language"""
-            language_manager.set_language(selected_language)
+            smart_translator.set_language(selected_language)
             close_dialog(e)
             # Refresh the current page to apply new language
             self.show_profile()
@@ -919,9 +919,9 @@ class Dashboard:
         def update_language_options():
             """Update language options display"""
             language_options.controls.clear()
-            for lang in language_manager.get_available_languages():
+            for lang in smart_translator.get_supported_languages():
                 is_selected = lang["code"] == selected_language
-                is_current = lang["code"] == language_manager.current_language
+                is_current = lang["code"] == smart_translator.current_language
                 
                 # Show both current and selected states
                 trailing_icon = None
@@ -948,7 +948,7 @@ class Dashboard:
         update_language_options()
         
         dialog = ft.AlertDialog(
-            title=ft.Text(language_manager.get_text("select_language"), color=self.styles.TEXT_PRIMARY),
+            title=ft.Text(smart_translator.get_text("select_language"), color=self.styles.TEXT_PRIMARY),
             content=ft.Container(
                 content=language_options,
                 width=350,
@@ -956,12 +956,12 @@ class Dashboard:
             ),
             actions=[
                 ft.TextButton(
-                    language_manager.get_text("cancel"), 
+                    smart_translator.get_text("cancel"), 
                     on_click=close_dialog,
                     style=ft.ButtonStyle(color=self.styles.TEXT_SECONDARY)
                 ),
                 ft.ElevatedButton(
-                    language_manager.get_text("save"), 
+                    smart_translator.get_text("save"), 
                     on_click=save_language,
                     bgcolor=self.styles.ACCENT_COLOR,
                     color=ft.Colors.WHITE

@@ -9,7 +9,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..'))
 
 from core.styles import AppStyles
 from services.database.sqlite_manager import SQLiteManager
-from core.language import language_manager
+from core.translator import smart_translator
 
 class AuthHandler:
     def __init__(self, page: ft.Page, on_success_callback):
@@ -455,12 +455,12 @@ class AuthHandler:
         
         # Create luxury form fields with language support
         email_field = self.create_luxury_form_field(
-            language_manager.get_text("email"), 
-            language_manager.get_text("enter_email")
+            smart_translator.get_text("email"), 
+            smart_translator.get_text("enter_email")
         )
         password_field = self.create_luxury_form_field(
-            language_manager.get_text("password"), 
-            language_manager.get_text("enter_password"), 
+            smart_translator.get_text("password"), 
+            smart_translator.get_text("enter_password"), 
             password=True
         )
         
@@ -544,8 +544,8 @@ class AuthHandler:
             # Compact header
             ft.Container(
                 content=self.create_premium_header(
-                    language_manager.get_text("login"), 
-                    language_manager.get_text("professional_trading_platform")
+                    smart_translator.get_text("login"), 
+                    smart_translator.get_text("professional_trading_platform")
                 ),
                 padding=ft.padding.only(top=15, bottom=10),
             ),
@@ -558,7 +558,7 @@ class AuthHandler:
                         content=ft.Column([
                             # Form heading
                             ft.Text(
-                                language_manager.get_text("exclusive_access"),
+                                smart_translator.get_text("exclusive_access"),
                                 size=16,
                                 weight=ft.FontWeight.W_900,
                                 color="#ffffff",
@@ -575,7 +575,7 @@ class AuthHandler:
                             # Remember me and forgot password
                             ft.Row([
                                 ft.Checkbox(
-                                    label=language_manager.get_text("remember_me"),
+                                    label=smart_translator.get_text("remember_me"),
                                     value=False,
                                     fill_color="#00d4ff",
                                     check_color="#ffffff",
@@ -589,7 +589,7 @@ class AuthHandler:
                                 ft.Container(expand=True),
                                 ft.TextButton(
                                     content=ft.Text(
-                                        language_manager.get_text("forgot_password_link"),
+                                        smart_translator.get_text("forgot_password_link"),
                                         size=11,
                                         weight=ft.FontWeight.W_700,
                                         color="#00d4ff",
@@ -612,7 +612,7 @@ class AuthHandler:
                             ft.Container(height=15),
                             
                             # Login button
-                            self.create_primary_button(language_manager.get_text("login_now"), handle_login, 300),
+                            self.create_primary_button(smart_translator.get_text("login_now"), handle_login, 300),
                             
                             ft.Container(height=20),
                             
@@ -630,7 +630,7 @@ class AuthHandler:
                                 ),
                                 ft.Container(
                                     content=ft.Text(
-                                        language_manager.get_text("or"),
+                                        smart_translator.get_text("or"),
                                         size=10,
                                         color="#64748b",
                                         weight=ft.FontWeight.W_600,
@@ -648,7 +648,7 @@ class AuthHandler:
                             ft.Container(
                                 content=ft.Column([
                                     ft.Text(
-                                        language_manager.get_text("dont_have_account"),
+                                        smart_translator.get_text("dont_have_account"),
                                         size=13,
                                         color="#94a3b8",
                                         weight=ft.FontWeight.W_500,
@@ -659,7 +659,7 @@ class AuthHandler:
                                     ft.Container(
                                         content=ft.TextButton(
                                             content=ft.Text(
-                                                language_manager.get_text("register_now"),
+                                                smart_translator.get_text("register_now"),
                                                 size=14,
                                                 weight=ft.FontWeight.W_800,
                                                 color="#00d4ff",
@@ -963,8 +963,8 @@ class AuthHandler:
                             ),
                             
                             ft.Row([
-                                ft.Text(language_manager.get_text("already_have_account") + " ", size=14, color=self.styles.TEXT_TERTIARY),
-                                self.create_text_button(language_manager.get_text("login"), lambda e: self.show_login()),
+                                ft.Text(smart_translator.get_text("already_have_account") + " ", size=14, color=self.styles.TEXT_TERTIARY),
+                                self.create_text_button(smart_translator.get_text("login"), lambda e: self.show_login()),
                             ], alignment=ft.MainAxisAlignment.CENTER),
                             
                         ], spacing=0),

@@ -11,7 +11,7 @@ from services.database.sqlite_manager import SQLiteManager
 from core.styles import AppStyles
 from config.app_config import AppConfig
 from utils.logger import logger
-from core.language import language_manager
+from core.translator import smart_translator
 
 class ATVApp:
     def __init__(self):
@@ -43,9 +43,9 @@ class ATVApp:
                 logger.error(f"Database initialization error: {e}")
                 self.db_initialized = False
         
-        # Initialize language manager to English (ensure default)
-        language_manager.set_language("en")
-        logger.info(f"Language initialized to: {language_manager.current_language}")
+        # Initialize smart translator to English (ensure default)
+        smart_translator.set_language("en")
+        logger.info(f"Language initialized to: {smart_translator.current_language}")
         
         # Start with splash screen
         self.show_splash_screen()
