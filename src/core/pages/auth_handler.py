@@ -216,19 +216,14 @@ class AuthHandler:
             elif "phone" in label.lower():
                 field_icon = ft.Icons.SMARTPHONE_ROUNDED
                 
-        # Password visibility toggle state
-        password_visible = ft.Ref[bool]()
-        password_visible.current = False
-        
         # Password visibility toggle function
         def toggle_password_visibility(e):
-            password_visible.current = not password_visible.current
-            text_field.password = not password_visible.current
+            text_field.password = not text_field.password
             # Update icon
-            if password_visible.current:
-                suffix_icon.icon = ft.Icons.VISIBILITY_OFF
-            else:
+            if text_field.password:
                 suffix_icon.icon = ft.Icons.VISIBILITY
+            else:
+                suffix_icon.icon = ft.Icons.VISIBILITY_OFF
             self.page.update()
             
         # Suffix icon for password toggle
@@ -241,7 +236,7 @@ class AuthHandler:
                 icon_size=20,
             )
         
-        # Premium text field with enhanced styling
+        # Premium text field with enhanced styling - FIXED for proper input handling
         text_field = ft.TextField(
             hint_text=hint_text,
             password=password,
@@ -262,8 +257,70 @@ class AuthHandler:
                 font_family="Inter",
             ),
             bgcolor=ft.Colors.TRANSPARENT,
-            content_padding=ft.padding.symmetric(horizontal=0, vertical=18),
-            expand=True,
+            content_padding=ft.padding.symmetric(horizontal=60, vertical=18),
+            width=300,
+            height=55,
+            # CRITICAL: Ensure the text field can receive focus and input
+            autofocus=False,
+            can_reveal_password=False,  # We handle this manually
+        )
+        
+        # Create the visual container with glassmorphism effect
+        field_container = ft.Container(
+            content=ft.Stack([
+                # Premium background with multiple gradient layers
+                ft.Container(
+                    width=300,
+                    height=55,
+                    border_radius=16,
+                    gradient=ft.LinearGradient(
+                        begin=ft.alignment.top_left,
+                        end=ft.alignment.bottom_right,
+                        colors=[
+                            ft.Colors.with_opacity(0.15, "#ffffff"),
+                            ft.Colors.with_opacity(0.08, "#00d4ff"),
+                            ft.Colors.with_opacity(0.12, "#0ea5e9"),
+                            ft.Colors.with_opacity(0.05, "#1e40af"),
+                        ],
+                    ),
+                    border=ft.border.all(1.5, ft.Colors.with_opacity(0.25, "#00d4ff")),
+                ),
+                # Secondary luxury glow layer
+                ft.Container(
+                    width=300,
+                    height=55,
+                    border_radius=16,
+                    gradient=ft.LinearGradient(
+                        begin=ft.alignment.top_center,
+                        end=ft.alignment.bottom_center,
+                        colors=[
+                            ft.Colors.with_opacity(0.1, "#ffffff"),
+                            ft.Colors.TRANSPARENT,
+                        ],
+                    ),
+                ),
+                # Luxury icon positioned absolutely
+                ft.Container(
+                    content=ft.Icon(
+                        field_icon,
+                        size=22,
+                        color="#00d4ff",
+                    ),
+                    left=20,
+                    top=16,
+                ),
+                # Password visibility toggle positioned absolutely
+                ft.Container(
+                    content=suffix_icon if password else None,
+                    right=15,
+                    top=12,
+                ) if password else ft.Container(),
+                # The actual text field positioned to fill the container
+                text_field,
+            ]),
+            width=300,
+            height=55,
+            animate=ft.Animation(400, ft.AnimationCurve.EASE_OUT),
         )
         
         return ft.Container(
@@ -279,88 +336,15 @@ class AuthHandler:
                     ),
                     padding=ft.padding.only(left=12, bottom=8),
                 ),
-                # Ultra-premium glassmorphism container
-                ft.Container(
-                    content=ft.Stack([
-                        # Premium background with multiple gradient layers - optimized for mobile
-                        ft.Container(
-                            width=300,
-                            height=55,
-                            border_radius=16,
-                            gradient=ft.LinearGradient(
-                                begin=ft.alignment.top_left,
-                                end=ft.alignment.bottom_right,
-                                colors=[
-                                    ft.Colors.with_opacity(0.15, "#ffffff"),
-                                    ft.Colors.with_opacity(0.08, "#00d4ff"),
-                                    ft.Colors.with_opacity(0.12, "#0ea5e9"),
-                                    ft.Colors.with_opacity(0.05, "#1e40af"),
-                                ],
-                            ),
-                            border=ft.border.all(1.5, ft.Colors.with_opacity(0.25, "#00d4ff")),
-                        ),
-                        # Secondary luxury glow layer
-                        ft.Container(
-                            width=300,
-                            height=55,
-                            border_radius=16,
-                            gradient=ft.LinearGradient(
-                                begin=ft.alignment.top_center,
-                                end=ft.alignment.bottom_center,
-                                colors=[
-                                    ft.Colors.with_opacity(0.1, "#ffffff"),
-                                    ft.Colors.TRANSPARENT,
-                                ],
-                            ),
-                        ),
-                        # Premium input content row
-                        ft.Container(
-                            content=ft.Row([
-                                # Luxury icon with enhanced glow
-                                ft.Container(
-                                    content=ft.Icon(
-                                        field_icon,
-                                        size=22,
-                                        color="#00d4ff",
-                                    ),
-                                    padding=ft.padding.only(left=20, right=12),
-                                    width=54,
-                                ),
-                                # Premium text field
-                                text_field,
-                                # Password visibility toggle or right padding
-                                ft.Container(
-                                    content=suffix_icon if password else None,
-                                    width=50 if password else 20,
-                                    alignment=ft.alignment.center,
-                                ),
-                            ],
-                            spacing=0,
-                            vertical_alignment=ft.CrossAxisAlignment.CENTER,
-                            ),
-                            width=300,
-                            height=55,
-                        ),
-                        # Luxury focus glow effect
-                        ft.Container(
-                            width=300,
-                            height=55,
-                            border_radius=16,
-                            shadow=ft.BoxShadow(
-                                spread_radius=0,
-                                blur_radius=20,
-                                color=ft.Colors.with_opacity(0.3, "#00d4ff"),
-                                offset=ft.Offset(0, 8),
-                            ),
-                        ),
-                    ]),
-                    animate=ft.Animation(400, ft.AnimationCurve.EASE_OUT),
-                ),
+                # The field container with visual effects
+                field_container,
             ],
             spacing=0,
             ),
             margin=ft.margin.only(bottom=25),
             animate=ft.Animation(300, ft.AnimationCurve.EASE_IN_OUT),
+            # Store reference to text field for easy access
+            data=text_field,  # Store the text field reference here
         )
         
     def create_primary_button(self, text, on_click, width=320):
@@ -463,9 +447,9 @@ class AuthHandler:
         email_field = self.create_luxury_form_field("Email", "Masukkan email Anda")
         password_field = self.create_luxury_form_field("Password", "Masukkan password Anda", password=True)
         
-        # Get text field references from the luxury structure
-        email_textfield = email_field.content.controls[1].content.controls[2].content.controls[1]
-        password_textfield = password_field.content.controls[1].content.controls[2].content.controls[1]
+        # Get text field references using the data attribute (FIXED)
+        email_textfield = email_field.data
+        password_textfield = password_field.data
         
         # Error message container
         error_container = ft.Container(
@@ -743,11 +727,11 @@ class AuthHandler:
         password_field = self.create_luxury_form_field("Password", "Masukkan password Anda", password=True)
         confirm_password_field = self.create_luxury_form_field("Konfirmasi Password", "Masukkan ulang password Anda", password=True)
         
-        # Get text field references from luxury structure
-        username_textfield = username_field.content.controls[1].content.controls[2].content.controls[1]
-        email_textfield = email_field.content.controls[1].content.controls[2].content.controls[1]
-        password_textfield = password_field.content.controls[1].content.controls[2].content.controls[1]
-        confirm_password_textfield = confirm_password_field.content.controls[1].content.controls[2].content.controls[1]
+        # Get text field references using the data attribute (FIXED)
+        username_textfield = username_field.data
+        email_textfield = email_field.data
+        password_textfield = password_field.data
+        confirm_password_textfield = confirm_password_field.data
         
         # Error message container with premium styling
         error_container = ft.Container(
@@ -1003,8 +987,8 @@ class AuthHandler:
         # Create luxury form field
         email_field = self.create_luxury_form_field("Email", "Masukkan email Anda")
         
-        # Get text field reference from luxury structure
-        email_textfield = email_field.content.controls[1].content.controls[2].content.controls[1]
+        # Get text field reference using the data attribute (FIXED)
+        email_textfield = email_field.data
         
         # Error message container
         error_container = ft.Container(
