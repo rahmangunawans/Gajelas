@@ -217,31 +217,6 @@ class AuthHandler:
             elif "phone" in label.lower():
                 field_icon = ft.Icons.SMARTPHONE_ROUNDED
                 
-        # Password visibility toggle function - FIXED
-        def toggle_password_visibility(e):
-            text_field.password = not text_field.password
-            # Update icon based on current state
-            if text_field.password:
-                e.control.icon = ft.Icons.VISIBILITY
-            else:
-                e.control.icon = ft.Icons.VISIBILITY_OFF
-            self.page.update()
-            
-        # Suffix icon for password toggle
-        suffix_icon = None
-        if password:
-            suffix_icon = ft.IconButton(
-                icon=ft.Icons.VISIBILITY,
-                icon_color="#64748b",
-                on_click=toggle_password_visibility,
-                icon_size=18,
-                tooltip="Show/Hide Password",
-                style=ft.ButtonStyle(
-                    padding=ft.padding.all(4),
-                    overlay_color=ft.Colors.TRANSPARENT,
-                ),
-            )
-        
         # Premium text field with enhanced styling - FIXED for proper input handling
         text_field = ft.TextField(
             hint_text=hint_text,
@@ -270,6 +245,33 @@ class AuthHandler:
             autofocus=False,
             can_reveal_password=False,  # We handle this manually
         )
+        
+        # Password visibility toggle function - FIXED (defined after text_field)
+        def toggle_password_visibility(e):
+            text_field.password = not text_field.password
+            # Update icon based on current state
+            if text_field.password:
+                e.control.icon = ft.Icons.VISIBILITY
+                e.control.tooltip = "Show Password"
+            else:
+                e.control.icon = ft.Icons.VISIBILITY_OFF
+                e.control.tooltip = "Hide Password"
+            self.page.update()
+            
+        # Suffix icon for password toggle
+        suffix_icon = None
+        if password:
+            suffix_icon = ft.IconButton(
+                icon=ft.Icons.VISIBILITY,
+                icon_color="#64748b",
+                on_click=toggle_password_visibility,
+                icon_size=18,
+                tooltip="Show Password",
+                style=ft.ButtonStyle(
+                    padding=ft.padding.all(4),
+                    overlay_color=ft.Colors.TRANSPARENT,
+                ),
+            )
         
         # Create the visual container with glassmorphism effect
         field_container = ft.Container(
