@@ -7,12 +7,12 @@ import os
 # Add src to path for imports
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 
-from services.database.postgres_manager import PostgresManager
+from services.database.sqlite_manager import SQLiteManager
 from config.app_config import AppConfig
 
 def create_admin_user():
     """Create admin user with default credentials"""
-    db = PostgresManager()
+    db = SQLiteManager(AppConfig.DATABASE_PATH)
     
     # Initialize database
     db.init_db()

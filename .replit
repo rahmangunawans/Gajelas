@@ -22,7 +22,7 @@ author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "cd /home/runner/workspace && python -u app.py"
+args = "python app.py"
 waitForPort = 5000
 
 [[ports]]
