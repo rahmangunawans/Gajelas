@@ -2101,7 +2101,7 @@ class Dashboard:
     def logout(self):
         """Handle logout"""
         # Clear user data and return to auth
-        from pages.auth_handler import AuthHandler
+        from core.pages.auth_handler import AuthHandler
         self.current_page = AuthHandler(self.page, None)
         self.current_page.show_login()
         
