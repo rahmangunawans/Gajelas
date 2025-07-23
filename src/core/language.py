@@ -23,7 +23,7 @@ class LanguageManager:
                 "remember_me": "Remember me",
                 "forgot_password_link": "Forgot Password?",
                 "login_now": "LOGIN NOW",
-                "register_now": "REGISTER",
+                "register_now": "REGISTER NOW",
                 "send_reset_link": "SEND RESET LINK",
                 "back_to_login": "← Back to Login",
                 "exclusive_access": "Exclusive Access",
@@ -64,6 +64,7 @@ class LanguageManager:
                 # Common
                 "or": "or",
                 "already_have_account": "Already have an account?",
+                "dont_have_account": "Don't have an account?",
                 "terms_conditions": "Terms and Conditions",
                 "privacy_policy": "Privacy Policy",
                 "i_agree_with": "I agree with",
@@ -111,7 +112,7 @@ class LanguageManager:
                 "remember_me": "Ingat saya",
                 "forgot_password_link": "Lupa Password?",
                 "login_now": "MASUK SEKARANG",
-                "register_now": "DAFTAR",
+                "register_now": "DAFTAR SEKARANG",
                 "send_reset_link": "KIRIM LINK RESET",
                 "back_to_login": "← Kembali ke Login",
                 "exclusive_access": "Akses Eksklusif",
@@ -152,6 +153,7 @@ class LanguageManager:
                 # Common
                 "or": "atau",
                 "already_have_account": "Sudah punya akun?",
+                "dont_have_account": "Belum punya akun?",
                 "terms_conditions": "Syarat dan Ketentuan",
                 "privacy_policy": "Kebijakan Privasi",
                 "i_agree_with": "Saya setuju dengan",

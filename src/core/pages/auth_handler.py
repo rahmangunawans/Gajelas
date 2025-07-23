@@ -630,7 +630,7 @@ class AuthHandler:
                                 ),
                                 ft.Container(
                                     content=ft.Text(
-                                        "atau",
+                                        language_manager.get_text("or"),
                                         size=10,
                                         color="#64748b",
                                         weight=ft.FontWeight.W_600,
@@ -648,7 +648,7 @@ class AuthHandler:
                             ft.Container(
                                 content=ft.Column([
                                     ft.Text(
-                                        "Belum punya akun?",
+                                        language_manager.get_text("dont_have_account"),
                                         size=13,
                                         color="#94a3b8",
                                         weight=ft.FontWeight.W_500,
@@ -659,7 +659,7 @@ class AuthHandler:
                                     ft.Container(
                                         content=ft.TextButton(
                                             content=ft.Text(
-                                                "DAFTAR SEKARANG",
+                                                language_manager.get_text("register_now"),
                                                 size=14,
                                                 weight=ft.FontWeight.W_800,
                                                 color="#00d4ff",
