@@ -43,7 +43,7 @@ class Dashboard:
                 # Search Bar
                 ft.Container(
                     content=ft.TextField(
-                        hint_text="Cari broker atau bot...",
+                        hint_text=language_manager.get_text("search_broker_bot"),
                         hint_style=ft.TextStyle(
                             color=self.styles.TEXT_MUTED,
                             size=14,
@@ -441,10 +441,10 @@ class Dashboard:
     def create_bottom_navigation(self):
         """Create modern bottom navigation bar with clean design"""
         nav_items = [
-            {"icon": ft.Icons.HOME, "label": "Beranda", "key": "beranda"},
-            {"icon": ft.Icons.SMART_TOY, "label": "Active Bots", "key": "bots"},
-            {"icon": ft.Icons.HISTORY, "label": "History", "key": "history"},
-            {"icon": ft.Icons.PERSON, "label": "Saya", "key": "profile"},
+            {"icon": ft.Icons.HOME, "label": language_manager.get_text("beranda"), "key": "beranda"},
+            {"icon": ft.Icons.SMART_TOY, "label": language_manager.get_text("active_bots"), "key": "bots"},
+            {"icon": ft.Icons.HISTORY, "label": language_manager.get_text("history"), "key": "history"},
+            {"icon": ft.Icons.PERSON, "label": language_manager.get_text("profile"), "key": "profile"},
         ]
         
         # Create navigation buttons
@@ -834,7 +834,7 @@ class Dashboard:
                                                 size=16,
                                             ),
                                             ft.Text(
-                                                "VIP Premium" if self.user_data.get('vip_status') == 'premium' else "Regular",
+                                                language_manager.get_text("vip_premium") if self.user_data.get('vip_status') == 'premium' else language_manager.get_text("regular"),
                                                 size=12,
                                                 color=self.styles.TEXT_SECONDARY,
                                             ),
@@ -927,7 +927,7 @@ class Dashboard:
                 height=150,
             ),
             actions=[
-                ft.TextButton("Cancel", on_click=close_dialog),
+                ft.TextButton(language_manager.get_text("cancel"), on_click=close_dialog),
             ],
             bgcolor=self.styles.PRIMARY_COLOR,
         )

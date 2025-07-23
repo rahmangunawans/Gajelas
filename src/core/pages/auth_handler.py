@@ -234,7 +234,12 @@ class AuthHandler:
                 icon=ft.Icons.VISIBILITY,
                 icon_color="#64748b",
                 on_click=toggle_password_visibility,
-                icon_size=20,
+                icon_size=18,
+                tooltip="Show/Hide Password",
+                style=ft.ButtonStyle(
+                    padding=ft.padding.all(4),
+                    overlay_color=ft.Colors.TRANSPARENT,
+                ),
             )
         
         # Premium text field with enhanced styling - FIXED for proper input handling
@@ -310,11 +315,13 @@ class AuthHandler:
                     left=20,
                     top=16,
                 ),
-                # Password visibility toggle positioned absolutely
+                # Password visibility toggle positioned absolutely - FIXED LAYOUT
                 ft.Container(
                     content=suffix_icon if password else None,
                     right=15,
-                    top=12,
+                    top=17,
+                    width=30,
+                    height=25,
                 ) if password else ft.Container(),
                 # The actual text field positioned to fill the container
                 text_field,
