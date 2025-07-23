@@ -8,6 +8,7 @@ import os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..'))
 
 from core.styles import AppStyles
+from core.language import language_manager
 
 class Dashboard:
     def __init__(self, page: ft.Page, user_data):
@@ -851,19 +852,25 @@ class Dashboard:
                         ft.Container(
                             content=ft.Column([
                                 ft.ListTile(
+                                    leading=ft.Icon(ft.Icons.LANGUAGE, color=self.styles.TEXT_SECONDARY),
+                                    title=ft.Text(language_manager.get_text("language"), color=self.styles.TEXT_PRIMARY),
+                                    trailing=ft.Icon(ft.Icons.ARROW_FORWARD_IOS, color=self.styles.TEXT_TERTIARY),
+                                    on_click=lambda e: self.show_language_selection(),
+                                ),
+                                ft.ListTile(
                                     leading=ft.Icon(ft.Icons.SETTINGS, color=self.styles.TEXT_SECONDARY),
-                                    title=ft.Text("Settings", color=self.styles.TEXT_PRIMARY),
+                                    title=ft.Text(language_manager.get_text("settings"), color=self.styles.TEXT_PRIMARY),
                                     trailing=ft.Icon(ft.Icons.ARROW_FORWARD_IOS, color=self.styles.TEXT_TERTIARY),
                                     on_click=lambda e: self.show_settings(),
                                 ),
                                 ft.ListTile(
                                     leading=ft.Icon(ft.Icons.HELP, color=self.styles.TEXT_SECONDARY),
-                                    title=ft.Text("Help & Support", color=self.styles.TEXT_PRIMARY),
+                                    title=ft.Text(language_manager.get_text("help_support"), color=self.styles.TEXT_PRIMARY),
                                     trailing=ft.Icon(ft.Icons.ARROW_FORWARD_IOS, color=self.styles.TEXT_TERTIARY),
                                 ),
                                 ft.ListTile(
                                     leading=ft.Icon(ft.Icons.LOGOUT, color=self.styles.ERROR_COLOR),
-                                    title=ft.Text("Logout", color=self.styles.ERROR_COLOR),
+                                    title=ft.Text(language_manager.get_text("logout"), color=self.styles.ERROR_COLOR),
                                     trailing=ft.Icon(ft.Icons.ARROW_FORWARD_IOS, color=self.styles.TEXT_TERTIARY),
                                     on_click=lambda e: self.logout(),
                                 ),
@@ -885,6 +892,49 @@ class Dashboard:
         )
         
         self.page.add(profile_content)
+        
+    def show_language_selection(self):
+        """Show language selection dialog"""
+        def change_language(language_code):
+            """Change the current language"""
+            language_manager.set_language(language_code)
+            # Refresh the current page to apply new language
+            self.show_profile()
+            
+        def close_dialog(e):
+            dialog.open = False
+            self.page.update()
+            
+        # Create language options
+        language_options = []
+        for lang in language_manager.get_available_languages():
+            is_current = lang["code"] == language_manager.current_language
+            language_options.append(
+                ft.ListTile(
+                    leading=ft.Icon(ft.Icons.LANGUAGE, color=self.styles.TEXT_SECONDARY),
+                    title=ft.Text(lang["name"], color=self.styles.TEXT_PRIMARY),
+                    trailing=ft.Icon(ft.Icons.CHECK, color=self.styles.ACCENT_COLOR) if is_current else None,
+                    on_click=lambda e, code=lang["code"]: [change_language(code), close_dialog(e)],
+                    bgcolor=self.styles.SECONDARY_COLOR if is_current else None,
+                )
+            )
+        
+        dialog = ft.AlertDialog(
+            title=ft.Text(language_manager.get_text("language"), color=self.styles.TEXT_PRIMARY),
+            content=ft.Container(
+                content=ft.Column(language_options, spacing=5),
+                width=300,
+                height=150,
+            ),
+            actions=[
+                ft.TextButton("Cancel", on_click=close_dialog),
+            ],
+            bgcolor=self.styles.PRIMARY_COLOR,
+        )
+        
+        self.page.overlay.append(dialog)
+        dialog.open = True
+        self.page.update()
         
     def show_settings(self):
         """Show settings page"""

@@ -9,6 +9,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..'))
 
 from core.styles import AppStyles
 from services.database.sqlite_manager import SQLiteManager
+from core.language import language_manager
 
 class AuthHandler:
     def __init__(self, page: ft.Page, on_success_callback):
@@ -216,14 +217,14 @@ class AuthHandler:
             elif "phone" in label.lower():
                 field_icon = ft.Icons.SMARTPHONE_ROUNDED
                 
-        # Password visibility toggle function
+        # Password visibility toggle function - FIXED
         def toggle_password_visibility(e):
             text_field.password = not text_field.password
-            # Update icon
+            # Update icon based on current state
             if text_field.password:
-                suffix_icon.icon = ft.Icons.VISIBILITY
+                e.control.icon = ft.Icons.VISIBILITY
             else:
-                suffix_icon.icon = ft.Icons.VISIBILITY_OFF
+                e.control.icon = ft.Icons.VISIBILITY_OFF
             self.page.update()
             
         # Suffix icon for password toggle
@@ -443,9 +444,16 @@ class AuthHandler:
         """Show login page"""
         self.page.clean()
         
-        # Create luxury form fields
-        email_field = self.create_luxury_form_field("Email", "Masukkan email Anda")
-        password_field = self.create_luxury_form_field("Password", "Masukkan password Anda", password=True)
+        # Create luxury form fields with language support
+        email_field = self.create_luxury_form_field(
+            language_manager.get_text("email"), 
+            language_manager.get_text("enter_email")
+        )
+        password_field = self.create_luxury_form_field(
+            language_manager.get_text("password"), 
+            language_manager.get_text("enter_password"), 
+            password=True
+        )
         
         # Get text field references using the data attribute (FIXED)
         email_textfield = email_field.data
@@ -526,7 +534,10 @@ class AuthHandler:
         login_content = ft.Column([
             # Compact header
             ft.Container(
-                content=self.create_premium_header("Masuk", "Platform Trading Profesional"),
+                content=self.create_premium_header(
+                    language_manager.get_text("login"), 
+                    language_manager.get_text("professional_trading_platform")
+                ),
                 padding=ft.padding.only(top=15, bottom=10),
             ),
             
@@ -538,7 +549,7 @@ class AuthHandler:
                         content=ft.Column([
                             # Form heading
                             ft.Text(
-                                "Akses Eksklusif",
+                                language_manager.get_text("exclusive_access"),
                                 size=16,
                                 weight=ft.FontWeight.W_900,
                                 color="#ffffff",
@@ -555,7 +566,7 @@ class AuthHandler:
                             # Remember me and forgot password
                             ft.Row([
                                 ft.Checkbox(
-                                    label="Ingat saya",
+                                    label=language_manager.get_text("remember_me"),
                                     value=False,
                                     fill_color="#00d4ff",
                                     check_color="#ffffff",
@@ -569,7 +580,7 @@ class AuthHandler:
                                 ft.Container(expand=True),
                                 ft.TextButton(
                                     content=ft.Text(
-                                        "Lupa Password?",
+                                        language_manager.get_text("forgot_password_link"),
                                         size=11,
                                         weight=ft.FontWeight.W_700,
                                         color="#00d4ff",
@@ -592,7 +603,7 @@ class AuthHandler:
                             ft.Container(height=15),
                             
                             # Login button
-                            self.create_primary_button("MASUK SEKARANG", handle_login, 300),
+                            self.create_primary_button(language_manager.get_text("login_now"), handle_login, 300),
                             
                             ft.Container(height=20),
                             
@@ -936,15 +947,15 @@ class AuthHandler:
                             ft.Container(
                                 content=ft.Row([
                                     ft.Container(height=1, bgcolor=self.styles.CARD_BORDER, expand=True),
-                                    ft.Text("atau", size=12, color=self.styles.TEXT_MUTED),
+                                    ft.Text(language_manager.get_text("or"), size=12, color=self.styles.TEXT_MUTED),
                                     ft.Container(height=1, bgcolor=self.styles.CARD_BORDER, expand=True),
                                 ], spacing=10),
                                 padding=ft.padding.symmetric(vertical=10),
                             ),
                             
                             ft.Row([
-                                ft.Text("Sudah punya akun? ", size=14, color=self.styles.TEXT_TERTIARY),
-                                self.create_text_button("Masuk", lambda e: self.show_login()),
+                                ft.Text(language_manager.get_text("already_have_account") + " ", size=14, color=self.styles.TEXT_TERTIARY),
+                                self.create_text_button(language_manager.get_text("login"), lambda e: self.show_login()),
                             ], alignment=ft.MainAxisAlignment.CENTER),
                             
                         ], spacing=0),
@@ -1087,7 +1098,7 @@ class AuthHandler:
                             ft.Container(
                                 content=ft.Row([
                                     ft.Container(height=1, bgcolor=self.styles.CARD_BORDER, expand=True),
-                                    ft.Text("atau", size=12, color=self.styles.TEXT_MUTED),
+                                    ft.Text(language_manager.get_text("or"), size=12, color=self.styles.TEXT_MUTED),
                                     ft.Container(height=1, bgcolor=self.styles.CARD_BORDER, expand=True),
                                 ], spacing=10),
                                 padding=ft.padding.symmetric(vertical=10),

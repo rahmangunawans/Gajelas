@@ -29,3 +29,7 @@ class AppConfig:
     # Default Admin Credentials
     DEFAULT_ADMIN_EMAIL = "admin@atv.com"
     DEFAULT_ADMIN_PASSWORD = "admin123"
+    
+    # Language Configuration
+    DEFAULT_LANGUAGE = "en"  # Default to English
+    SUPPORTED_LANGUAGES = ["en", "id"]
